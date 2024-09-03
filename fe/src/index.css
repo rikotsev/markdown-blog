@@ -1,0 +1,169 @@
+/* src/index.css */
+
+body {
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  background-color: #f2f2f2;
+  color: #333;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #222;
+  margin-bottom: 0.5rem;
+  font-weight: normal;
+}
+
+p {
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+a {
+  color: #333;
+  text-decoration: none; /* Remove underline from links */
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: #000;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1rem; /* Reduced padding for better mobile display */
+}
+
+.navbar {
+  background-color: #fff;
+  border-bottom: 1px solid #ddd;
+  padding: 1rem;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: center; /* Center menu items */
+  box-sizing: border-box;
+}
+
+.navbar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap; /* Allows items to wrap on smaller screens */
+  justify-content: center; /* Center-align items */
+}
+
+.navbar li {
+  margin: 0;
+}
+
+.navbar a {
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  text-decoration: none;
+}
+
+.navbar a:hover {
+  background-color: #e0e0e0;
+  color: #000;
+}
+
+.navbar a.active {
+  background-color: #333;
+  color: #fff;
+}
+
+.main-content {
+  margin-top: 4rem; /* Ensure content starts below the fixed navbar */
+  padding: 1rem;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.article-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.article-item {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.article-item:hover {
+  background-color: #e0e0e0;
+}
+
+.article-item h2 {
+  margin: 0;
+  color: #333;
+  font-size: 1.3rem;
+}
+
+.article-item p {
+  color: #666;
+  font-size: 1rem;
+  margin-top: 0.5rem;
+}
+
+.article-item a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.article-item a:hover h2 {
+  text-decoration: none;
+  color: #000;
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column; /* Stack items vertically on smaller screens */
+    align-items: center; /* Center-align items */
+    padding: 0.5rem; /* Reduce padding for smaller screens */
+  }
+
+  .navbar ul {
+    gap: 0.5rem; /* Reduce gap between items on smaller screens */
+    flex-direction: column; /* Stack items vertically on smaller screens */
+    width: 100%; /* Ensure the navbar spans full width on small screens */
+    padding: 0;
+  }
+
+  .navbar a {
+    padding: 0.75rem 1rem; /* Increase touch target size */
+    text-align: center;
+    width: 100%; /* Make each link take the full width */
+  }
+
+  .container {
+    padding: 1rem; /* Reduce padding for smaller screens */
+  }
+
+  .article-item {
+    padding: 1rem; /* Reduce padding for smaller screens */
+  }
+
+  .article-item h2 {
+    font-size: 1.1rem; /* Reduce font size for smaller screens */
+  }
+
+  .main-content {
+    margin-top: 5rem; /* Adjust for fixed navbar height on smaller screens */
+    padding: 1rem; /* Reduce padding for smaller screens */
+  }
+}
+

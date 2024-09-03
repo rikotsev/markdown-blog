@@ -1,0 +1,112 @@
+/* src/components/ArticleManager.module.css */
+
+.article-manager {
+    margin-top: 4rem;
+    padding: 1rem;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.article-manager .filters {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.article-manager input[type="text"],
+.article-manager select {
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.article-manager input[type="text"]:focus,
+.article-manager select:focus {
+    border-color: #333;
+}
+
+.article-manager button {
+    padding: 0.5rem 1rem;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    margin-bottom: 1rem;
+}
+
+.article-manager button:hover {
+    background-color: #555;
+}
+
+.article-manager ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.article-manager li {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background-color: #f2f2f2;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+.article-manager li:hover {
+    background-color: #e0e0e0;
+}
+
+.article-manager h2 {
+    margin: 0;
+    color: #333;
+    font-size: 1.2rem;
+}
+
+.article-manager p {
+    color: #666;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.article-manager small {
+    display: block;
+    color: #888;
+    margin-top: 0.5rem;
+}
+
+.article-manager .edit-button,
+.article-manager .delete-button {
+    padding: 0.4rem 0.8rem;
+    margin-left: 0.5rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.article-manager .edit-button {
+    background-color: #0066cc;
+    color: #fff;
+}
+
+.article-manager .edit-button:hover {
+    background-color: #005bb5;
+}
+
+.article-manager .delete-button {
+    background-color: #d9534f;
+    color: #fff;
+}
+
+.article-manager .delete-button:hover {
+    background-color: #c9302c;
+}

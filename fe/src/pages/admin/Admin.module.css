@@ -1,0 +1,31 @@
+.adminContainer {
+    display: flex; /* Use Flexbox to align children side by side */
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    gap: 2rem; /* Add space between the two sections */
+    padding: 2rem; /* Add padding around the container */
+    margin-top: 4rem; /* Margin to align with other content and prevent overlap with navbar */
+}
+
+.categorySection {
+    flex: 0.5; /* Take half of the available space */
+    min-width: 300px; /* Minimum width to prevent too much shrinking on small screens */
+}
+
+.otherSection {
+    flex: 1; /* Take the remaining half of the available space */
+    min-width: 300px; /* Minimum width to prevent too much shrinking on small screens */
+    background-color: #f2f2f2; /* Light grey background for contrast */
+    padding: 1rem;
+}
+
+@media (max-width: 768px) {
+    .adminContainer {
+        flex-direction: column; /* Stack vertically on smaller screens */
+    }
+
+    .categorySection,
+    .otherSection {
+        flex: none; /* Reset flex on smaller screens */
+        width: 100%; /* Take full width on smaller screens */
+    }
+}
