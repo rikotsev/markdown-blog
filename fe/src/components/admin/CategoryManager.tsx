@@ -1,21 +1,32 @@
 import React, {useState} from "react";
 import styles from './CategoryManager.module.css'
+import ArticleApi, {Category} from "../../services/ArticleApi";
 
 const CategoryManager: React.FC = () => {
-    const [categories, setCategories] = useState<Set<string>>(new Set());
+
+    const existingCategories = ArticleApi.getInstance().getCategories()
+    const [categories, setCategories] = useState<Set<Category>>(new Set(existingCategories));
     const [newCategory, setNewCategory] = useState<string>('');
 
     const handleAddCategory = () => {
         if (newCategory.trim() !== '') {
-            setCategories((prevCategories) => new Set(prevCategories).add(newCategory.trim()))
+            setCategories((prevCategories) => new Set(prevCategories).add({
+                id: newCategory,
+                prettyId: newCategory,
+                title: newCategory
+            }))
             setNewCategory('')
         }
     };
 
     const handleRemoveCategory = (categoryToRemove: string) => {
         setCategories((prevCategories) => {
-            const updatedCategories = new Set(prevCategories);
-            updatedCategories.delete(categoryToRemove);
+            const updatedCategories = new Set<Category>()
+            prevCategories.forEach(cat => {
+                if (cat.id !== categoryToRemove) {
+                    updatedCategories.add(cat)
+                }
+            })
             return updatedCategories
         })
     };
@@ -42,9 +53,12 @@ const CategoryManager: React.FC = () => {
             <button onClick={handleAddCategory}>Add category</button>
             <ul>
                 {Array.from(categories).map((category) => (
-                    <li key={category}>
-                        {category}
-                        <button onClick={() => handleRemoveCategory(category)}>Remove</button>
+                    <li key={category.id}>
+                        <div className={styles['category-text']}>
+                            <div className={styles['category-title']}>{category.title}</div>
+                            <div className={styles['category-subtitle']}>{category.prettyId}</div>
+                        </div>
+                        <button onClick={() => handleRemoveCategory(category.id)}>Remove</button>
                     </li>
                 ))}
             </ul>

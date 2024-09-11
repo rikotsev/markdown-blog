@@ -1,24 +1,13 @@
 import React, {useState} from "react";
 import styles from './ArticleManager.module.css'
 import {useNavigate} from "react-router-dom";
+import ArticleApi, {Article} from "../../services/ArticleApi";
 
-
-interface DummyArticle {
-    id: string
-    title: string
-    content: string
-}
-
-const initialArticles: DummyArticle[] = [
-    { id: 'article_1', title: 'Understanding React Components', content: 'Detailed content about React components...' },
-    { id: 'article_2', title: 'JavaScript ES6 Features', content: 'Content about ES6 features in JavaScript...' },
-    { id: 'article_3', title: 'TypeScript Basics', content: 'Content about getting started with TypeScript...' },
-];
-
-const categories = ['All', 'React', 'JavaScript', 'TypeScript'];
 
 const ArticleManager: React.FC = () => {
-    const [articles, setArticles] = useState<DummyArticle[]>(initialArticles)
+    const initialArticles = ArticleApi.getInstance().getAllArticles()
+    const initialCategories = ArticleApi.getInstance().getCategories()
+    const [articles, setArticles] = useState<Article[]>(initialArticles)
     const [searchTerm, setSearchTerm] = useState<string>('')
     const [selectedCategory, setSelectedCategory] = useState<string>('All');
     const navigate = useNavigate()
@@ -52,9 +41,10 @@ const ArticleManager: React.FC = () => {
                        onChange={handleSearchChange}
                        value={searchTerm} />
                 <select value={selectedCategory} onChange={handleCategoryChange} className={styles.categoryDropdown}>
-                    {categories.map((category) => (
-                        <option key={category} value={category}>
-                            {category}
+                    <option value="all">All</option>
+                    {initialCategories.map((category) => (
+                        <option key={category.id} value={category.prettyId}>
+                            {category.title}
                         </option>
                     ))}
                 </select>
@@ -67,7 +57,7 @@ const ArticleManager: React.FC = () => {
                     <li key={article.id}>
                         <div>
                             <h3>{article.title}</h3>
-                            <p>{article.content}</p>
+                            <p>{article.description}</p>
                         </div>
                         <div>
                             <button onClick={() => {handleEditArticle(article.id)}}>

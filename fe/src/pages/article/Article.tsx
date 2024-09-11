@@ -1,30 +1,22 @@
 import React from "react";
+import {useParams} from "react-router-dom";
+import ArticleApi from "../../services/ArticleApi";
+import Markdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 
 const Article: React.FC = () => {
 
-    const item: ArticleItem = {
-        id: "article_1",
-        title: "Exciting tech news",
-        description: "This is an exciting update, please see it.",
-        content: "This is a very long and elaborate article."
-    }
+    const {id} = useParams<{id: string}>();
+    const article = ArticleApi.getInstance().getArticle(id!)
 
     return (
         <div className="main-content">
             <div className="container">
-                <h1>{item.title}</h1>
-                <p>{item.content}</p>
+                <Markdown remarkPlugins={[remarkGfm]}>{article.content}</Markdown>
             </div>
         </div>
     )
-}
-
-interface ArticleItem {
-    id: string
-    title: string
-    description: string
-    content: string
 }
 
 export default Article;

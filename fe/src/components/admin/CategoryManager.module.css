@@ -44,6 +44,22 @@
     transition: background-color 0.2s ease;
 }
 
+.category-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.category-subtitle {
+    font-size: 0.9rem;
+    color: #888; /* Lighter color for the subtitle */
+    margin-top: 0.3rem;
+}
+
+.category-text {
+    display: flex;
+    flex-direction: column; /* Stack the title and subtitle vertically */
+}
+
 .category-manager li:hover {
     background-color: #e0e0e0;
 }
