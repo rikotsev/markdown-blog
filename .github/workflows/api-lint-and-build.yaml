@@ -2,7 +2,7 @@ name: Markdown Blog API - lint and build
 on:
   pull_request:
     paths:
-      - 'openapi'
+      - 'openapi/**'
 jobs:
   link-and-build:
     runs-on: ubuntu-latest

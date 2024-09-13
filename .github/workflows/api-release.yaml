@@ -2,7 +2,7 @@ name: Markdown Blog API - Release
 on:
   push:
     paths:
-      - "openapi"
+      - 'openapi/**'
 jobs:
   release-please:
     runs-on: ubuntu-latest
@@ -17,4 +17,4 @@ jobs:
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
       - run: npm run build &&
-        if: ${{ steps.release.outputs[openapi--release-created] }}
+        if: ${{ steps.release.outputs['openapi--release-created'] }}
