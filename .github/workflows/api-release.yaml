@@ -2,7 +2,7 @@ name: Markdown Blog API - Release
 on:
   push:
     paths:
-      - './openapi'
+      - 'openapi/**'
 jobs:
   release-please:
     runs-on: ubuntu-latest
