@@ -1,0 +1,23 @@
+tags:
+  - Article
+summary: Delete an Article
+operationId: article-delete
+description: >
+  Permanently deletes the Article. This is irreversible!
+security:
+  - main_auth: []
+parameters:
+  - $ref: ../../../components/parameters/UrlId.yaml
+    example: yet-another-js-framework
+    description: The URL ID of the Article.
+responses:
+  '200':
+    description: OK
+  '403':
+    description: Unauthorized
+  '500':
+    description: Internal Issue
+    content:
+      application/json:
+        schema:
+          $ref: ../../../components/schemas/Problem.yaml

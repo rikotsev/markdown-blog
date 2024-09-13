@@ -1,0 +1,23 @@
+tags:
+  - Category
+summary: Delete a Category
+operationId: category-delete
+description: >
+  Permanently deletes the Category. This is irreversible!
+security:
+  - main_auth: []
+parameters:
+  - $ref: ../../../components/parameters/UrlId.yaml
+    example: new-tech
+    description: The URL ID of the Category.
+responses:
+  '200':
+    description: OK
+  '403':
+    description: Unauthorized
+  '500':
+    description: Internal Issue
+    content:
+      application/json:
+        schema:
+          $ref: ../../../components/schemas/Problem.yaml

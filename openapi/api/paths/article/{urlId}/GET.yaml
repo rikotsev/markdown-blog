@@ -1,0 +1,26 @@
+tags:
+  - Article
+summary: Get an Article
+operationId: article-get
+description: >
+  Retrieves all information about the Article.
+security: []
+parameters:
+  - $ref: ../../../components/parameters/UrlId.yaml
+    example: yet-another-js-framework
+    description: The URL ID of the Article.
+responses:
+  '200':
+    description: OK
+    content:
+      application/json:
+        schema:
+          $ref: ../../../components/schemas/Article.yaml
+  '403':
+    description: Unauthorized
+  '500':
+    description: Internal Issue
+    content:
+      application/json:
+        schema:
+          $ref: ../../../components/schemas/Problem.yaml

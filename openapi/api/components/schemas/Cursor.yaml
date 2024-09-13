@@ -1,0 +1,4 @@
+type: string
+description: A base64 encoded cursor for traversing items in a list
+example: |
+  eyJ0aW1lc3RhbXAiOiAiMjAyMy0wMy0wMVQxMjowMDowMFoiLCAicG9zdElkIjogIjEyMzQ1In0=

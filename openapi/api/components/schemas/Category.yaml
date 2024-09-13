@@ -1,0 +1,18 @@
+type: object
+description: A category for blog articles.
+properties:
+  id:
+    readOnly: true
+    description: An UUID to identify the category.
+    allOf:
+      - $ref: ./Id.yaml
+  urlId:
+    readOnly: true
+    description: An url friendly and semantically meaningful identification for a category.
+    example: new-tech
+    allOf:
+      - $ref: ./UrlId.yaml
+  name:
+    type: string
+    description: The name of the category.
+    example: New Technology

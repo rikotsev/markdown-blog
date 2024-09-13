@@ -1,0 +1,23 @@
+tags:
+  - Page
+summary: Delete a Page
+operationId: page-delete
+description: >
+  Permanently deletes the Page. This is irreversible!
+security:
+  - main_auth: []
+parameters:
+  - $ref: ../../../components/parameters/UrlId.yaml
+    example: home
+    description: The URL ID of the Page.
+responses:
+  '200':
+    description: OK
+  '403':
+    description: Unauthorized
+  '500':
+    description: Internal Issue
+    content:
+      application/json:
+        schema:
+          $ref: ../../../components/schemas/Problem.yaml

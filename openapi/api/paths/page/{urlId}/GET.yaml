@@ -1,0 +1,26 @@
+tags:
+  - Page
+summary: Get a Page
+operationId: page-get
+description: >
+  Retrieves all information about the Page.
+security: []
+parameters:
+  - $ref: ../../../components/parameters/UrlId.yaml
+    example: home
+    description: The URL ID of the Page.
+responses:
+  '200':
+    description: OK
+    content:
+      application/json:
+        schema:
+          $ref: ../../../components/schemas/Page.yaml
+  '403':
+    description: Unauthorized
+  '500':
+    description: Internal Issue
+    content:
+      application/json:
+        schema:
+          $ref: ../../../components/schemas/Problem.yaml

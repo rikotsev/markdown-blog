@@ -1,0 +1,34 @@
+tags:
+  - Category
+summary: Create a new category
+operationId: category-create
+description: >
+  Creates a new category and returns the created category.
+security:
+  - main_auth: []
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          name:
+            type: string
+        required:
+          - name
+responses:
+  '201':
+    description: CREATED
+    content:
+      application/json:
+        schema:
+          $ref: ../../components/schemas/Category.yaml
+  '403':
+    description: Unauthorized
+  '500':
+    description: Internal Issue
+    content:
+      application/json:
+        schema:
+          $ref: ../../components/schemas/Problem.yaml

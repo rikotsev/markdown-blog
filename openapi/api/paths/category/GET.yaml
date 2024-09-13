@@ -1,0 +1,27 @@
+tags:
+  - Category
+summary: List of Categories
+operationId: category-list
+description: >
+  Returns the complete list of categories.
+security: []
+responses:
+  '200':
+    description: OK
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            categories:
+              type: array
+              items:
+                $ref: ../../components/schemas/Category.yaml
+  '403':
+    description: Unauthorized
+  '500':
+    description: Internal Issue
+    content:
+      application/json:
+        schema:
+          $ref: ../../components/schemas/Problem.yaml

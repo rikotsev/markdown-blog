@@ -1,0 +1,3 @@
+type: string
+description: An UUID to identify the article.
+example: 971b1f3b-e3e8-4fe0-a0e6-edf129601d81

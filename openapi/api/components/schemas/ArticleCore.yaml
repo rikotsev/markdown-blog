@@ -1,0 +1,29 @@
+type: object
+properties:
+  title:
+    description: The title of the article.
+    example: Yet another cool new JS Framework!
+    allOf:
+      - $ref: ./EntityTitle.yaml
+  category:
+    $ref: ./Category.yaml
+  description:
+    type: string
+    description: A short overview of the contents of the article.
+    maxLength: 256
+    example: >
+      I know... Another JS Framework. However, this one is a bit different. Might actually be useful and innovative...
+  content:
+    type: string
+    description: The content of the article in Markdown format.
+    example: |
+      # Yet another cool new JS Framework!
+      ---
+      > I know... Another JS Framework. However, this one is a bit different. Might actually be useful and innovative...
+      ---
+      All jokes aside it ticks two of the 3 checkboxes every JS framework has.
+      * [X] it is innovative
+      * [X] it is made by a small team that may abandon it at any time
+      * [ ] there is something else that already does the same thing and you don't need it. 
+
+      As you can see - it fails to check in just the right places.

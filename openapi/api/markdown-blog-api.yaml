@@ -1,0 +1,71 @@
+openapi: 3.1.0
+info:
+  version: 1.0.0
+  title: Markdown Blog API
+  contact:
+    name: Contact me (Radoslav)
+    email: r.i.kotsev@gmail.com
+  description: >
+    This is the API for the Markdown Blog application. 
+    
+    # Introduction
+    
+    The api drives the communication between the front end (React) and the back end (GoLang). 
+    It is generally intented to be used for that use case primarily, although it is possible to use
+    the api with another front end. 
+    
+    # About the API
+    
+    It is supposed to be a simple CRUD API. The main principle behind it - KISS (Keep it Simple Stupid).
+    I **really** do not want a complex platform that does many things. My goal is to have the bare minimum.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+  - url: https://api.blog.rikotsev.com/v1
+tags:
+  - name: Article
+    description: "Operations involving creating, modifying, listing, viewing or deleting articles."
+  - name: Category
+    description: "Operations involving listing, creating and deleting categories."
+  - name: Page
+    description: "Operations involving creating, modifying, listing, viewing or deleting pages."
+paths:
+  '/article':
+    get:
+      $ref: ./paths/article/GET.yaml
+    post:
+      $ref: ./paths/article/POST.yaml
+  '/article/{urlId}':
+    get:
+      $ref: ./paths/article/{urlId}/GET.yaml
+    patch:
+      $ref: ./paths/article/{urlId}/PATCH.yaml
+    delete:
+      $ref: ./paths/article/{urlId}/DELETE.yaml
+  '/category':
+    get:
+      $ref: ./paths/category/GET.yaml
+    post:
+      $ref: ./paths/category/POST.yaml
+  '/category/{urlId}':
+    delete:
+      $ref: ./paths/category/{urlId}/DELETE.yaml
+  '/page':
+    get:
+      $ref: ./paths/page/GET.yaml
+    post:
+      $ref: ./paths/page/POST.yaml
+  '/page/{urlId}':
+    get:
+      $ref: ./paths/page/{urlId}/GET.yaml
+    patch:
+      $ref: ./paths/page/{urlId}/PATCH.yaml
+    delete:
+      $ref: ./paths/page/{urlId}/DELETE.yaml
+components:
+  securitySchemes:
+    main_auth:
+      type: http
+      scheme: Bearer
+      bearerFormat: JWT

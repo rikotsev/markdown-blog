@@ -1,0 +1,4 @@
+description: Where to find the Article.
+schema:
+  type: string
+  example: https://api.blog.rikotsev.com/article/yet-another-js-framework

@@ -1,0 +1,35 @@
+tags:
+  - Article
+summary: Create a new article
+operationId: article-create
+description: >
+  Creates a new article and returns the location of the newly created article.
+security:
+  - main_auth: []
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        allOf:
+          - $ref: ../../components/schemas/ArticleCore.yaml
+          - type: object
+            required:
+              - title
+              - category
+              - description
+              - content
+responses:
+  '201':
+    description: CREATED
+    headers:
+      Location:
+        $ref: ../../components/headers/Location.yaml
+  '403':
+    description: Unauthorized
+  '500':
+    description: Internal Issue
+    content:
+      application/json:
+        schema:
+          $ref: ../../components/schemas/Problem.yaml

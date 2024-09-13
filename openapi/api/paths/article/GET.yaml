@@ -1,0 +1,41 @@
+tags:
+  - Article
+summary: List of Articles
+operationId: article-list
+description: >
+  Returns a list of articles. Provides a paging mechanism and a query param filter for the articles.
+security: []
+parameters:
+  - in: query
+    name: category
+    description: The category for the news articles
+    required: false
+    example: new-tech
+    schema:
+      $ref: ../../components/schemas/UrlId.yaml
+  - in: query
+    name: cursor
+    description: Cursor for paging
+    required: false
+    schema:
+      $ref: ../../components/schemas/Cursor.yaml
+responses:
+  '200':
+    description: OK
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            articles:
+              type: array
+              items:
+                $ref: ../../components/schemas/Article.yaml
+  '403':
+    description: Unauthorized
+  '500':
+    description: Internal Issue
+    content:
+      application/json:
+        schema:
+          $ref: ../../components/schemas/Problem.yaml

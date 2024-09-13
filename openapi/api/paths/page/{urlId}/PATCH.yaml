@@ -1,0 +1,34 @@
+tags:
+  - Page
+summary: Edit a Page
+operationId: page-edit
+description: >
+  Edits a page and returns the location of the modified page.
+security:
+  - main_auth: []
+parameters:
+  - $ref: ../../../components/parameters/UrlId.yaml
+    example: home
+    description: The URL ID of the Page.
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        $ref: ../../../components/schemas/PageCore.yaml
+responses:
+  '200':
+    description: OK
+    headers:
+      Location:
+        $ref: ../../../components/headers/Location.yaml
+        example: https://api.blog.rikotsev.com/page/home
+        description: Where to find the modified page.
+  '403':
+    description: Unauthorized
+  '500':
+    description: Internal Issue
+    content:
+      application/json:
+        schema:
+          $ref: ../../../components/schemas/Problem.yaml

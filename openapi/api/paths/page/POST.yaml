@@ -1,0 +1,35 @@
+tags:
+  - Page
+summary: Create a new page
+operationId: page-create
+description: >
+  Creates a new page and returns the location of the newly created page.
+security:
+  - main_auth: []
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        allOf:
+          - $ref: ../../components/schemas/PageCore.yaml
+          - type: object
+            required:
+              - title
+              - content
+responses:
+  '201':
+    description: CREATED
+    headers:
+      Location:
+        $ref: ../../components/headers/Location.yaml
+        example: https://api.blog.rikotsev.com/page/home
+        description: Where to find the created page.
+  '403':
+    description: Unauthorized
+  '500':
+    description: Internal Issue
+    content:
+      application/json:
+        schema:
+          $ref: ../../components/schemas/Problem.yaml

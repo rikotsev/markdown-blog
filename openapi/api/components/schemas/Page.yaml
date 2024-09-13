@@ -1,0 +1,22 @@
+type: object
+description: A simple web site page.
+allOf:
+  - type: object
+    properties:
+      id:
+        readOnly: true
+        description: An UUID to identify a page.
+        allOf:
+          - $ref: ./Id.yaml
+      urlId:
+        readOnly: true
+        description: An URL friendly and semantically meaningful identification for a page.
+        example: yet-another-cool-js-framework
+        allOf:
+          - $ref: ./UrlId.yaml
+  - $ref: ./PageCore.yaml
+required:
+  - id
+  - urlId
+  - title
+  - content

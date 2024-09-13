@@ -1,0 +1,5 @@
+in: path
+name: urlId
+required: true
+schema:
+  $ref: ../schemas/UrlId.yaml

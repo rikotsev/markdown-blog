@@ -1,0 +1,38 @@
+type: object
+description: A blog article with some basic metadata.
+allOf:
+  - type: object
+    properties:
+      id:
+        readOnly: true
+        description: An UUID to identify the article.
+        allOf:
+          - $ref: ./Id.yaml
+      urlId:
+        readOnly: true
+        description: An URL friendly and semantically meaningful identification for an article.
+        example: yet-another-cool-js-framework
+        allOf:
+          - $ref: ./UrlId.yaml
+      createdAt:
+        readOnly: true
+        type: string
+        format: date-time
+        description: Date and time when the article was created.
+        example: 2017-07-21T17:32:28Z
+      editedAt:
+        readOnly: true
+        type: string
+        format: date-time
+        description: Date and time when the article was last edited.
+        example: 2017-07-21T17:32:28Z
+  - $ref: ./ArticleCore.yaml
+required:
+  - id
+  - urlId
+  - createdAt
+  - editedAt
+  - title
+  - category
+  - description
+  - content

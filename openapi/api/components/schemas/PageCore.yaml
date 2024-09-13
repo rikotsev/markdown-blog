@@ -1,0 +1,18 @@
+type: object
+properties:
+  title:
+    description: The title of the page.
+    example: Home
+    allOf:
+     - $ref: ./EntityTitle.yaml
+  content:
+    type: string
+    description: The content of the page in Markdown format.
+    example: |
+      # Home
+      ---
+      Hi, there!
+      My name is Radoslav and this is my personal website / blog where I spill my thoughts.
+      
+      Feel free to read through - if you find something interesting or want to collaborate on something
+      please do send me a message.

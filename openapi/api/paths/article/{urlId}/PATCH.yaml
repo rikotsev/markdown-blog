@@ -1,0 +1,32 @@
+tags:
+  - Article
+summary: Edit an Article
+operationId: article-edit
+description: >
+  Edits an article and returns the location of the modified article.
+security:
+  - main_auth: []
+parameters:
+  - $ref: ../../../components/parameters/UrlId.yaml
+    example: yet-another-js-framework
+    description: The URL ID of the Article.
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        $ref: ../../../components/schemas/ArticleCore.yaml
+responses:
+  '200':
+    description: OK
+    headers:
+      Location:
+        $ref: ../../../components/headers/Location.yaml
+  '403':
+    description: Unauthorized
+  '500':
+    description: Internal Issue
+    content:
+      application/json:
+        schema:
+          $ref: ../../../components/schemas/Problem.yaml

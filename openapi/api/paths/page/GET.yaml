@@ -1,0 +1,32 @@
+tags:
+  - Page
+summary: List of Pages
+operationId: page-list
+description: >
+  Returns a complete list of all the pages that contains only the URL IDs and titles of the pages.
+security: []
+responses:
+  '200':
+    description: OK
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            pages:
+              type: array
+              items:
+                type: object
+                properties:
+                  urlId:
+                    $ref: ../../components/schemas/UrlId.yaml
+                  title:
+                    $ref: ../../components/schemas/EntityTitle.yaml
+  '403':
+    description: Unauthorized
+  '500':
+    description: Internal Issue
+    content:
+      application/json:
+        schema:
+          $ref: ../../components/schemas/Problem.yaml

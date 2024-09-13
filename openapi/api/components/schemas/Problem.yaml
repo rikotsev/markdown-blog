@@ -1,0 +1,15 @@
+type: object
+description: Generic container for information provided on system errors.
+properties:
+  code:
+    type: integer
+    description: |
+      The error code of the problem you have encountered.
+  title:
+    type: string
+    description: |
+      A user-friendly caption for the problem.
+  description:
+    type: string
+    description: |
+      A long and detailed (may include technical details) information related to the problem.
