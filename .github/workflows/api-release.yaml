@@ -1,0 +1,20 @@
+name: Markdown Blog API - Release
+on:
+  push:
+    paths:
+      - "openapi"
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run:
+          cd openapi && npm ci && npm run test
+      - uses: googleapis/release-please-action@v4
+        id: release
+        with:
+          token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+      - run: npm run build &&
+        if: ${{ steps.release.outputs[openapi--release-created] }}

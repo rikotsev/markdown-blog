@@ -1,0 +1,7 @@
+{
+  "packages": {
+    "openapi": {
+      "release-type": "node"
+    }
+  }
+}
