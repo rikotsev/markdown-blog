@@ -1,0 +1,18 @@
+name: Markdown Blog API - lint and build
+on:
+  pull_request:
+    paths:
+      - 'openapi'
+jobs:
+  link-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: |
+          cd openapi
+          npm ci
+          npm run test
+          npm run build
