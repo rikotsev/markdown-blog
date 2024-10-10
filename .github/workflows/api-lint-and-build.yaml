@@ -11,7 +11,7 @@ jobs:
         with:
           node-version: 22
       - run: |
-          npm i -g @commitlint/cli
+          npm i -g @commitlint/{cli,config-conventional}
           echo "$TITLE" | commitlint
         env:
           TITLE: ${{ github.event.pull_request.title }}
