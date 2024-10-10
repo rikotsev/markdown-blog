@@ -4,7 +4,7 @@ on:
     paths:
       - 'openapi/**'
 jobs:
-  link-and-build:
+  lint-and-build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
