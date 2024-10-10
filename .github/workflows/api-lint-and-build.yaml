@@ -18,6 +18,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+        if: steps.path_filter.outputs.openapi == 'true'
       - run: |
           cd openapi
           npm ci
