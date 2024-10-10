@@ -25,4 +25,4 @@ jobs:
           npm run build
           zip openapi-spec.zip dist/markdown-blog-api.yaml
           gh release upload ${{ steps.release.outputs.openapi--tag_name }} openapi-spec.zip
-        if: ${{ steps.release.outputs['packages/openapi--release_created'] }}
+        if: ${{ steps.release.outputs['openapi--release_created'] }}
