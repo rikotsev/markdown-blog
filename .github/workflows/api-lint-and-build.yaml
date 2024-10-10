@@ -1,15 +1,20 @@
-name: Markdown Blog API - lint and build
+name: Markdown Blog -  lint and build
 on:
   pull_request:
     branches:
       - master
-    paths:
-      - 'openapi/**'
 jobs:
   lint-and-build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: determine impacted paths
+        id: path_filter
+        uses: dorny/paths-filter@v2
+        with:
+          filters: |
+            openapi:
+             - 'openapi/**'
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -18,3 +23,4 @@ jobs:
           npm ci
           npm run test
           npm run build
+        if: steps.path_filter.outputs.openapi == 'true'
