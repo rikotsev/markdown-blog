@@ -1,6 +1,8 @@
 name: Markdown Blog API - lint and build
 on:
   pull_request:
+    branches:
+      - master
     paths:
       - 'openapi/**'
 jobs:
