@@ -27,5 +27,5 @@ jobs:
           zip openapi-spec.zip dist/markdown-blog-api.yaml
           gh release upload ${{ steps.release.outputs.openapi--tag_name }} openapi-spec.zip
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.RELEASE_PLEASE_TOKEN }}
         if: ${{ steps.release.outputs['openapi--release_created'] }}
