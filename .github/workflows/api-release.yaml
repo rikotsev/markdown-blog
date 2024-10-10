@@ -23,5 +23,6 @@ jobs:
           manifest-file: .release-please-manifest.json
       - run: |
           npm run build
-          gh release upload ${{ steps.release.outputs.openapi--tag_name }} dist/markdown-blog-api.yaml
-        if: ${{ steps.release.outputs['openapi--release-created'] }}
+          zip openapi-spec.zip dist/markdown-blog-api.yaml
+          gh release upload ${{ steps.release.outputs.openapi--tag_name }} openapi-spec.zip
+        if: ${{ steps.release.outputs['packages/openapi--release-created'] }}
