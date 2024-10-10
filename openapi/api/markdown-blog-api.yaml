@@ -14,7 +14,6 @@ info:
     It is generally intented to be used for that use case primarily, although it is possible to use
     the api with another front end. 
     
-    
     # About the API
     
     It is supposed to be a simple CRUD API. The main principle behind it - KISS (Keep it Simple Stupid).
