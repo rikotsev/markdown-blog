@@ -22,6 +22,7 @@ jobs:
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
       - run: |
+          cd openapi
           npm run build
           zip openapi-spec.zip dist/markdown-blog-api.yaml
           gh release upload ${{ steps.release.outputs.openapi--tag_name }} openapi-spec.zip
