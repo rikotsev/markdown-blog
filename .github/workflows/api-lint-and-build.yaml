@@ -12,7 +12,9 @@ jobs:
           node-version: 22
       - run: |
           npm i -g @commitlint/cli
-          echo "${{ github.event.pull_request.title }}" | commitlint
+          echo "$TITLE" | commitlint
+        env:
+          TITLE: ${{ github.event.pull_request.title }}
       - uses: actions/checkout@v4
       - name: determine impacted paths
         id: path_filter
