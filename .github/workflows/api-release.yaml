@@ -8,6 +8,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
       - run:
           cd openapi && npm ci && npm run test
       - uses: googleapis/release-please-action@v4
@@ -16,5 +19,7 @@ jobs:
           token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
-      - run: npm run build &&
+      - run: |
+          npm run build
+          gh release upload ${{ steps.release.outputs.openapi--tag_name }} dist/markdown-blog-api.yaml
         if: ${{ steps.release.outputs['openapi--release-created'] }}
