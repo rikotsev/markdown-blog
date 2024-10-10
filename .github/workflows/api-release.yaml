@@ -24,4 +24,4 @@ jobs:
       - run: |
           npm run build
           gh release upload ${{ steps.release.outputs.openapi--tag_name }} dist/markdown-blog-api.yaml
-        if: ${{ steps.release.outputs['openapi--release-created'] }}
+        if: ${{ steps.release.outputs['packages/openapi--release-created'] }}
