@@ -13,7 +13,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run:
+      - name: Test - Node
+        run: |
           cd openapi && npm ci && npm run test
       - uses: googleapis/release-please-action@v4
         id: release
@@ -21,11 +22,26 @@ jobs:
           token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
+        name: Release Please
       - run: |
           cd openapi
           npm run build
           zip openapi-spec.zip dist/markdown-blog-api.yaml
           gh release upload ${{ steps.release.outputs.openapi--tag_name }} openapi-spec.zip
+          mv dist/markdown-blog-api.html dist/index.html
         env:
           GH_TOKEN: ${{ secrets.RELEASE_PLEASE_TOKEN }}
+        name: Build - Node
         if: ${{ steps.release.outputs['openapi--release_created'] }}
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+        if: ${{ steps.release.outputs['openapi--release_created'] }}
+      - name: Upload artifact
+        if: ${{ steps.release.outputs['openapi--release_created'] }}
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: 'openapi/dist/.'
+      - name: Deploy to GitHub Pages
+        if: ${{ steps.release.outputs['openapi--release_created'] }}
+        id: deployment
+        uses: actions/deploy-pages@v4
