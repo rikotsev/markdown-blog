@@ -26,6 +26,19 @@ jobs:
           npm run build
           zip openapi-spec.zip dist/markdown-blog-api.yaml
           gh release upload ${{ steps.release.outputs.openapi--tag_name }} openapi-spec.zip
+          mv dist/markdown-blog-api.html dist/index.html
         env:
           GH_TOKEN: ${{ secrets.RELEASE_PLEASE_TOKEN }}
         if: ${{ steps.release.outputs['openapi--release_created'] }}
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+        if: ${{ steps.release.outputs['openapi--release_created'] }}
+      - name: Upload artifact
+        if: ${{ steps.release.outputs['openapi--release_created'] }}
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: 'openapi/dist/.'
+      - name: Deploy to GitHub Pages
+        if: ${{ steps.release.outputs['openapi--release_created'] }}
+        id: deployment
+        uses: actions/deploy-pages@v4
