@@ -30,4 +30,5 @@ jobs:
           npm ci
           npm run test
           npm run build
+        name: Test & Build - Node
         if: steps.path_filter.outputs.openapi == 'true'
