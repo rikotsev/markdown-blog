@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.2](https://github.com/rikotsev/markdown-blog/compare/markdown-blog-api-v1.1.1...markdown-blog-api-v1.1.2) (2024-10-12)
+
+
+### Bug Fixes
+
+* **api:** versioning is reflected in the html ([#27](https://github.com/rikotsev/markdown-blog/issues/27)) ([05ba700](https://github.com/rikotsev/markdown-blog/commit/05ba7005bc1e6d9c96b11f40e3ab5ddb181b3ed6))
+
 ## [1.1.1](https://github.com/rikotsev/markdown-blog/compare/markdown-blog-api-v1.1.0...markdown-blog-api-v1.1.1) (2024-10-12)
 
 
