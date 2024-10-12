@@ -16,8 +16,9 @@ jobs:
           echo "$TITLE" | commitlint
         env:
           TITLE: ${{ github.event.pull_request.title }}
+        name: Verify Pull Request Title
       - uses: actions/checkout@v4
-      - name: determine impacted paths
+      - name: Determine impacted paths
         id: path_filter
         uses: dorny/paths-filter@v3
         with:
