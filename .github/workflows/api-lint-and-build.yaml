@@ -25,7 +25,6 @@ jobs:
           filters: |
             openapi:
              - 'openapi/**'
-        if: steps.path_filter.outputs.openapi == 'true'
       - run: |
           cd openapi
           npm ci
