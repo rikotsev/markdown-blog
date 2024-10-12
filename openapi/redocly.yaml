@@ -1,7 +1,12 @@
 # See https://redocly.com/docs/cli/configuration/ for more information.
+plugins:
+  - plugins/markdown-blog-plugin.js
+
 apis:
   markdown-blog-api@v1:
     root: api/markdown-blog-api.yaml
+    decorators:
+      markdown-blog-plugin/update-version: on
 extends:
   - recommended
 rules:
