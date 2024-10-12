@@ -5,6 +5,12 @@ on:
       - master
     paths:
       - 'openapi/**'
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
 jobs:
   release-please:
     runs-on: ubuntu-latest
