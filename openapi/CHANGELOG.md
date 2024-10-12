@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/rikotsev/markdown-blog/compare/markdown-blog-api-v1.0.0...markdown-blog-api-v1.1.0) (2024-10-12)
+
+
+### Features
+
+* **api:** publish to github pages ([#22](https://github.com/rikotsev/markdown-blog/issues/22)) ([88c0a4f](https://github.com/rikotsev/markdown-blog/commit/88c0a4fbb5c69a0f371163c24d6f895c47f26bc5))
+
 ## 1.0.0 (2024-10-10)
 
 
