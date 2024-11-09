@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/rikotsev/markdown-blog/compare/markdown-blog-api-v1.1.2...markdown-blog-api-v1.2.0) (2024-11-09)
+
+
+### Features
+
+* **api, be, fe:** initial BE, improve API, generate stubs in FE ([#30](https://github.com/rikotsev/markdown-blog/issues/30)) ([102533d](https://github.com/rikotsev/markdown-blog/commit/102533d6d0cd9e5d593b401879726fd74d293f4f))
+
 ## [1.1.2](https://github.com/rikotsev/markdown-blog/compare/markdown-blog-api-v1.1.1...markdown-blog-api-v1.1.2) (2024-10-12)
 
 
