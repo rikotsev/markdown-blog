@@ -1,0 +1,6 @@
+[server]
+address = ":0"
+
+[database]
+url = "postgres://mdblog:mdblog@localhost:5431/mdblog?sslmode=disable"
+maxConn = 5

@@ -26,6 +26,12 @@ responses:
           $ref: ../../components/schemas/Category.yaml
   '403':
     description: Unauthorized
+  '409':
+    description: Conflict - the category already exists
+    content:
+      application/json:
+        schema:
+          $ref: ../../components/schemas/Problem.yaml
   '500':
     description: Internal Issue
     content:

@@ -17,8 +17,6 @@ responses:
               type: array
               items:
                 $ref: ../../components/schemas/Category.yaml
-  '403':
-    description: Unauthorized
   '500':
     description: Internal Issue
     content:
