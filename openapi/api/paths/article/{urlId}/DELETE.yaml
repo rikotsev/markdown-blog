@@ -18,6 +18,6 @@ responses:
   default:
     description: Server Error
     content:
-      application/problem+json:
+      application/json:
         schema:
           $ref: ../../../components/schemas/Problem.yaml
