@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.4](https://github.com/rikotsev/markdown-blog/compare/markdown-blog-api-v1.3.3...markdown-blog-api-v1.3.4) (2024-11-11)
+
+
+### Bug Fixes
+
+* **api:** authorized response for not protected paths ([#40](https://github.com/rikotsev/markdown-blog/issues/40)) ([f9c6d47](https://github.com/rikotsev/markdown-blog/commit/f9c6d47d5a8ffd4c9fb88b221608b2b2c0896a4e))
+
 ## [1.3.3](https://github.com/rikotsev/markdown-blog/compare/markdown-blog-api-v1.3.2...markdown-blog-api-v1.3.3) (2024-11-11)
 
 
