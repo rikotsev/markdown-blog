@@ -31,8 +31,6 @@ responses:
               type: array
               items:
                 $ref: ../../components/schemas/Article.yaml
-  '403':
-    description: Unauthorized
   default:
     description: Server Error
     content:

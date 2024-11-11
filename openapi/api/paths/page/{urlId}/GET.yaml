@@ -16,8 +16,6 @@ responses:
       application/json:
         schema:
           $ref: ../../../components/schemas/Page.yaml
-  '403':
-    description: Unauthorized
   default:
     description: Server Error
     content:

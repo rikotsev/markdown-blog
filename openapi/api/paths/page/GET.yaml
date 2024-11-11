@@ -22,8 +22,6 @@ responses:
                     $ref: ../../components/schemas/UrlId.yaml
                   title:
                     $ref: ../../components/schemas/EntityTitle.yaml
-  '403':
-    description: Unauthorized
   default:
     description: Server Error
     content:
