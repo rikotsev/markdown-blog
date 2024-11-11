@@ -29,7 +29,7 @@ responses:
   '409':
     description: Conflict - the category already exists
     content:
-      application/problem+json:
+      application/json:
         schema:
           $ref: ../../components/schemas/Problem.yaml
   default:
