@@ -83,10 +83,7 @@ func (s *ApplicationSuite) startServer() {
 	dbCfg.BeforeAcquire = func(ctx context.Context, conn *pgx.Conn) bool {
 		slog.Info("Setting search path to", "value", s.testSchema)
 		_, err := conn.Exec(ctx, fmt.Sprintf("SET search_path TO %s", s.testSchema))
-		if err != nil {
-			return false
-		}
-		return true
+		return err == nil
 	}
 	pool, err := pgxpool.NewWithConfig(s.ctx, dbCfg)
 	s.Require().NoError(err, "could not create db pool")
@@ -130,19 +127,10 @@ func (s *ApplicationSuite) SetupTest() {
 	s.testSchema = fmt.Sprintf("test_schema_%d", s.testSchemaCounter)
 	_, err := s.dbPoolForTests.Exec(s.ctx, fmt.Sprintf("CREATE SCHEMA %s;", s.testSchema))
 	s.Require().NoError(err)
-	m, err := migrate.New(fmt.Sprintf("file://../db"), fmt.Sprintf("%s&search_path=%s", s.cfg.Database.Url, s.testSchema))
+	m, err := migrate.New("file://../db", fmt.Sprintf("%s&search_path=%s", s.cfg.Database.Url, s.testSchema))
 	s.Require().NoError(err)
 	err = m.Up()
 	s.Require().NoError(err)
-}
-
-func (s *ApplicationSuite) readResponse(r io.ReadCloser) string {
-	content, err := io.ReadAll(r)
-	if err != nil {
-		return "<N/A>"
-	}
-
-	return string(content)
 }
 
 func (s *ApplicationSuite) httpGet(path string, result any) {

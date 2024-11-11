@@ -24,9 +24,9 @@ responses:
                     $ref: ../../components/schemas/EntityTitle.yaml
   '403':
     description: Unauthorized
-  '500':
-    description: Internal Issue
+  default:
+    description: Server Error
     content:
-      application/json:
+      application/problem+json:
         schema:
           $ref: ../../components/schemas/Problem.yaml

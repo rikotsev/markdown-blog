@@ -1,15 +1,28 @@
 type: object
 description: Generic container for information provided on system errors.
 properties:
-  code:
+  type:
+    type: string
+    description: |
+      The URI reference for this type of fault registered. Default value is about:blank
+  status:
     type: integer
     description: |
-      The error code of the problem you have encountered.
+      The HTTP status code of the response.
   title:
     type: string
     description: |
       A user-friendly caption for the problem.
-  description:
+  detail:
     type: string
     description: |
       A long and detailed (may include technical details) information related to the problem.
+  instance:
+    type: string
+    description: |
+      The URI reference for this particular occurrence of the error.
+  errorInstanceId:
+    type: string
+    description: |
+      The error instance id that can be easily queried.
+  additionalProperties: true
