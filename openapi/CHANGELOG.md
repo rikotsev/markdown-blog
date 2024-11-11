@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.1](https://github.com/rikotsev/markdown-blog/compare/markdown-blog-api-v1.3.0...markdown-blog-api-v1.3.1) (2024-11-11)
+
+
+### Bug Fixes
+
+* **api:** proper setup of additional properties for problem+json ([#34](https://github.com/rikotsev/markdown-blog/issues/34)) ([129c971](https://github.com/rikotsev/markdown-blog/commit/129c9716875ad720b0dc08b07800ad66d6fe4aba))
+
 ## [1.3.0](https://github.com/rikotsev/markdown-blog/compare/markdown-blog-api-v1.2.0...markdown-blog-api-v1.3.0) (2024-11-11)
 
 
