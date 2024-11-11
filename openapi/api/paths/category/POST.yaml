@@ -33,6 +33,7 @@ responses:
         schema:
           $ref: ../../components/schemas/Problem.yaml
   default:
+    description: Server Error
     content:
       application/problem+json:
         schema:

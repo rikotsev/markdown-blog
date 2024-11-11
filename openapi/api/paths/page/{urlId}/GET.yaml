@@ -19,6 +19,7 @@ responses:
   '403':
     description: Unauthorized
   default:
+    description: Server Error
     content:
       application/problem+json:
         schema:

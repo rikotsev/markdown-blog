@@ -18,6 +18,7 @@ responses:
               items:
                 $ref: ../../components/schemas/Category.yaml
   default:
+    description: Server Error
     content:
       application/problem+json:
         schema:
