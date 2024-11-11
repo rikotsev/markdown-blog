@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/rikotsev/markdown-blog/compare/markdown-blog-api-v1.2.0...markdown-blog-api-v1.3.0) (2024-11-11)
+
+
+### Features
+
+* **api:** start using default problem+json ([#32](https://github.com/rikotsev/markdown-blog/issues/32)) ([82a75a1](https://github.com/rikotsev/markdown-blog/commit/82a75a1e54947ca056c6d74861662d209dc2c94d))
+
 ## [1.2.0](https://github.com/rikotsev/markdown-blog/compare/markdown-blog-api-v1.1.2...markdown-blog-api-v1.2.0) (2024-11-09)
 
 
