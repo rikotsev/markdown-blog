@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.3](https://github.com/rikotsev/markdown-blog/compare/markdown-blog-api-v1.3.2...markdown-blog-api-v1.3.3) (2024-11-11)
+
+
+### Bug Fixes
+
+* **api:** content-type for category create conflict result ([#38](https://github.com/rikotsev/markdown-blog/issues/38)) ([d8c4fed](https://github.com/rikotsev/markdown-blog/commit/d8c4fedcba6285599dd02b1ce971a277cf09807e))
+
 ## [1.3.2](https://github.com/rikotsev/markdown-blog/compare/markdown-blog-api-v1.3.1...markdown-blog-api-v1.3.2) (2024-11-11)
 
 
