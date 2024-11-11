@@ -15,9 +15,8 @@ responses:
     description: OK
   '403':
     description: Unauthorized
-  '500':
-    description: Internal Issue
+  default:
     content:
-      application/json:
+      application/problem+json:
         schema:
           $ref: ../../../components/schemas/Problem.yaml

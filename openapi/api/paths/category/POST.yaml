@@ -29,12 +29,11 @@ responses:
   '409':
     description: Conflict - the category already exists
     content:
-      application/json:
+      application/problem+json:
         schema:
           $ref: ../../components/schemas/Problem.yaml
-  '500':
-    description: Internal Issue
+  default:
     content:
-      application/json:
+      application/problem+json:
         schema:
           $ref: ../../components/schemas/Problem.yaml
