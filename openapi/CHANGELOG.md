@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.2](https://github.com/rikotsev/markdown-blog/compare/markdown-blog-api-v1.3.1...markdown-blog-api-v1.3.2) (2024-11-11)
+
+
+### Bug Fixes
+
+* **api:** revert to application/json because of generator issues ([#36](https://github.com/rikotsev/markdown-blog/issues/36)) ([b35b320](https://github.com/rikotsev/markdown-blog/commit/b35b320b2db0eeb29eae97adaf889b6354965a31))
+
 ## [1.3.1](https://github.com/rikotsev/markdown-blog/compare/markdown-blog-api-v1.3.0...markdown-blog-api-v1.3.1) (2024-11-11)
 
 
