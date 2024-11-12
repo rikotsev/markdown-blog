@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/rikotsev/markdown-blog/compare/markdown-blog-api-v1.3.4...markdown-blog-api-v1.4.0) (2024-11-12)
+
+
+### Features
+
+* **be, api:** setup category endpoints and add not found responses to api ([#42](https://github.com/rikotsev/markdown-blog/issues/42)) ([90f20ac](https://github.com/rikotsev/markdown-blog/commit/90f20ac15d85c0f0858cf8dc295135acfbc7c48c))
+
 ## [1.3.4](https://github.com/rikotsev/markdown-blog/compare/markdown-blog-api-v1.3.3...markdown-blog-api-v1.3.4) (2024-11-11)
 
 
