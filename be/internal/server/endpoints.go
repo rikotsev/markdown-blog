@@ -2,11 +2,10 @@ package server
 
 import (
 	"context"
-	"github.com/go-faster/errors"
+	"errors"
 	"github.com/google/uuid"
 	"github.com/rikotsev/markdown-blog/be/gen/api"
 	"github.com/rikotsev/markdown-blog/be/internal/category"
-	"github.com/rikotsev/markdown-blog/be/internal/common"
 	"github.com/rikotsev/markdown-blog/be/internal/urlid"
 	"log/slog"
 	"time"
@@ -41,12 +40,12 @@ func (handler *endpointsHandler) ArticleEdit(ctx context.Context, req *api.Artic
 	panic("implement me")
 }
 
-func (handler *endpointsHandler) ArticleGet(ctx context.Context, params api.ArticleGetParams) (api.ArticleGetRes, error) {
+func (handler *endpointsHandler) ArticleGet(ctx context.Context, params api.ArticleGetParams) (*api.Article, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (handler *endpointsHandler) ArticleList(ctx context.Context, params api.ArticleListParams) (api.ArticleListRes, error) {
+func (handler *endpointsHandler) ArticleList(ctx context.Context, params api.ArticleListParams) (*api.ArticleListOK, error) {
 	//TODO implement me
 	panic("implement me")
 }
@@ -57,33 +56,30 @@ func (handler *endpointsHandler) CategoryCreate(ctx context.Context, req *api.Ca
 
 	newCategory, err := handler.categoryHandler.CreateCategory(ctx, req)
 	if err != nil {
-		if errors.Is(err, category.DuplicateRecordErr) {
-			return &api.Problem{
-				Title: api.NewOptString("category.exists.title"),
-				Code:  api.NewOptInt(409),
-			}, nil
-		}
-		errorId := uuid.New().String()
-		slog.Error("failed to create new category", "id", errorId, "err", err)
-		return common.Problem("Internal Error", "Failed to create category", errorId, 500), nil
+		return nil, err
 	}
 
 	return newCategory, nil
 }
 
 func (handler *endpointsHandler) CategoryDelete(ctx context.Context, params api.CategoryDeleteParams) (api.CategoryDeleteRes, error) {
-	//TODO implement me
-	panic("implement me")
+	ctx, cancelFunc := context.WithTimeout(ctx, handler.requestTimeout)
+	defer cancelFunc()
+
+	res, err := handler.categoryHandler.DeleteCategory(ctx, params)
+	if err != nil {
+		return nil, err
+	}
+
+	return res, nil
 }
 
-func (handler *endpointsHandler) CategoryList(ctx context.Context) (api.CategoryListRes, error) {
+func (handler *endpointsHandler) CategoryList(ctx context.Context) (*api.CategoryListOK, error) {
 	ctx, cancelFunc := context.WithTimeout(ctx, handler.requestTimeout)
 	defer cancelFunc()
 	categories, err := handler.categoryHandler.ListCategories(ctx)
 	if err != nil {
-		errorId := uuid.New().String()
-		slog.Error("failed to list categories", "id", errorId, "err", err)
-		return common.Problem("Internal Error", "Failed to list categories", errorId, 500), nil
+		return nil, err
 	}
 
 	return &api.CategoryListOK{
@@ -106,12 +102,40 @@ func (handler *endpointsHandler) PageEdit(ctx context.Context, req *api.PageCore
 	panic("implement me")
 }
 
-func (handler *endpointsHandler) PageGet(ctx context.Context, params api.PageGetParams) (api.PageGetRes, error) {
+func (handler *endpointsHandler) PageGet(ctx context.Context, params api.PageGetParams) (*api.Page, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (handler *endpointsHandler) PageList(ctx context.Context) (api.PageListRes, error) {
+func (handler *endpointsHandler) PageList(ctx context.Context) (*api.PageListOK, error) {
 	//TODO implement me
 	panic("implement me")
+}
+
+func (handler *endpointsHandler) NewError(ctx context.Context, err error) *api.ProblemStatusCode {
+	if errors.Is(err, category.DuplicateRecordErr) {
+		return &api.ProblemStatusCode{
+			StatusCode: 409,
+			Response: api.Problem{
+				Title:    api.NewOptString("category.exists.title"),
+				Status:   api.NewOptInt(409),
+				Detail:   api.NewOptString("category.exists.detail"),
+				Instance: api.NewOptString("/category"),
+				Type:     api.NewOptString("about:blank"),
+			},
+		}
+	}
+
+	errorId := uuid.New().String()
+	slog.Error("failed to create new category", "id", errorId, "err", err)
+	return &api.ProblemStatusCode{
+		StatusCode: 500,
+		Response: api.Problem{
+			Title:           api.NewOptString("internal.server.error.title"),
+			Status:          api.NewOptInt(500),
+			Detail:          api.NewOptString("internal.server.error.detail"),
+			Type:            api.NewOptString("about:blank"),
+			ErrorInstanceId: api.NewOptString(errorId),
+		},
+	}
 }

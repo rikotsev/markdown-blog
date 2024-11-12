@@ -15,6 +15,8 @@ responses:
     description: OK
   '403':
     description: Unauthorized
+  '404':
+    description: Not Found
   default:
     description: Server Error
     content:
