@@ -26,13 +26,21 @@ const createCategory = `
 	INSERT INTO
 		category (id, url_id, name)
 	VALUES 
-		($1, $2, $3)
+		($1, $2, $3);
+`
+
+const deleteCategory = `
+	DELETE FROM
+		category
+	WHERE
+	    url_id = $1;
 `
 
 var DuplicateRecordErr = errors.New("a category with that url id already exists. please select a different name")
 
 type Repository struct {
-	pool *pgxpool.Pool
+	pool         *pgxpool.Pool
+	queryTimeout time.Duration
 }
 
 type Entity struct {
@@ -43,12 +51,13 @@ type Entity struct {
 
 func NewRepository(pool *pgxpool.Pool) *Repository {
 	return &Repository{
-		pool: pool,
+		pool:         pool,
+		queryTimeout: time.Second * 5,
 	}
 }
 
 func (r *Repository) listCategories(ctx context.Context) ([]*Entity, error) {
-	ctx, cancelFunc := context.WithTimeout(ctx, time.Second*5)
+	ctx, cancelFunc := context.WithTimeout(ctx, r.queryTimeout)
 	defer cancelFunc()
 
 	conn, err := r.pool.Acquire(ctx)
@@ -66,7 +75,7 @@ func (r *Repository) listCategories(ctx context.Context) ([]*Entity, error) {
 }
 
 func (r *Repository) createCategory(ctx context.Context, entity *Entity) error {
-	ctx, cancelFunc := context.WithTimeout(ctx, time.Second*5)
+	ctx, cancelFunc := context.WithTimeout(ctx, r.queryTimeout)
 	defer cancelFunc()
 
 	trx, err := r.pool.Begin(ctx)
@@ -97,4 +106,22 @@ func (r *Repository) createCategory(ctx context.Context, entity *Entity) error {
 		return fmt.Errorf("could not commit transaction: %w", err)
 	}
 	return nil
+}
+
+func (r *Repository) deleteCategory(ctx context.Context, urlId string) (int, error) {
+	ctx, cancelFunc := context.WithTimeout(ctx, r.queryTimeout)
+	defer cancelFunc()
+
+	conn, err := r.pool.Acquire(ctx)
+	defer conn.Release()
+	if err != nil {
+		return 0, err
+	}
+
+	tag, err := conn.Exec(ctx, deleteCategory, urlId)
+	if err != nil {
+		return 0, err
+	}
+
+	return int(tag.RowsAffected()), nil
 }

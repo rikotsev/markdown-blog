@@ -15,7 +15,6 @@ import (
 	"github.com/stretchr/testify/suite"
 	tc "github.com/testcontainers/testcontainers-go/modules/compose"
 	"io"
-	"log/slog"
 	"net"
 	"net/http"
 	"strings"
@@ -81,7 +80,6 @@ func (s *ApplicationSuite) startServer() {
 	dbCfg, err := pgxpool.ParseConfig(s.cfg.Database.Url)
 	s.Require().NoError(err, "could not create db configuration for url", s.cfg.Database.Url)
 	dbCfg.BeforeAcquire = func(ctx context.Context, conn *pgx.Conn) bool {
-		slog.Info("Setting search path to", "value", s.testSchema)
 		_, err := conn.Exec(ctx, fmt.Sprintf("SET search_path TO %s", s.testSchema))
 		return err == nil
 	}
@@ -147,6 +145,20 @@ func (s *ApplicationSuite) httpGet(path string, result any) {
 
 	err = json.Unmarshal(content, result)
 	s.Require().NoError(err, "could not unmarshal resp body", url, req, string(content))
+}
+
+func (s *ApplicationSuite) httpDelete(path string) int {
+	url := fmt.Sprintf("http://%s/%s", s.serverAddr, path)
+
+	req, err := http.NewRequest(http.MethodDelete, url, nil)
+	s.Require().NoError(err, "failed to create request", url)
+	req.Header.Set("Authorization", "Bearer mock_token")
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := s.httpClient.Do(req)
+	s.Require().NoError(err, "failed to execute request", url, req)
+
+	return resp.StatusCode
 }
 
 func (s *ApplicationSuite) httpPost(path string, payload any, result any) int {

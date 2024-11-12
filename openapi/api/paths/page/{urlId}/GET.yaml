@@ -16,6 +16,8 @@ responses:
       application/json:
         schema:
           $ref: ../../../components/schemas/Page.yaml
+  '404':
+    description: Not Found
   default:
     description: Server Error
     content:
