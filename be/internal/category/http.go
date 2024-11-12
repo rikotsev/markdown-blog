@@ -63,6 +63,15 @@ func (h *Http) CreateCategory(ctx context.Context, req *api.CategoryCreateReq) (
 	}, nil
 }
 
-func (h *Http) DeleteCategory(ctx context.Context, req api.CategoryDeleteParams) api.CategoryDeleteRes {
-	return &api.CategoryDeleteOK{}
+func (h *Http) DeleteCategory(ctx context.Context, req api.CategoryDeleteParams) (api.CategoryDeleteRes, error) {
+	rowsDeleted, err := h.repository.deleteCategory(ctx, string(req.UrlId))
+	if err != nil {
+		return nil, err
+	}
+
+	if rowsDeleted == 0 {
+		return &api.CategoryDeleteUnauthorized{}, nil
+	}
+
+	return &api.CategoryDeleteOK{}, nil
 }

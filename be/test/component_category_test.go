@@ -1,6 +1,7 @@
 package test
 
 import (
+	"fmt"
 	"github.com/rikotsev/markdown-blog/be/gen/api"
 )
 
@@ -57,9 +58,34 @@ func (s *ApplicationSuite) TestCreateExistingCategory() {
 	res := api.Problem{}
 	responseCode := s.httpPost(CategoryPath, req, &res)
 
-	//TODO fix when API is updated
-	s.Require().Equal(500, responseCode)
-	s.Require().Equal(409, res.Code.Value)
+	s.Require().Equal(409, responseCode)
+	s.Require().Equal(409, res.Status.Value)
 	s.Require().Equal("category.exists.title", res.Title.Value)
-	s.Require().NotNil(res.Description.Value)
+	s.Require().NotNil(res.Detail.Value)
+}
+
+func (s *ApplicationSuite) TestDeleteExistingCategory() {
+	_ = s.httpPost(CategoryPath, api.CategoryCreateReq{Name: "tech"}, &api.Category{})
+	toBeDeleted := api.Category{}
+	_ = s.httpPost(CategoryPath, api.CategoryCreateReq{Name: "philosophy"}, &toBeDeleted)
+
+	categoriesBeforeDelete := api.CategoryListOK{}
+	s.httpGet(CategoryPath, &categoriesBeforeDelete)
+	s.Require().Equal(2, len(categoriesBeforeDelete.Categories))
+	s.Require().Equal("tech", categoriesBeforeDelete.Categories[0].Name.Value)
+	s.Require().Equal("philosophy", categoriesBeforeDelete.Categories[1].Name.Value)
+
+	res := s.httpDelete(fmt.Sprintf("%s/%s", CategoryPath, toBeDeleted.UrlId.Value))
+	s.Require().Equal(200, res)
+
+	categoriesBeforeDelete = api.CategoryListOK{}
+	s.httpGet(CategoryPath, &categoriesBeforeDelete)
+	s.Require().Equal(1, len(categoriesBeforeDelete.Categories))
+	s.Require().Equal("tech", categoriesBeforeDelete.Categories[0].Name.Value)
+}
+
+func (s *ApplicationSuite) TestDeleteNonExistingCategory() {
+	res := s.httpDelete(fmt.Sprintf("%s/%s", CategoryPath, "tech"))
+	//TODO fix when API is updated
+	s.Require().Equal(401, res)
 }

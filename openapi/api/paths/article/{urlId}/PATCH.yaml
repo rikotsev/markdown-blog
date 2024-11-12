@@ -24,6 +24,8 @@ responses:
         $ref: ../../../components/headers/Location.yaml
   '403':
     description: Unauthorized
+  '404':
+    description: Not Found
   default:
     description: Server Error
     content:

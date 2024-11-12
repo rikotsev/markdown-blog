@@ -26,6 +26,8 @@ responses:
         description: Where to find the modified page.
   '403':
     description: Unauthorized
+  '404':
+    description: Not Found
   default:
     description: Server Error
     content:
