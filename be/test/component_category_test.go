@@ -86,6 +86,5 @@ func (s *ApplicationSuite) TestDeleteExistingCategory() {
 
 func (s *ApplicationSuite) TestDeleteNonExistingCategory() {
 	res := s.httpDelete(fmt.Sprintf("%s/%s", CategoryPath, "tech"))
-	//TODO fix when API is updated
-	s.Require().Equal(401, res)
+	s.Require().Equal(404, res)
 }

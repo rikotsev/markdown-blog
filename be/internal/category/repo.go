@@ -49,10 +49,10 @@ type Entity struct {
 	Name  string
 }
 
-func NewRepository(pool *pgxpool.Pool) *Repository {
+func NewRepository(pool *pgxpool.Pool, queryTimeout time.Duration) *Repository {
 	return &Repository{
 		pool:         pool,
-		queryTimeout: time.Second * 5,
+		queryTimeout: queryTimeout,
 	}
 }
 
@@ -88,7 +88,7 @@ func (r *Repository) createCategory(ctx context.Context, entity *Entity) error {
 
 	id := uuid.New()
 
-	if res, err := trx.Exec(ctx, createCategory, id, entity.Name, entity.UrlId); err != nil {
+	if res, err := trx.Exec(ctx, createCategory, id, entity.UrlId, entity.Name); err != nil {
 		var pgErr *pgconn.PgError
 		if ok := errors.As(err, &pgErr); ok {
 			if pgErr.Code == "23505" {
