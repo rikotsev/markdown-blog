@@ -5,6 +5,7 @@ import (
 	"errors"
 	"github.com/google/uuid"
 	"github.com/rikotsev/markdown-blog/be/gen/api"
+	"github.com/rikotsev/markdown-blog/be/internal/article"
 	"github.com/rikotsev/markdown-blog/be/internal/category"
 	"github.com/rikotsev/markdown-blog/be/internal/urlid"
 	"log/slog"
@@ -12,10 +13,14 @@ import (
 )
 
 func NewEndpointsHandler(ctx ApplicationContext) (api.Handler, error) {
+	queryTimeout := time.Second * 5
+	transformer := urlid.NewTransformerWith(urlid.Slug)
+
 	return &endpointsHandler{
 		requestTimeout:  time.Second * 3,
 		appCtx:          ctx,
-		categoryHandler: category.NewHttp(category.NewRepository(ctx.Pool()), urlid.NewTransformerWith(urlid.Slug)),
+		categoryHandler: category.NewHttp(category.NewRepository(ctx.Pool(), queryTimeout), transformer),
+		articleHandler:  article.NewHttp(article.NewRepository(ctx.Pool(), queryTimeout), transformer),
 	}, nil
 }
 
@@ -23,11 +28,14 @@ type endpointsHandler struct {
 	requestTimeout  time.Duration
 	appCtx          ApplicationContext
 	categoryHandler *category.Http
+	articleHandler  *article.Http
 }
 
 func (handler *endpointsHandler) ArticleCreate(ctx context.Context, req *api.ArticleCreateReq) (api.ArticleCreateRes, error) {
-	//TODO implement me
-	panic("implement me")
+	//ctx, cancelFunc := context.WithTimeout(ctx, handler.requestTimeout)
+	//defer cancelFunc()
+
+	return handler.articleHandler.CreateArticle(ctx, req)
 }
 
 func (handler *endpointsHandler) ArticleDelete(ctx context.Context, params api.ArticleDeleteParams) (api.ArticleDeleteRes, error) {
@@ -40,9 +48,8 @@ func (handler *endpointsHandler) ArticleEdit(ctx context.Context, req *api.Artic
 	panic("implement me")
 }
 
-func (handler *endpointsHandler) ArticleGet(ctx context.Context, params api.ArticleGetParams) (*api.Article, error) {
-	//TODO implement me
-	panic("implement me")
+func (handler *endpointsHandler) ArticleGet(ctx context.Context, params api.ArticleGetParams) (api.ArticleGetRes, error) {
+	return handler.articleHandler.GetArticle(ctx, params)
 }
 
 func (handler *endpointsHandler) ArticleList(ctx context.Context, params api.ArticleListParams) (*api.ArticleListOK, error) {
@@ -102,7 +109,7 @@ func (handler *endpointsHandler) PageEdit(ctx context.Context, req *api.PageCore
 	panic("implement me")
 }
 
-func (handler *endpointsHandler) PageGet(ctx context.Context, params api.PageGetParams) (*api.Page, error) {
+func (handler *endpointsHandler) PageGet(ctx context.Context, params api.PageGetParams) (api.PageGetRes, error) {
 	//TODO implement me
 	panic("implement me")
 }
@@ -127,7 +134,7 @@ func (handler *endpointsHandler) NewError(ctx context.Context, err error) *api.P
 	}
 
 	errorId := uuid.New().String()
-	slog.Error("failed to create new category", "id", errorId, "err", err)
+	slog.Error("failed to perform task", "id", errorId, "err", err)
 	return &api.ProblemStatusCode{
 		StatusCode: 500,
 		Response: api.Problem{

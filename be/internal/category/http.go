@@ -70,7 +70,7 @@ func (h *Http) DeleteCategory(ctx context.Context, req api.CategoryDeleteParams)
 	}
 
 	if rowsDeleted == 0 {
-		return &api.CategoryDeleteUnauthorized{}, nil
+		return &api.CategoryDeleteNotFound{}, nil
 	}
 
 	return &api.CategoryDeleteOK{}, nil
