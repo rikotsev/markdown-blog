@@ -1,0 +1,35 @@
+name: Markdown Blog -  Backend - lint, test and build
+on:
+  pull_request:
+    branches:
+      - master
+jobs:
+  backend-lint-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Determine impacted paths
+        id: path_filter
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            be:
+             - 'be/**'
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.23.2'
+        if: steps.path_filter.outputs.be == 'true'
+      - name: Lint (golangci-lint)
+        uses: golangci/golangci-lint-action@v6
+        with:
+          version: v1.60
+          working-directory: be
+        if: steps.path_filter.outputs.be == 'true'
+      - name: Test & Build
+        run: |
+          cd be
+          make clean
+          make test
+          make build
+        if: steps.path_filter.outputs.openapi == 'true'

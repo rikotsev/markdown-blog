@@ -1,4 +1,4 @@
-name: Markdown Blog -  lint and build
+name: Markdown Blog -  API - test and build
 on:
   pull_request:
     branches:
@@ -7,16 +7,6 @@ jobs:
   lint-and-build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-      - run: |
-          npm i -g @commitlint/{cli,config-conventional}
-          echo "export default { extends: ['@commitlint/config-conventional'] };" > commitlint.config.js
-          echo "$TITLE" | commitlint
-        env:
-          TITLE: ${{ github.event.pull_request.title }}
-        name: Verify Pull Request Title
       - uses: actions/checkout@v4
       - name: Determine impacted paths
         id: path_filter
@@ -25,6 +15,11 @@ jobs:
           filters: |
             openapi:
              - 'openapi/**'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+        name: Setup - Node
+        if: steps.path_filter.outputs.openapi == 'true'
       - run: |
           cd openapi
           npm ci
