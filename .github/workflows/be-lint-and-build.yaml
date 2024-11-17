@@ -24,6 +24,7 @@ jobs:
         run: |
           cd be
           go mod tidy
+          go get -d github.com/ogen-go/ogen
       - name: Test & Build
         run: |
           cd be
