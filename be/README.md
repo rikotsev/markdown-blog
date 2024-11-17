@@ -45,3 +45,8 @@ Page - n --------/
 | url_id TEXT        |
 | title VARCHAR(100) |
 | content TEXT       |
+
+### CI/CD pipeline
+Currently only the CI part is implemented. There are two gateways the code needs to pass:
+- on a PR - the code should pass all tests and conform to all linting rules.
+- on a release - the code should pass all tests and conform to all linting rules.
