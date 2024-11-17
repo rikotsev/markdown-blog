@@ -96,14 +96,13 @@ func (r *Repository) create(ctx context.Context, item Entity) (*Entity, error) {
 	}
 
 	var article Entity
-	for rows.Next() {
+	if rows.Next() {
 		err := rows.Scan(&article.Id, &article.UrlId, &article.Title,
 			&article.Description, &article.Content, &article.Created, &article.Edited,
 			&article.Category.Id, &article.Category.UrlId, &article.Category.Name)
 		if err != nil {
 			return nil, fmt.Errorf("failed to scan from rows: %w", err)
 		}
-		break
 	}
 	return &article, nil
 }
@@ -123,14 +122,13 @@ func (r *Repository) get(ctx context.Context, urlId string) (*Entity, error) {
 		return nil, fmt.Errorf("failed to get article with url_id: %s with error: %w", urlId, err)
 	}
 	var article Entity
-	for rows.Next() {
+	if rows.Next() {
 		err := rows.Scan(&article.Id, &article.UrlId, &article.Title,
 			&article.Description, &article.Content, &article.Created, &article.Edited,
 			&article.Category.Id, &article.Category.UrlId, &article.Category.Name)
 		if err != nil {
 			return nil, fmt.Errorf("failed to scan from rows: %w", err)
 		}
-		break
 	}
 	return &article, nil
 }

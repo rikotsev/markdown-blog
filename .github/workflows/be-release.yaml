@@ -1,0 +1,48 @@
+name: Markdown Blog - Backend - release
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'be/**'
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  backend-release-please:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.23.2'
+      - name: Lint (golangci-lint)
+        uses: golangci/golangci-lint-action@v6
+        with:
+          version: v1.60
+          working-directory: be
+      - name: Test
+        run: |
+          cd be
+          make clean
+          make test
+      - name: Release Please
+        uses: googleapis/release-please-action@v4
+        id: release
+        with:
+          token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+      - run: |
+          cd be
+          make build
+          zip -j be.zip dist/markdown-blog-server
+          gh release upload ${{ steps.release.outputs.be--tag_name }} be.zip
+        env:
+          GH_TOKEN: ${{ secrets.RELEASE_PLEASE_TOKEN }}
+        name: Build
+        if: ${{ steps.release.outputs['be--release_created'] }}
