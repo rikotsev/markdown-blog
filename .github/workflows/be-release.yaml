@@ -30,6 +30,7 @@ jobs:
         with:
           version: v1.60
           working-directory: be
+          args: --timeout=10m
       - name: Release Please
         uses: googleapis/release-please-action@v4
         id: release
