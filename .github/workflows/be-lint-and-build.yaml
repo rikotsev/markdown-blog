@@ -24,13 +24,6 @@ jobs:
         run: |
           cd be
           go mod tidy
-      - name: Lint (golangci-lint)
-        uses: golangci/golangci-lint-action@v6
-        with:
-          version: v1.60
-          working-directory: be
-          args: --timeout=10m
-        if: steps.path_filter.outputs.be == 'true'
       - name: Test & Build
         run: |
           cd be
@@ -38,3 +31,10 @@ jobs:
           make test
           make build
         if: steps.path_filter.outputs.openapi == 'true'
+      - name: Lint (golangci-lint)
+        uses: golangci/golangci-lint-action@v6
+        with:
+          version: v1.60
+          working-directory: be
+          args: --timeout=10m
+        if: steps.path_filter.outputs.be == 'true'
