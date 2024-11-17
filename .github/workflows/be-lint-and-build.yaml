@@ -30,7 +30,7 @@ jobs:
           make clean
           make test
           make build
-        if: steps.path_filter.outputs.openapi == 'true'
+        if: steps.path_filter.outputs.be == 'true'
       - name: Lint (golangci-lint)
         uses: golangci/golangci-lint-action@v6
         with:
