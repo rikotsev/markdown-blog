@@ -11,19 +11,18 @@ requestBody:
   content:
     application/json:
       schema:
-        type: object
-        properties:
-          name:
-            type: string
-        required:
-          - name
+        allOf:
+          - $ref: ../../components/schemas/category/CategoryCore.yaml
+          - type: object
+            required:
+              - name
 responses:
   '201':
     description: CREATED
     content:
       application/json:
         schema:
-          $ref: ../../components/schemas/Category.yaml
+          $ref: ../../components/schemas/category/Category.yaml
   '403':
     description: Unauthorized
   '409':

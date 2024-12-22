@@ -1,0 +1,21 @@
+type: object
+description: A category for blog articles.
+allOf:
+  - type: object
+    properties:
+      entityType:
+        $ref: ./CategoryType.yaml
+      id:
+        $ref: ./CategoryId.yaml
+      urlId:
+        readOnly: true
+        description: An url friendly and semantically meaningful identification for a category.
+        example: new-tech
+        allOf:
+          - $ref: ../UrlId.yaml
+  - $ref: ./CategoryCore.yaml
+required:
+  - entityType
+  - id
+  - urlId
+  - name

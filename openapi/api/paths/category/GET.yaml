@@ -13,10 +13,10 @@ responses:
         schema:
           type: object
           properties:
-            categories:
+            data:
               type: array
               items:
-                $ref: ../../components/schemas/Category.yaml
+                $ref: ../../components/schemas/category/Category.yaml
   default:
     description: Server Error
     content:

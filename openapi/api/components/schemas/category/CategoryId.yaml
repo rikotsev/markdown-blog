@@ -1,0 +1,5 @@
+type: string
+readOnly: true
+description: An UUID to identify the category.
+allOf:
+  - $ref: ../Id.yaml

@@ -1,0 +1,12 @@
+type: object
+properties:
+  entityType:
+    $ref: ./CategoryType.yaml
+  id:
+    readOnly: false
+    example: 971b1f3b-e3e8-4fe0-a0e6-edf129601d81
+    allOf:
+      - $ref: ./CategoryId.yaml
+required:
+  - entityType
+  - id

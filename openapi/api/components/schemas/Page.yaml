@@ -3,6 +3,10 @@ description: A simple web site page.
 allOf:
   - type: object
     properties:
+      entityType:
+        type: string
+        enum:
+          - page
       id:
         readOnly: true
         description: An UUID to identify a page.
@@ -16,6 +20,7 @@ allOf:
           - $ref: ./UrlId.yaml
   - $ref: ./PageCore.yaml
 required:
+  - entityType
   - id
   - urlId
   - title
