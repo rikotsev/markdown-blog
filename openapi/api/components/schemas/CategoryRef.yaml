@@ -1,0 +1,12 @@
+type: object
+properties:
+  entityType:
+    type: string
+    enum:
+      - category
+  id:
+    description: An UUID to identify the category.
+    allOf:
+      - $ref: ./Id.yaml
+required:
+  - id

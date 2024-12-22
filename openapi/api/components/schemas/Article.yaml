@@ -38,6 +38,6 @@ required:
   - createdAt
   - editedAt
   - title
-  - categoryId
+  - category
   - description
   - content
