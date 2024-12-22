@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/rikotsev/markdown-blog/compare/markdown-blog-api-v1.4.0...markdown-blog-api-v1.5.0) (2024-12-22)
+
+
+### Features
+
+* **api:** compound documents implementation for article ([#50](https://github.com/rikotsev/markdown-blog/issues/50)) ([f286f52](https://github.com/rikotsev/markdown-blog/commit/f286f52c0a697043680bfd0d9b77287aff263462))
+
 ## [1.4.0](https://github.com/rikotsev/markdown-blog/compare/markdown-blog-api-v1.3.4...markdown-blog-api-v1.4.0) (2024-11-12)
 
 
