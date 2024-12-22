@@ -15,7 +15,10 @@ responses:
     content:
       application/json:
         schema:
-          $ref: ../../../components/schemas/Page.yaml
+          type: object
+          properties:
+            data:
+              $ref: ../../../components/schemas/Page.yaml
   '404':
     description: Not Found
   default:

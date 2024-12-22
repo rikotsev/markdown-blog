@@ -5,8 +5,10 @@ properties:
     example: Yet another cool new JS Framework!
     allOf:
       - $ref: ./EntityTitle.yaml
-  category:
-    $ref: ./Category.yaml
+  categoryId:
+    description: The id of the category to which the article belongs to.
+    allOf:
+      - $ref: ./Id.yaml
   description:
     type: string
     description: A short overview of the contents of the article.

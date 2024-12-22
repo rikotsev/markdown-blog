@@ -16,7 +16,7 @@ requestBody:
           - type: object
             required:
               - title
-              - category
+              - categoryId
               - description
               - content
 responses:

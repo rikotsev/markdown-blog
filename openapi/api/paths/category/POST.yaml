@@ -11,12 +11,11 @@ requestBody:
   content:
     application/json:
       schema:
-        type: object
-        properties:
-          name:
-            type: string
-        required:
-          - name
+        allOf:
+          - $ref: ../../components/schemas/CategoryCore.yaml
+          - type: object
+            required:
+              - name
 responses:
   '201':
     description: CREATED

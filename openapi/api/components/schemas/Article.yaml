@@ -3,6 +3,10 @@ description: A blog article with some basic metadata.
 allOf:
   - type: object
     properties:
+      entityType:
+        type: string
+        enum:
+          - article
       id:
         readOnly: true
         description: An UUID to identify the article.
@@ -28,11 +32,12 @@ allOf:
         example: 2017-07-21T17:32:28Z
   - $ref: ./ArticleCore.yaml
 required:
+  - entityType
   - id
   - urlId
   - createdAt
   - editedAt
   - title
-  - category
+  - categoryId
   - description
   - content
