@@ -6,7 +6,7 @@ properties:
     allOf:
       - $ref: ./EntityTitle.yaml
   category:
-    $ref: ./CategoryRef.yaml
+    $ref: ./category/CategoryRef.yaml
   description:
     type: string
     description: A short overview of the contents of the article.

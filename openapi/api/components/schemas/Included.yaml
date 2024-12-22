@@ -4,5 +4,5 @@ description: All included resources in the compound document.
 items:
   anyOf:
     - $ref: ./Article.yaml
-    - $ref: ./Category.yaml
+    - $ref: ./category/Category.yaml
     - $ref: ./Page.yaml
