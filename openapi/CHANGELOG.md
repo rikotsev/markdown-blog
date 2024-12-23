@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.0](https://github.com/rikotsev/markdown-blog/compare/markdown-blog-api-v1.5.0...markdown-blog-api-v1.6.0) (2024-12-23)
+
+
+### Features
+
+* **api:** discriminator field ([#52](https://github.com/rikotsev/markdown-blog/issues/52)) ([3603a1f](https://github.com/rikotsev/markdown-blog/commit/3603a1f977136e27a9991f731287a2b1243c1a03))
+
 ## [1.5.0](https://github.com/rikotsev/markdown-blog/compare/markdown-blog-api-v1.4.0...markdown-blog-api-v1.5.0) (2024-12-22)
 
 
