@@ -6,3 +6,9 @@ items:
     - $ref: ./Article.yaml
     - $ref: ./category/Category.yaml
     - $ref: ./Page.yaml
+  discriminator:
+    propertyName: entityType
+    mapping:
+      article: ./Article.yaml
+      category: ./category/Category.yaml
+      page: ./Page.yaml
