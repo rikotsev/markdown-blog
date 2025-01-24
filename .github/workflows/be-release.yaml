@@ -23,6 +23,8 @@ jobs:
       - name: Test
         run: |
           cd be
+          go mod tidy
+          go get -d github.com/oapi-codegen/oapi-codegen/v2/cmd/oapi-codegen
           make clean
           make test
       - name: Lint (golangci-lint)
