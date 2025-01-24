@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.0](https://github.com/rikotsev/markdown-blog/compare/markdown-blog-api-v1.6.0...markdown-blog-api-v1.7.0) (2025-01-24)
+
+
+### Features
+
+* **api:** json api includes and discriminator for entities ([#54](https://github.com/rikotsev/markdown-blog/issues/54)) ([8874227](https://github.com/rikotsev/markdown-blog/commit/887422778f6e1a0a3c31d99e61996af02ecf7a8b))
+
 ## [1.6.0](https://github.com/rikotsev/markdown-blog/compare/markdown-blog-api-v1.5.0...markdown-blog-api-v1.6.0) (2024-12-23)
 
 
