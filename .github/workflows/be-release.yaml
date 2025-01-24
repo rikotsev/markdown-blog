@@ -23,7 +23,7 @@ jobs:
       - name: Test
         run: |
           cd be
-          go mod tidyss
+          go mod tidy
           make clean
           make test
       - name: Lint (golangci-lint)
