@@ -11,12 +11,7 @@ responses:
     content:
       application/json:
         schema:
-          type: object
-          properties:
-            data:
-              type: array
-              items:
-                $ref: ../../components/schemas/category/Category.yaml
+          $ref: ../../components/schemas/category/CategoryResponseList.yaml
   default:
     description: Server Error
     content:

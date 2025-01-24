@@ -6,16 +6,19 @@ allOf:
       entityType:
         $ref: ./CategoryType.yaml
       id:
-        $ref: ./CategoryId.yaml
+        description: An UUID to identify the category.
+        $ref: ../Id.yaml
       urlId:
         readOnly: true
         description: An url friendly and semantically meaningful identification for a category.
         example: new-tech
-        allOf:
-          - $ref: ../UrlId.yaml
+        $ref: ../UrlId.yaml
+    required:
+      - entityType
   - $ref: ./CategoryCore.yaml
-required:
-  - entityType
-  - id
-  - urlId
-  - name
+  - type: object
+    required:
+      - entityType
+      - id
+      - urlId
+      - name
