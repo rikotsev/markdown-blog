@@ -25,14 +25,7 @@ responses:
     content:
       application/json:
         schema:
-          type: object
-          properties:
-            data:
-              type: array
-              items:
-                $ref: ../../components/schemas/Article.yaml
-            included:
-              $ref: ../../components/schemas/Included.yaml
+          $ref: ../../components/schemas/ArticleResponseList.yaml
   default:
     description: Server Error
     content:

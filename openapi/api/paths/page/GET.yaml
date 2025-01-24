@@ -11,17 +11,7 @@ responses:
     content:
       application/json:
         schema:
-          type: object
-          properties:
-            data:
-              type: array
-              items:
-                type: object
-                properties:
-                  urlId:
-                    $ref: ../../components/schemas/UrlId.yaml
-                  title:
-                    $ref: ../../components/schemas/EntityTitle.yaml
+          $ref: ../../components/schemas/PageResponseList.yaml
   default:
     description: Server Error
     content:

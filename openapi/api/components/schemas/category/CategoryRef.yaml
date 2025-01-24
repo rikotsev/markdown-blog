@@ -5,8 +5,8 @@ properties:
   id:
     readOnly: false
     example: 971b1f3b-e3e8-4fe0-a0e6-edf129601d81
-    allOf:
-      - $ref: ./CategoryId.yaml
+    description: An UUID to identify the category.
+    $ref: ../Id.yaml
 required:
   - entityType
   - id
