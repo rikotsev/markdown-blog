@@ -2,76 +2,77 @@ package category
 
 import (
 	"context"
-	"fmt"
-	"github.com/rikotsev/markdown-blog/be/gen/api"
-	"github.com/rikotsev/markdown-blog/be/internal/urlid"
+	"encoding/json"
+	"github.com/rikotsev/markdown-blog/be/gen"
+	"net/http"
+	"time"
 )
 
 type Http struct {
-	repository       *Repository
-	urlIdTransformer *urlid.Transformer
+	service *Service
+	timeout time.Duration
 }
 
-func NewHttp(repository *Repository, transformer *urlid.Transformer) *Http {
+func NewHttp(service *Service) *Http {
 	return &Http{
-		repository:       repository,
-		urlIdTransformer: transformer,
+		service: service,
+		timeout: 5 * time.Second,
 	}
 }
 
-func (h *Http) ListCategories(ctx context.Context) ([]api.Category, error) {
-	entities, err := h.repository.listCategories(ctx)
+func (h *Http) ListCategories(w http.ResponseWriter, r *http.Request, ctx context.Context) error {
+	ctx, cancel := context.WithTimeout(ctx, h.timeout)
+	defer cancel()
+	response, err := h.service.ListCategories(ctx)
 	if err != nil {
-		return nil, fmt.Errorf("failed to list categories from repository: %w", err)
+		return err
 	}
 
-	apiCategories := make([]api.Category, 0, len(entities))
-
-	for _, entity := range entities {
-		apiCategories = append(apiCategories, api.Category{
-			ID: api.OptString{
-				Value: entity.Id,
-				Set:   true,
-			},
-			UrlId: api.OptString{
-				Value: entity.UrlId,
-				Set:   true,
-			},
-			Name: api.OptString{
-				Value: entity.Name,
-				Set:   true,
-			},
-		})
-	}
-
-	return apiCategories, nil
-}
-
-func (h *Http) CreateCategory(ctx context.Context, req *api.CategoryCreateReq) (*api.Category, error) {
-	entity := Entity{
-		Name:  req.Name,
-		UrlId: h.urlIdTransformer.Process(req.Name),
-	}
-	if err := h.repository.createCategory(ctx, &entity); err != nil {
-		return nil, fmt.Errorf("failed to create category in repository: %w", err)
-	}
-
-	return &api.Category{
-		ID:    api.NewOptString(entity.Id),
-		UrlId: api.NewOptString(entity.UrlId),
-		Name:  api.NewOptString(entity.Name),
-	}, nil
-}
-
-func (h *Http) DeleteCategory(ctx context.Context, req api.CategoryDeleteParams) (api.CategoryDeleteRes, error) {
-	rowsDeleted, err := h.repository.deleteCategory(ctx, string(req.UrlId))
+	err = json.NewEncoder(w).Encode(response)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	if rowsDeleted == 0 {
-		return &api.CategoryDeleteNotFound{}, nil
+	return nil
+}
+
+func (h *Http) CreateCategory(w http.ResponseWriter, r *http.Request, ctx context.Context) error {
+	ctx, cancel := context.WithTimeout(ctx, h.timeout)
+	defer cancel()
+
+	var createCategoryRequest gen.CategoryCreateJSONBody
+	err := json.NewDecoder(r.Body).Decode(&createCategoryRequest)
+	if err != nil {
+		return err
 	}
 
-	return &api.CategoryDeleteOK{}, nil
+	newCategory, err := h.service.CreateCategory(ctx, &createCategoryRequest)
+	if err != nil {
+		return err
+	}
+
+	w.WriteHeader(http.StatusCreated)
+	err = json.NewEncoder(w).Encode(newCategory)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (h *Http) DeleteCategory(w http.ResponseWriter, r *http.Request, urlId gen.UrlId, ctx context.Context) error {
+	ctx, cancel := context.WithTimeout(ctx, h.timeout)
+	defer cancel()
+	deleted, err := h.service.DeleteCategory(ctx, urlId)
+	if err != nil {
+		return err
+	}
+
+	if !deleted {
+		w.WriteHeader(http.StatusNotFound)
+		return nil
+	}
+
+	w.WriteHeader(http.StatusOK)
+	return nil
 }

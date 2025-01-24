@@ -2,61 +2,105 @@ package article
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
-	"github.com/rikotsev/markdown-blog/be/gen/api"
-	"github.com/rikotsev/markdown-blog/be/internal/category"
-	"github.com/rikotsev/markdown-blog/be/internal/urlid"
+	"github.com/rikotsev/markdown-blog/be/gen"
+	"net/http"
 )
 
 type Http struct {
-	repository       *Repository
-	urlIdTransformer *urlid.Transformer
+	service *Service
 }
 
-func NewHttp(repository *Repository, transformer *urlid.Transformer) *Http {
+func NewHttp(service *Service) *Http {
 	return &Http{
-		repository:       repository,
-		urlIdTransformer: transformer,
+		service: service,
 	}
 }
-func (h *Http) CreateArticle(ctx context.Context, req *api.ArticleCreateReq) (api.ArticleCreateRes, error) {
-	urlId := h.urlIdTransformer.Process(req.Title)
-	categoryUrlId := h.urlIdTransformer.Process(req.Category.Name.Value)
 
-	entity, err := h.repository.create(ctx, Entity{
-		UrlId:       urlId,
-		Title:       req.Title,
-		Description: req.Description,
-		Content:     req.Content,
-		Category: category.Entity{
-			UrlId: categoryUrlId,
-		},
-	})
+func (h *Http) CreateArticle(w http.ResponseWriter, r *http.Request, ctx context.Context) error {
+	var createArticleBody gen.ArticleCreateJSONBody
+	err := json.NewDecoder(r.Body).Decode(&createArticleBody)
 	if err != nil {
-		return nil, fmt.Errorf("failed to create article: %w", err)
+		return fmt.Errorf("failed to decode body: %w", err)
 	}
 
-	return &api.ArticleCreateCreated{Location: api.NewOptString(entity.UrlId)}, nil
+	urlId, err := h.service.CreateArticle(ctx, &createArticleBody)
+	if err != nil {
+		return fmt.Errorf("failed to create article: %w", err)
+	}
+
+	w.Header().Add("Location", urlId)
+	w.WriteHeader(http.StatusCreated)
+
+	return nil
 }
 
-func (h *Http) GetArticle(ctx context.Context, params api.ArticleGetParams) (*api.Article, error) {
-	entity, err := h.repository.get(ctx, string(params.UrlId))
+func (h *Http) GetArticle(w http.ResponseWriter, r *http.Request, urlId gen.UrlId, ctx context.Context) error {
+	resp, err := h.service.GetArticle(ctx, urlId)
 	if err != nil {
-		return nil, fmt.Errorf("failed to get article from DB: %w", err)
+		return fmt.Errorf("failed to get article: %w", err)
 	}
 
-	return &api.Article{
-		ID:          api.NewOptString(entity.Id),
-		UrlId:       api.NewOptString(entity.UrlId),
-		Title:       api.NewOptString(entity.Title),
-		Description: api.NewOptString(entity.Description),
-		Content:     api.NewOptString(entity.Content),
-		CreatedAt:   api.NewOptDateTime(entity.Created),
-		EditedAt:    api.NewOptDateTime(entity.Edited),
-		Category: api.NewOptCategory(api.Category{
-			ID:    api.NewOptString(entity.Category.Id),
-			Name:  api.NewOptString(entity.Category.Name),
-			UrlId: api.NewOptString(entity.Category.UrlId),
-		}),
-	}, nil
+	if resp == nil {
+		w.WriteHeader(http.StatusNotFound)
+		return nil
+	}
+
+	err = json.NewEncoder(w).Encode(resp)
+	if err != nil {
+		return fmt.Errorf("failed to encode response: %w", err)
+	}
+
+	w.WriteHeader(http.StatusOK)
+
+	return nil
+}
+
+func (h *Http) ArticleList(w http.ResponseWriter, r *http.Request, params gen.ArticleListParams, ctx context.Context) error {
+	resp, err := h.service.ListArticles(ctx)
+	if err != nil {
+		return fmt.Errorf("failed to list articles: %w", err)
+	}
+
+	err = json.NewEncoder(w).Encode(resp)
+	if err != nil {
+		return fmt.Errorf("failed to encode response: %w", err)
+	}
+
+	w.WriteHeader(http.StatusOK)
+	return nil
+}
+
+func (h *Http) ArticleDelete(w http.ResponseWriter, r *http.Request, urlId gen.UrlId, ctx context.Context) error {
+	resp, err := h.service.DeleteArticle(ctx, urlId)
+	if err != nil {
+		return fmt.Errorf("failed to delete article: %w", err)
+	}
+
+	if !resp {
+		w.WriteHeader(http.StatusNotFound)
+		return nil
+	}
+
+	w.WriteHeader(http.StatusOK)
+	return nil
+}
+
+func (h *Http) ArticleEdit(w http.ResponseWriter, r *http.Request, urlId gen.UrlId, ctx context.Context) error {
+	var articleCore gen.ArticleCore
+	err := json.NewDecoder(r.Body).Decode(&articleCore)
+	if err != nil {
+		return fmt.Errorf("failed to decode request body: %w", err)
+	}
+
+	location, err := h.service.UpdateArticle(ctx, urlId, &articleCore)
+	if err != nil {
+		return fmt.Errorf("failed to update article: %w", err)
+	}
+
+	w.Header().Add("Location", location)
+	w.WriteHeader(http.StatusOK)
+
+	return nil
 }
