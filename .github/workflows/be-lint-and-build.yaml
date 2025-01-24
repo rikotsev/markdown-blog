@@ -24,7 +24,6 @@ jobs:
         run: |
           cd be
           go mod tidy
-          go get -d github.com/oapi-codegen/oapi-codegen/v2/cmd/oapi-codegen
       - name: Test & Build
         run: |
           cd be
