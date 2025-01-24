@@ -11,14 +11,21 @@ func main() {
 	cfg, err := config.InitConfig()
 	if err != nil {
 		slog.Error("failed to init configuration", "err", err)
+		os.Exit(1)
 	}
-	markdownBlog, err := server.New(server.BuildContext(cfg))
+
+	appCtx, err := server.BuildContext(cfg)
+	if err != nil {
+		slog.Error("failed to spin up application context", "err", err)
+	}
+
+	applicationServer, err := server.New(appCtx)
 	if err != nil {
 		slog.Error("failed to create markdown blog server", "err", err)
 		os.Exit(1)
 	}
 
-	if err := markdownBlog.Start(); err != nil {
+	if err := applicationServer.Start(); err != nil {
 		slog.Error("failed to start markdown blog server", "err", err)
 		os.Exit(1)
 	}

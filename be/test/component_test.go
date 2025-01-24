@@ -28,7 +28,7 @@ type ApplicationSuite struct {
 	cfg                *config.Config
 	dbPoolForTests     *pgxpool.Pool
 	applicationContext server.ApplicationContext
-	applicationServer  *server.ApplicationServer
+	applicationServer  server.ApplicationServer
 	serverAddr         string
 	dockerComposeDown  func()
 	httpClient         *http.Client
@@ -88,7 +88,7 @@ func (s *ApplicationSuite) startServer() {
 	testContext.pool = pool
 
 	s.applicationContext = &testContext
-	srv, err := server.New(&testContext, nil)
+	srv, err := server.New(&testContext)
 	s.Require().NoError(err)
 	go func() {
 		err := srv.Start()
@@ -201,6 +201,37 @@ func (s *ApplicationSuite) httpPostRaw(path string, payload any) *http.Response 
 	return resp
 }
 
+func (s *ApplicationSuite) httpPatchRaw(path string, payload any) *http.Response {
+	url := fmt.Sprintf("http://%s/%s", s.serverAddr, path)
+
+	requestContent, err := json.Marshal(payload)
+	s.Require().NoError(err)
+
+	req, err := http.NewRequest(http.MethodPatch, url, bytes.NewReader(requestContent))
+	s.Require().NoError(err, "failed to create request ", url)
+	req.Header.Set("Authorization", "Bearer mock_token")
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := s.httpClient.Do(req)
+	s.Require().NoError(err, "failed to execute request", url, req)
+
+	return resp
+}
+
+func (s *ApplicationSuite) httpGetRaw(path string) *http.Response {
+	url := fmt.Sprintf("http://%s/%s", s.serverAddr, path)
+
+	req, err := http.NewRequest(http.MethodGet, url, nil)
+	s.Require().NoError(err, "failed to create request", url)
+
+	resp, err := s.httpClient.Do(req)
+	s.Require().NoError(err, "failed to execute request", url, req)
+
+	return resp
+}
+
 func TestMarkdownBlogSuite(t *testing.T) {
 	suite.Run(t, new(ApplicationSuite))
 }
+
+func ptr[T any](v T) *T { return &v }
