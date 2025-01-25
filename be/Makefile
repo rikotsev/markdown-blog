@@ -1,5 +1,5 @@
 OUTPUT_BINARY=markdown-blog-server
-API_VERSION=1.7.0
+API_VERSION=1.8.0
 
 .PHONY: all
 all: clean setup lint test build
