@@ -1,10 +1,12 @@
 {
   "packages": {
     "openapi": {
-      "release-type": "node"
+      "release-type": "node",
+      "component": "api"
     },
     "be": {
-      "release-type": "go"
+      "release-type": "go",
+      "component": "backend"
     }
   }
 }
