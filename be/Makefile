@@ -14,7 +14,7 @@ setup:
 	go get github.com/oapi-codegen/oapi-codegen/v2/cmd/oapi-codegen
 	go get github.com/oapi-codegen/runtime
 	rm -rf ./gen/dist
-	curl -LO https://github.com/rikotsev/markdown-blog/releases/download/markdown-blog-api-v${API_VERSION}/openapi-spec.zip
+	curl -LO https://github.com/rikotsev/markdown-blog/releases/download/api-v${API_VERSION}/openapi-spec.zip
 	unzip openapi-spec.zip -d gen
 	unlink openapi-spec.zip
 	go generate ./...
