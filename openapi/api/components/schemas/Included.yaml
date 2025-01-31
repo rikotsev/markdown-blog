@@ -2,13 +2,4 @@ type: array
 readOnly: true
 description: All included resources in the compound document.
 items:
-  anyOf:
-    - $ref: ./Article.yaml
-    - $ref: ./category/Category.yaml
-    - $ref: ./Page.yaml
-  discriminator:
-    propertyName: entityType
-    mapping:
-      article: ./Article.yaml
-      category: ./category/Category.yaml
-      page: ./Page.yaml
+  $ref: ./IncludedItem.yaml

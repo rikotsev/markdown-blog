@@ -11,6 +11,7 @@ requestBody:
   content:
     application/json:
       schema:
+        title: PageCreate
         allOf:
           - $ref: ../../components/schemas/PageCore.yaml
           - type: object
