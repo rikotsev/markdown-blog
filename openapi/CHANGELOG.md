@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.1](https://github.com/rikotsev/markdown-blog/compare/api-v1.8.0...api-v1.8.1) (2025-01-31)
+
+
+### Bug Fixes
+
+* **api:** included item as a separate model ([#64](https://github.com/rikotsev/markdown-blog/issues/64)) ([4baee07](https://github.com/rikotsev/markdown-blog/commit/4baee0736fd61dbc2957d2043388d9ed5e97515a))
+
 ## [1.8.0](https://github.com/rikotsev/markdown-blog/compare/api-v1.7.0...api-v1.8.0) (2025-01-25)
 
 
