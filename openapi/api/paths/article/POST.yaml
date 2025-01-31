@@ -11,6 +11,7 @@ requestBody:
   content:
     application/json:
       schema:
+        title: ArticleCreate
         allOf:
           - $ref: ../../components/schemas/ArticleCore.yaml
           - type: object
