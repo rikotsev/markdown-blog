@@ -19,7 +19,7 @@ func main() {
 		slog.Error("failed to spin up application context", "err", err)
 	}
 
-	applicationServer, err := server.New(appCtx)
+	applicationServer, err := server.New(appCtx, server.Okta(cfg))
 	if err != nil {
 		slog.Error("failed to create markdown blog server", "err", err)
 		os.Exit(1)

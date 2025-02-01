@@ -1,14 +1,22 @@
 import React, {useState} from "react";
 import styles from './CategoryManager.module.css'
 import ArticleApi, {Category} from "../../services/ArticleApi";
+import {useConfig} from "../../services/ConfigContext";
+import {CategoryApi, CategoryCreate, Configuration} from "../../openapi";
+import {useAuth0} from "@auth0/auth0-react";
+import type { AjaxConfig } from 'rxjs/ajax';
 
 const CategoryManager: React.FC = () => {
+
+
+    const { getAccessTokenSilently } = useAuth0();
+    const config = useConfig()!
 
     const existingCategories = ArticleApi.getInstance().getCategories()
     const [categories, setCategories] = useState<Set<Category>>(new Set(existingCategories));
     const [newCategory, setNewCategory] = useState<string>('');
 
-    const handleAddCategory = () => {
+    const handleAddCategory = async () => {
         if (newCategory.trim() !== '') {
             setCategories((prevCategories) => new Set(prevCategories).add({
                 id: newCategory,
@@ -16,6 +24,26 @@ const CategoryManager: React.FC = () => {
                 title: newCategory
             }))
             setNewCategory('')
+            const request: CategoryCreate = {
+               name: newCategory
+            }
+
+            const accessToken = await getAccessTokenSilently({
+                authorizationParams: {
+                    audience: "urn:markdown-blog:api",
+                    scope: "category:write"
+                },
+            })
+
+            const api = new CategoryApi(new Configuration({
+                basePath: config.API_BASE,
+                accessToken: accessToken
+            }));
+
+            api.categoryCreate(request).then((resp) => {
+                console.log(resp.data)
+            })
+
         }
     };
 

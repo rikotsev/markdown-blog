@@ -1,5 +1,5 @@
 OUTPUT_BINARY=markdown-blog-server
-API_VERSION=1.8.0
+API_VERSION=1.8.1
 
 .PHONY: all
 all: clean setup lint test build
@@ -35,4 +35,4 @@ build:
 run:
 	docker compose -f docker/docker-compose-run.yaml down
 	docker compose -f docker/docker-compose-run.yaml up -d
-	go run cmd/server.go
+	export SERVER_ADDRESS="0.0.0.0:8080" && export DATABASE_URL="postgres://mdblog:mdblog@localhost:5432/mdblog?sslmode=disable" && go run cmd/server.go

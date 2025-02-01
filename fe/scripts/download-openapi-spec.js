@@ -6,8 +6,8 @@ const { finished } = require('stream/promises');
 const fs = require('fs');
 const path = require('path');
 const packageJson = require('../package.json');
-const downloadedZipPath = path.join(__dirname, '..', 'openapi', 'openapi-spec.zip')
-const extractedZipPath = path.join(__dirname, '..', 'openapi')
+const downloadedZipPath = path.join(__dirname, '..', 'src', 'openapi', 'openapi-spec.zip')
+const extractedZipPath = path.join(__dirname, '..', 'src', 'openapi')
 const url = packageJson.custom.openapi.downloadUrl.replace(versionToken, packageJson.custom.openapi.version);
 
 
