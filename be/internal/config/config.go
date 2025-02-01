@@ -17,9 +17,20 @@ type (
 		Url     string
 		MaxConn int
 	}
+
+	CorsConfig struct {
+		AllowedOrigins string
+	}
+
+	AuthConfig struct {
+		JwksUrl string
+	}
+
 	Config struct {
 		Server   ServerConfig
 		Database DatabaseConfig
+		Cors     CorsConfig
+		Auth     AuthConfig
 	}
 )
 
@@ -28,6 +39,8 @@ var configFile embed.FS
 
 func InitConfig() (*Config, error) {
 	v := viper.New()
+	v.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
+	v.AutomaticEnv()
 
 	v.SetConfigName("config")
 	v.SetConfigType("toml")
@@ -40,9 +53,6 @@ func InitConfig() (*Config, error) {
 	if err := v.ReadConfig(bytes.NewReader(data)); err != nil {
 		return nil, fmt.Errorf("viper failed to read the embdded config.toml content with: %w", err)
 	}
-
-	v.AutomaticEnv()
-	v.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
 
 	config := Config{}
 	if err := v.Unmarshal(&config); err != nil {

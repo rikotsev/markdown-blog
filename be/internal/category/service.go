@@ -50,9 +50,10 @@ func (h *Service) CreateCategory(ctx context.Context, req *gen.CategoryCreateJSO
 	}
 
 	return &gen.Category{
-		Id:    entity.Id,
-		UrlId: entity.UrlId,
-		Name:  entity.Name,
+		EntityType: gen.CategoryTypeCategory,
+		Id:         entity.Id,
+		UrlId:      entity.UrlId,
+		Name:       entity.Name,
 	}, nil
 }
 

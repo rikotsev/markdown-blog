@@ -1,7 +1,7 @@
 services:
-  golang-migrate:
+  golang-migrate-run:
     image: migrate/migrate
-    command: -path=/migrations/ -database postgres://mdblog:mdblog@db/mdblog?sslmode=disable up
+    command: -path=/migrations/ -database postgres://mdblog:mdblog@db_run/mdblog?sslmode=disable up
     volumes:
       - ../db:/migrations
     depends_on:

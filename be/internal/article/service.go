@@ -51,7 +51,7 @@ func (s *Service) GetArticle(ctx context.Context, urlId string) (*gen.ArticleRes
 	}
 
 	result := s.mapToApiResource(entity)
-	includedItem := gen.Included_Item{}
+	includedItem := gen.IncludedItem{}
 	err = includedItem.FromCategory(s.categoryMapper.ToHttpLayer(entity.Category))
 	if err != nil {
 		return nil, err
@@ -72,13 +72,13 @@ func (s *Service) ListArticles(ctx context.Context) (*gen.ArticleResponseList, e
 	}
 
 	articles := make([]gen.Article, 0, len(entities))
-	categories := make([]gen.Included_Item, 0)
+	categories := make([]gen.IncludedItem, 0)
 	addedCategories := map[string]struct{}{}
 
 	for _, entity := range entities {
 		articles = append(articles, s.mapToApiResource(&entity))
 		if _, ok := addedCategories[entity.Category.Id]; !ok {
-			item := gen.Included_Item{}
+			item := gen.IncludedItem{}
 			err = item.FromCategory(gen.Category{
 				Id:    entity.Category.Id,
 				UrlId: entity.Category.UrlId,

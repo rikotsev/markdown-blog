@@ -19,6 +19,8 @@ type runtimeApplicationContext struct {
 	pool *pgxpool.Pool
 }
 
+var _ ApplicationContext = (*runtimeApplicationContext)(nil)
+
 func (r *runtimeApplicationContext) Ctx() context.Context {
 	return r.ctx
 }

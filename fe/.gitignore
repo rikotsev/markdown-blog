@@ -10,7 +10,7 @@
 
 # production
 /build
-/openapi
+/src/openapi
 
 # misc
 .DS_Store

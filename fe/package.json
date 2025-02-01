@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@auth0/auth0-react": "^2.3.0",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -21,7 +22,7 @@
   },
   "scripts": {
     "download-openapi": "node scripts/download-openapi-spec.js",
-    "generate-openapi-stubs": "openapi-generator-cli generate -g typescript-fetch -i openapi/dist/markdown-blog-api.yaml -o openapi",
+    "generate-openapi-stubs": "openapi-generator-cli generate -g typescript-axios -i src/openapi/dist/markdown-blog-api.yaml -o src/openapi",
     "setup-openapi": "npm run download-openapi && npm run generate-openapi-stubs",
     "start": "npm run setup-openapi && react-scripts start",
     "build": "npm run setup-openapi && react-scripts build",
@@ -53,8 +54,8 @@
   },
   "custom": {
     "openapi": {
-      "version": "1.1.2",
-      "downloadUrl": "https://github.com/rikotsev/markdown-blog/releases/download/markdown-blog-api-v[VERSION]/openapi-spec.zip"
+      "version": "1.8.1",
+      "downloadUrl": "https://github.com/rikotsev/markdown-blog/releases/download/api-v[VERSION]/openapi-spec.zip"
     }
   }
 }
