@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.0](https://github.com/rikotsev/markdown-blog/compare/backend-v1.1.0...backend-v1.2.0) (2025-02-01)
+
+
+### Features
+
+* **be, fe:** authentication ([#67](https://github.com/rikotsev/markdown-blog/issues/67)) ([f3d3df2](https://github.com/rikotsev/markdown-blog/commit/f3d3df2975cc8e4fccc359cb38fba599ea6588fe))
+* bump api to 1.8.0 ([#61](https://github.com/rikotsev/markdown-blog/issues/61)) ([8ea52f6](https://github.com/rikotsev/markdown-blog/commit/8ea52f69e537cf42e8e72afdcba904fd06a6bebe))
+
 ## [1.1.0](https://github.com/rikotsev/markdown-blog/compare/backend-v1.0.0...backend-v1.1.0) (2025-01-25)
 
 
