@@ -3,16 +3,16 @@ import React from "react";
 import ArticleApi from "../../services/ArticleApi";
 import {useAuth0} from "@auth0/auth0-react";
 import admin from "../../pages/admin/Admin";
+import {useCategoryApiCtx} from "../../services/CategoryApiContext";
 
 const MenuBar: React.FC = () => {
-
-    const categories = ArticleApi.getInstance().getCategories()
+    const {categories} = useCategoryApiCtx()
     const { loginWithRedirect, isAuthenticated, logout } = useAuth0();
 
     let oauthButton;
     let adminSection;
     if (isAuthenticated) {
-        adminSection = <li>
+        adminSection = <li key={"admin"}>
             <NavLink to="/admin">Admin panel</NavLink>
         </li>
         oauthButton = <a href="#" onClick={() => logout()}>Log Out</a>
@@ -25,22 +25,22 @@ const MenuBar: React.FC = () => {
     return (
         <nav className="navbar">
             <ul>
-                <li>
+                <li key={"home"}>
                     <NavLink to="/" className={({ isActive }) => (isActive ? 'active' : '')}>Home</NavLink>
                 </li>
-                <li>
-                    <NavLink to="/about" className={({ isActive }) => (isActive ? 'active' : '')}>About</NavLink>
+                <li key={"about"}>
+                    <NavLink key={"about"} to="/about" className={({ isActive }) => (isActive ? 'active' : '')}>About</NavLink>
                 </li>
-                <li>
-                    <NavLink to="/contact" className={({ isActive }) => (isActive ? 'active' : '')}>Contact</NavLink>
+                <li key={"contact"}>
+                    <NavLink key={"contact"} to="/contact" className={({ isActive }) => (isActive ? 'active' : '')}>Contact</NavLink>
                 </li>
                 {categories.map((category) => (
-                    <li>
-                        <NavLink to={`/category/${category.prettyId}`} className={({ isActive }) => (isActive ? 'active' : '')}>{category.title}</NavLink>
+                    <li key={category.id}>
+                        <NavLink to={`/category/${category.urlId}`} className={({ isActive }) => (isActive ? 'active' : '')}>{category.name}</NavLink>
                     </li>
                 ))}
                 {adminSection}
-                <li>
+                <li key={"login"}>
                     {oauthButton}
                 </li>
             </ul>

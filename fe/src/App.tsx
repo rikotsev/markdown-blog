@@ -1,43 +1,31 @@
 import React, {useEffect, useState} from 'react';
 import './App.css';
-import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
-import MenuBar from "./components/menu/MenuBar";
-import Home from "./pages/home/Home";
-import About from "./pages/about/About";
-import Contact from "./pages/contact/Contact";
-import Category from "./pages/category/Category";
-import Article from "./pages/article/Article";
-import Admin from "./pages/admin/Admin";
-import DesignArticle from "./pages/article/DesignArticle";
 import {Auth0Provider} from '@auth0/auth0-react';
 import {Config, ConfigContext} from './services/ConfigContext';
+import {CategoryApiProvider} from "./services/CategoryApiContext";
+import {ArticleApiProvider} from "./services/ArticleApiContext";
+import {MarkdownBlog} from "./MarkdownBlog";
 
 function App() {
 
     const [config, setConfig] = useState<Config | null>(null);
-    const [error, setError] = useState("");
 
     useEffect(() => {
-        async function loadConfig() {
-            try {
-                const response = await fetch("/config.json");
+        fetch("/config.json")
+            .then((response) => {
                 if (!response.ok) {
-                    throw new Error(`Failed to fetch config.json: ${response.status}`);
+                    console.error("failed to fetch config.json", response)
+                    return
                 }
-                const data: Config = await response.json();
-                setConfig(data);
-            } catch (err) {
-                // @ts-ignore
-                setError(err.message);
-            }
-        }
 
-        loadConfig();
+                response.json()
+                    .then((data) => {
+                        setConfig(data)
+                    })
+                    .catch((err) => console.log(err));
+            })
+            .catch((err) => console.log(err))
     }, []);
-
-    if (error) {
-        return <div>Error loading config: {error}</div>
-    }
 
     if (!config) {
         return <div>Loading config...</div>
@@ -54,18 +42,11 @@ function App() {
                     scope: ""
                 }}
             >
-                <Router>
-                    <MenuBar/>
-                    <Routes>
-                        <Route path="/" element={<Home/>}/>
-                        <Route path="/about" element={<About/>}/>
-                        <Route path="/contact" element={<Contact/>}/>
-                        <Route path="/category/:category" element={<Category/>}/>
-                        <Route path="/category/:category/articles/:id" element={<Article/>}/>
-                        <Route path="/admin" element={<Admin/>}/>
-                        <Route path="/article/create" element={<DesignArticle/>}/>
-                    </Routes>
-                </Router>
+                <CategoryApiProvider>
+                    <ArticleApiProvider>
+                        <MarkdownBlog/>
+                    </ArticleApiProvider>
+                </CategoryApiProvider>
             </Auth0Provider>
         </ConfigContext.Provider>
     );

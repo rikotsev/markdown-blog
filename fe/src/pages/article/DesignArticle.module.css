@@ -1,9 +1,89 @@
 /* src/components/DesignArticle.module.css */
 
+.article-form {
+    max-width: 900px;
+    margin: 4rem auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    font-family: Arial, sans-serif;
+    padding: 2rem;
+}
+
+.top-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+
+.title-input {
+    flex: 1;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.title-input:focus {
+    border-color: #333;
+}
+
+
+.category-select {
+    width: 180px;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.category-select:focus {
+    border-color: #333;
+}
+
+
+.create-article-btn {
+    padding: 0.5rem 1rem;
+    background-color: #333;
+    color: #fff;
+    font-size: 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.create-article-btn:hover {
+    background-color: #555;
+}
+
+
+.short-description {
+    width: 100%;
+    height: 100px;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.short-description:focus {
+    border-color: #333;
+}
+
 .design-article {
     display: flex; /* Flexbox layout for side-by-side display */
     gap: 2rem; /* Space between left and right sides */
-    margin-top: 4rem;
+    margin-top: 1rem;
     padding: 1rem;
     background-color: #fff;
     border: 1px solid #ddd;
