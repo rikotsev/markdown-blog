@@ -15,17 +15,9 @@ const MenuBar: React.FC = () => {
         <NavLink to="/admin">Admin panel</NavLink>
       </li>
     );
-    oauthButton = (
-      <button onClick={() => logout()}>
-        Log Out
-      </button>
-    );
+    oauthButton = <button onClick={() => logout()}>Log Out</button>;
   } else {
-    oauthButton = (
-      <button onClick={() => loginWithRedirect()}>
-        Log In
-      </button>
-    );
+    oauthButton = <button onClick={() => loginWithRedirect()}>Log In</button>;
     adminSection = "";
   }
 

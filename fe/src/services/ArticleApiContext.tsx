@@ -54,7 +54,12 @@ export const ArticleApiProvider: React.FC<ArticleApiProviderProps> = ({
         ),
       );
     }
-  }, [isAuthenticated, config.API_BASE, config.AUDIENCE, getAccessTokenSilently]);
+  }, [
+    isAuthenticated,
+    config.API_BASE,
+    config.AUDIENCE,
+    getAccessTokenSilently,
+  ]);
 
   return (
     <ArticleApiContext.Provider value={{ api }}>

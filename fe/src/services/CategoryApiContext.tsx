@@ -68,7 +68,12 @@ export const CategoryApiProvider: React.FC<CategoryApiProviderProps> = ({
         ),
       );
     }
-  }, [isAuthenticated, config.API_BASE, config.AUDIENCE, getAccessTokenSilently]);
+  }, [
+    isAuthenticated,
+    config.API_BASE,
+    config.AUDIENCE,
+    getAccessTokenSilently,
+  ]);
 
   const withAuth = useCallback(() => {
     setApi(
