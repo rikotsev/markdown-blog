@@ -35,11 +35,14 @@ jobs:
       - run: |
           cd fe
           npm run build
+        name: Build
+      - run: |
+          cd fe
           cd build && zip ../fe.zip . -r && cd ..
           gh release upload ${{ steps.release.outputs.fe--tag_name }} fe.zip
         env:
           GH_TOKEN: ${{ secrets.RELEASE_PLEASE_TOKEN }}
-        name: Build - Node
+        name: Publish release
         if: ${{ steps.release.outputs['fe--release_created'] }}
       - run: |
           cd fe
