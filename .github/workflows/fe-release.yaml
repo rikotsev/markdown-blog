@@ -1,0 +1,58 @@
+name: Markdown Blog - Frontend - release
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'fe/**'
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Lint - Node
+        run: |
+          cd fe && npm ci && npm run lint
+      - name: Test - Node
+        run: |
+          cd fe && npm ci && npm run test
+      - uses: googleapis/release-please-action@v4
+        id: release
+        with:
+          token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+        name: Release Please
+      - run: |
+          cd fe
+          npm run build
+          cd build && zip ../fe.zip . -r && cd ..
+          gh release upload ${{ steps.release.outputs.fe--tag_name }} fe.zip
+        env:
+          GH_TOKEN: ${{ secrets.RELEASE_PLEASE_TOKEN }}
+        name: Build - Node
+        if: ${{ steps.release.outputs['fe--release_created'] }}
+      - run: |
+          cd fe
+          docker build -f docker/Dockerfile -t ghcr.io/rikotsev/markdown-blog-fe:latest .
+          docker push ghcr.io/rikotsev/markdown-blog-fe:latest
+        env:
+          GH_TOKEN: ${{ secrets.RELEASE_PLEASE_TOKEN }}
+        name: Bake Latest
+      - run: |
+          cd fe
+          docker build -f docker/Dockerfile -t ghcr.io/rikotsev/markdown-blog-fe:${{ steps.release.outputs.fe--tag_name }} .
+          docker push ghcr.io/rikotsev/markdown-blog-fe:${{ steps.release.outputs.fe--tag_name }}
+        env:
+          GH_TOKEN: ${{ secrets.RELEASE_PLEASE_TOKEN }}
+        name: Bake Release
+        if: ${{ steps.release.outputs['fe--release_created'] }}

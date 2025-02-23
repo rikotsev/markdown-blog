@@ -7,7 +7,7 @@ const CategoryManager: React.FC = () => {
   const [newCategory, setNewCategory] = useState<string>("");
 
   const handleAddCategory = async () => {
-    if (newCategory.trim() == "") {
+    if (newCategory.trim() === "") {
       return;
     }
 

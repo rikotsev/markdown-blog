@@ -68,7 +68,12 @@ export const CategoryApiProvider: React.FC<CategoryApiProviderProps> = ({
         ),
       );
     }
-  }, [isAuthenticated]);
+  }, [
+    isAuthenticated,
+    config.API_BASE,
+    config.AUDIENCE,
+    getAccessTokenSilently,
+  ]);
 
   const withAuth = useCallback(() => {
     setApi(
@@ -81,7 +86,7 @@ export const CategoryApiProvider: React.FC<CategoryApiProviderProps> = ({
         }),
       ),
     );
-  }, []);
+  }, [config.API_BASE, config.AUDIENCE, getAccessTokenSilently]);
 
   const refreshCategories = useCallback(async () => {
     try {
@@ -98,7 +103,7 @@ export const CategoryApiProvider: React.FC<CategoryApiProviderProps> = ({
         console.log(api);
         const response = await api!.categoryCreate(newCategory);
 
-        if (response.status == 201) {
+        if (response.status === 201) {
           setCategories((categories) => [...categories, response.data]);
         }
       } catch (err) {
@@ -113,7 +118,7 @@ export const CategoryApiProvider: React.FC<CategoryApiProviderProps> = ({
       try {
         const response = await api!.categoryDelete(urlId);
 
-        if (response.status == 200) {
+        if (response.status === 200) {
           setCategories((categories) =>
             categories.filter((category) => category.urlId !== urlId),
           );

@@ -41,10 +41,25 @@ jobs:
           manifest-file: .release-please-manifest.json
       - run: |
           cd be
-          make build
+          make dist
           zip -j be.zip dist/markdown-blog-server
           gh release upload ${{ steps.release.outputs.be--tag_name }} be.zip
         env:
           GH_TOKEN: ${{ secrets.RELEASE_PLEASE_TOKEN }}
         name: Build
+        if: ${{ steps.release.outputs['be--release_created'] }}
+      - run: |
+          cd be
+          docker build -f docker/Dockerfile -t ghcr.io/rikotsev/markdown-blog-be:latest .
+          docker push ghcr.io/rikotsev/markdown-blog-be:latest
+        env:
+          GH_TOKEN: ${{ secrets.RELEASE_PLEASE_TOKEN }}
+        name: Bake Latest
+      - run: |
+          cd be
+          docker build -f docker/Dockerfile -t ghcr.io/rikotsev/markdown-blog-be:${{ steps.release.outputs.be--tag_name }} .
+          docker push ghcr.io/rikotsev/markdown-blog-be:${{ steps.release.outputs.be--tag_name }}
+        env:
+          GH_TOKEN: ${{ secrets.RELEASE_PLEASE_TOKEN }}
+        name: Bake Release
         if: ${{ steps.release.outputs['be--release_created'] }}

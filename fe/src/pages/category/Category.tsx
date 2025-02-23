@@ -17,7 +17,7 @@ const Category: React.FC = () => {
         setCategoryName(includedItem.name);
       }
     });
-  }, []);
+  }, [category, api]);
 
   return (
     <div className="main-content">

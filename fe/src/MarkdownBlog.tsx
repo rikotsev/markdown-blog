@@ -19,7 +19,7 @@ export const MarkdownBlog: React.FC = () => {
     refreshCategories().then(() => {
       setLoading(false);
     });
-  }, []);
+  }, [refreshCategories]);
 
   if (loading) {
     return (

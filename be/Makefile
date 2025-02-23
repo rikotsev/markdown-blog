@@ -1,5 +1,6 @@
 OUTPUT_BINARY=markdown-blog-server
 API_VERSION=1.8.1
+DIST_BUILD=CGO_ENABLED=1 GOOS=linux GOARCH=amd64
 
 .PHONY: all
 all: clean setup lint test build
@@ -30,6 +31,11 @@ test: setup
 .PHONY: build
 build:
 	go build -o dist/${OUTPUT_BINARY} cmd/server.go
+
+.PHONY: dist
+dist:
+	$(DIST_BUILD) go build -ldflags="-s -w" -o dist/${OUTPUT_BINARY} cmd/server.go
+
 
 .PHONY: run
 run:
