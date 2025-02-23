@@ -1,6 +1,7 @@
-FROM nginx:1.27-alpine-otel
-WORKDIR /usr/share/nginx/html
+FROM nginxinc/nginx-unprivileged:1.27-alpine
+
 COPY build/ .
-EXPOSE 80
+
+EXPOSE 8080
 
 CMD ["nginx", "-g", "daemon off;"]
