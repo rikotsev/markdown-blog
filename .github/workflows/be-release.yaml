@@ -42,11 +42,14 @@ jobs:
       - run: |
           cd be
           make dist
+        name: Build
+      - run: |
+          cd be
           zip -j be.zip dist/markdown-blog-server
           gh release upload ${{ steps.release.outputs.be--tag_name }} be.zip
         env:
           GH_TOKEN: ${{ secrets.RELEASE_PLEASE_TOKEN }}
-        name: Build
+        name: Upload release package
         if: ${{ steps.release.outputs['be--release_created'] }}
       - run: |
           cd be
