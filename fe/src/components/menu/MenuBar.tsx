@@ -16,15 +16,15 @@ const MenuBar: React.FC = () => {
       </li>
     );
     oauthButton = (
-      <a href="#" onClick={() => logout()}>
+      <button onClick={() => logout()}>
         Log Out
-      </a>
+      </button>
     );
   } else {
     oauthButton = (
-      <a href="#" onClick={() => loginWithRedirect()}>
+      <button onClick={() => loginWithRedirect()}>
         Log In
-      </a>
+      </button>
     );
     adminSection = "";
   }
