@@ -2,12 +2,17 @@
 
 body {
   margin: 0;
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
   background-color: #f2f2f2;
   color: #333;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   color: #222;
   margin-bottom: 0.5rem;
   font-weight: normal;
@@ -65,7 +70,9 @@ a:hover {
 .navbar a {
   padding: 0.5rem 1rem;
   border-radius: 4px;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
   text-decoration: none;
 }
 
@@ -166,4 +173,3 @@ a:hover {
     padding: 1rem; /* Reduce padding for smaller screens */
   }
 }
-
