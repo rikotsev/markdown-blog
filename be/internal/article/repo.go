@@ -70,6 +70,8 @@ SELECT
 FROM
     article AS a
 	LEFT JOIN category AS c ON a.category_id = c.id
+WHERE
+    c.url_id = COALESCE($1, c.url_id)
 ORDER BY
     a.created;
 `
@@ -177,7 +179,7 @@ func (r *Repository) get(ctx context.Context, urlId string) (*Entity, error) {
 	return &article, nil
 }
 
-func (r *Repository) list(ctx context.Context) ([]Entity, error) {
+func (r *Repository) list(ctx context.Context, categoryValue *string) ([]Entity, error) {
 	ctx, cancelFunc := context.WithTimeout(ctx, r.queryTimeout)
 	defer cancelFunc()
 
@@ -187,7 +189,7 @@ func (r *Repository) list(ctx context.Context) ([]Entity, error) {
 		return nil, fmt.Errorf("failed to get conn with: %w", err)
 	}
 
-	rows, err := conn.Query(ctx, listArticles)
+	rows, err := conn.Query(ctx, listArticles, categoryValue)
 	if err != nil {
 		return nil, fmt.Errorf("failed to scan rows: %w", err)
 	}

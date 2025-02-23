@@ -58,7 +58,7 @@ func (h *Http) GetArticle(w http.ResponseWriter, r *http.Request, urlId gen.UrlI
 }
 
 func (h *Http) ArticleList(w http.ResponseWriter, r *http.Request, params gen.ArticleListParams, ctx context.Context) error {
-	resp, err := h.service.ListArticles(ctx)
+	resp, err := h.service.ListArticles(ctx, params.Category)
 	if err != nil {
 		return fmt.Errorf("failed to list articles: %w", err)
 	}
