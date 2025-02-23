@@ -10,6 +10,7 @@ permissions:
   contents: write
   pages: write
   id-token: write
+  packages: write
 
 jobs:
   release-please:
@@ -44,6 +45,9 @@ jobs:
           GH_TOKEN: ${{ secrets.RELEASE_PLEASE_TOKEN }}
         name: Publish release
         if: ${{ steps.release.outputs['fe--release_created'] }}
+      - run: |
+          echo "${{ secrets.RELEASE_PLEASE_TOKEN }}" | docker login ghcr.io -u rikotsev --password-stdin
+        name: Login to GHCR
       - run: |
           cd fe
           docker build -f docker/Dockerfile -t ghcr.io/rikotsev/markdown-blog-fe:latest .
