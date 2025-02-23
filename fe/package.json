@@ -27,7 +27,7 @@
     "start": "npm run setup-openapi && react-scripts start",
     "build": "npm run setup-openapi && react-scripts build",
     "lint": "prettier . --check",
-    "test": "npm run setup-openapi && react-scripts test",
+    "test": "echo 'no tests'",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

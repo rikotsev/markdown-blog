@@ -8,6 +8,10 @@
     "be": {
       "release-type": "go",
       "component": "backend"
+    },
+    "fe": {
+      "release-type": "node",
+      "component": "frontend"
     }
   },
   "separate-pull-requests": true
