@@ -65,8 +65,8 @@ func (s *Service) GetArticle(ctx context.Context, urlId string) (*gen.ArticleRes
 	}, nil
 }
 
-func (s *Service) ListArticles(ctx context.Context) (*gen.ArticleResponseList, error) {
-	entities, err := s.repository.list(ctx)
+func (s *Service) ListArticles(ctx context.Context, categoryValue *string) (*gen.ArticleResponseList, error) {
+	entities, err := s.repository.list(ctx, categoryValue)
 	if err != nil {
 		return nil, fmt.Errorf("failed to list articles from DB: %w", err)
 	}

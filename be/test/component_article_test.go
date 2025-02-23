@@ -230,6 +230,40 @@ func (s *ApplicationSuite) TestUpdateArticleCategory() {
 	}, *getResp.Data)
 }
 
+func (s *ApplicationSuite) TestListArticlesWithCategory() {
+	categoryToId := s.setupCategories()
+	dummyArticles := dummyArticles(categoryToId)
+	s.httpPostRaw(ArticlePath, &dummyArticles[0])
+	s.httpPostRaw(ArticlePath, &dummyArticles[1])
+	s.httpPostRaw(ArticlePath, &dummyArticles[3])
+
+	resp := gen.ArticleResponseList{}
+	s.httpGet(ArticlePath+"?category=technology", &resp)
+
+	s.Require().Equal(1, len(resp.Data))
+	s.Require().Equal(dummyArticles[0].Title, resp.Data[0].Title)
+	s.Require().Equal(dummyArticles[0].Category.Id, resp.Data[0].Category.Id)
+	s.Require().Equal(dummyArticles[0].Description, resp.Data[0].Description)
+	s.Require().Equal(dummyArticles[0].Content, resp.Data[0].Content)
+
+	resp = gen.ArticleResponseList{}
+	s.httpGet(ArticlePath+"?category=travel", &resp)
+
+	s.Require().Equal(2, len(resp.Data))
+	s.Require().Equal(dummyArticles[1].Title, resp.Data[0].Title)
+	s.Require().Equal(dummyArticles[1].Category.Id, resp.Data[0].Category.Id)
+	s.Require().Equal(dummyArticles[1].Description, resp.Data[0].Description)
+	s.Require().Equal(dummyArticles[1].Content, resp.Data[0].Content)
+	s.Require().Equal(dummyArticles[3].Title, resp.Data[1].Title)
+	s.Require().Equal(dummyArticles[3].Category.Id, resp.Data[1].Category.Id)
+	s.Require().Equal(dummyArticles[3].Description, resp.Data[1].Description)
+	s.Require().Equal(dummyArticles[3].Content, resp.Data[1].Content)
+
+	resp = gen.ArticleResponseList{}
+	s.httpGet(ArticlePath+"?category=philosophy", &resp)
+	s.Require().Equal(0, len(resp.Data))
+}
+
 func (s *ApplicationSuite) assertArticle(expected gen.ArticleCreateJSONBody, actual gen.Article) {
 	s.Require().Equal(expected.Title, actual.Title)
 	s.Require().Equal(expected.Description, actual.Description)
