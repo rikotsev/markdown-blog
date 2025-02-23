@@ -1,4 +1,4 @@
-name: Markdown Blog - API - release
+name: Markdown Blog - Frontend - release
 on:
   push:
     branches:

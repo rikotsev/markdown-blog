@@ -1,4 +1,4 @@
-name: Markdown Blog -  Frontend - test and build
+name: Markdown Blog -  Frontend - lint, test and build
 on:
   pull_request:
     branches:
