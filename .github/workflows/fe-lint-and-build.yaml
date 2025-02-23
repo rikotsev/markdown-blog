@@ -1,0 +1,30 @@
+name: Markdown Blog -  Frontend - lint, test and build
+on:
+  pull_request:
+    branches:
+      - master
+jobs:
+  lint-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Determine impacted paths
+        id: path_filter
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            fe:
+             - 'fe/**'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+        name: Setup - Node
+        if: steps.path_filter.outputs.fe == 'true'
+      - run: |
+          cd fe
+          npm ci
+          npm run test
+          npm run lint
+          npm run build
+        name: Test & Build - Node
+        if: steps.path_filter.outputs.fe == 'true'

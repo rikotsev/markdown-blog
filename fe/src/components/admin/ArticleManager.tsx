@@ -34,7 +34,7 @@ const ArticleManager: React.FC = () => {
     if (loading) {
       fetchInitialData();
     }
-  }, []);
+  }, [api, loading]);
 
   const handleCreateArticle = () => {
     navigate("/article/create");

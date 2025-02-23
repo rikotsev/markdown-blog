@@ -19,7 +19,7 @@ const Article: React.FC = () => {
       .catch((err) => {
         console.error(err);
       });
-  }, [id]);
+  }, [id, api]);
 
   if (!article) {
     return <div>Loading...</div>;

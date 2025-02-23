@@ -40,20 +40,20 @@ const DesignArticle: React.FC = () => {
           console.error(err);
         });
     }
-  }, []);
+  }, [id, api]);
 
   const handleContentChange = (
     event: React.ChangeEvent<HTMLTextAreaElement>,
   ) => {
     setArticleData((prev) => ({
       ...prev,
-      ["content"]: event.target.value,
+      content: event.target.value,
     }));
   };
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setArticleData((prev) => ({
       ...prev,
-      ["title"]: event.target.value,
+      title: event.target.value,
     }));
   };
   const handleDescriptionChange = (
@@ -61,7 +61,7 @@ const DesignArticle: React.FC = () => {
   ) => {
     setArticleData((prev) => ({
       ...prev,
-      ["description"]: event.target.value,
+      description: event.target.value,
     }));
   };
 
