@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/rikotsev/markdown-blog/compare/backend-v1.2.0...backend-v1.3.0) (2025-02-28)
+
+
+### Features
+
+* **be:** filter articles by category ([#80](https://github.com/rikotsev/markdown-blog/issues/80)) ([80b39ff](https://github.com/rikotsev/markdown-blog/commit/80b39ff57695838ea8bf868ff06980c59146cd0c))
+
 ## [1.2.0](https://github.com/rikotsev/markdown-blog/compare/backend-v1.1.0...backend-v1.2.0) (2025-02-01)
 
 
