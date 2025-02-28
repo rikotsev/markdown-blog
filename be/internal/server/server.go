@@ -8,6 +8,7 @@ import (
 	"github.com/rikotsev/markdown-blog/be/gen"
 	"github.com/rikotsev/markdown-blog/be/internal/article"
 	"github.com/rikotsev/markdown-blog/be/internal/category"
+	"github.com/rikotsev/markdown-blog/be/internal/page"
 	"github.com/rikotsev/markdown-blog/be/internal/urlid"
 	"github.com/rs/cors"
 	"log/slog"
@@ -21,6 +22,7 @@ type ApplicationServer struct {
 	authProvider AuthenticationProvider
 	articleHttp  *article.Http
 	categoryHttp *category.Http
+	pageHttp     *page.Http
 	Listener     net.Listener
 }
 
@@ -39,6 +41,7 @@ func New(appCtx ApplicationContext, authProvider AuthenticationProvider) (Applic
 		authProvider: authProvider,
 		articleHttp:  article.NewHttp(article.NewService(article.NewRepository(appCtx.Pool(), queryTimeout), transformer, category.NewMapper())),
 		categoryHttp: category.NewHttp(category.NewService(category.NewRepository(appCtx.Pool(), queryTimeout), transformer)),
+		pageHttp:     page.NewHttp(page.NewService(page.NewRepository(appCtx.Pool(), queryTimeout), transformer)),
 		Listener:     listener,
 	}, nil
 }
@@ -179,8 +182,10 @@ func (a ApplicationServer) PageList(w http.ResponseWriter, r *http.Request) {
 }
 
 func (a ApplicationServer) PageCreate(w http.ResponseWriter, r *http.Request) {
-	//TODO implement me
-	panic("implement me")
+	err := a.pageHttp.PageCreate(w, r, context.Background())
+	if err != nil {
+		handleExpectedError(w, r, err)
+	}
 }
 
 func (a ApplicationServer) PageDelete(w http.ResponseWriter, r *http.Request, urlId gen.UrlId) {
@@ -189,8 +194,10 @@ func (a ApplicationServer) PageDelete(w http.ResponseWriter, r *http.Request, ur
 }
 
 func (a ApplicationServer) PageGet(w http.ResponseWriter, r *http.Request, urlId gen.UrlId) {
-	//TODO implement me
-	panic("implement me")
+	err := a.pageHttp.PageGet(w, r, urlId, context.Background())
+	if err != nil {
+		handleExpectedError(w, r, err)
+	}
 }
 
 func (a ApplicationServer) PageEdit(w http.ResponseWriter, r *http.Request, urlId gen.UrlId) {
