@@ -1,6 +1,6 @@
 FROM nginxinc/nginx-unprivileged:1.27-alpine
 
-COPY build/ .
+COPY build/ /usr/share/nginx/html
 
 EXPOSE 8080
 
