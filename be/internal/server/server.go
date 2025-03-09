@@ -177,8 +177,10 @@ func (a ApplicationServer) CategoryDelete(w http.ResponseWriter, r *http.Request
 }
 
 func (a ApplicationServer) PageList(w http.ResponseWriter, r *http.Request) {
-	//TODO implement me
-	panic("implement me")
+	err := a.pageHttp.PageList(w, r, context.Background())
+	if err != nil {
+		handleExpectedError(w, r, err)
+	}
 }
 
 func (a ApplicationServer) PageCreate(w http.ResponseWriter, r *http.Request) {

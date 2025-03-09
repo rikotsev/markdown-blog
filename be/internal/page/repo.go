@@ -37,6 +37,15 @@ const (
 	WHERE
 	    url_id = $1;
 `
+	listPagesSql = `
+	SELECT
+		'' AS id,
+		url_id,
+		title,
+		'' AS content
+	FROM
+	    page
+`
 )
 
 func NewRepository(pool *pgxpool.Pool, queryTimeout time.Duration) *Repository {
@@ -102,6 +111,34 @@ func (r *Repository) get(ctx context.Context, urlId string) (*Entity, error) {
 	}
 
 	return &page, nil
+}
+
+func (r *Repository) list(ctx context.Context) ([]Entity, error) {
+	ctx, cancelFunc := context.WithTimeout(ctx, r.queryTimeout)
+	defer cancelFunc()
+
+	conn, err := r.pool.Acquire(ctx)
+	defer conn.Release()
+	if err != nil {
+		return nil, fmt.Errorf("failed to get conn with: %w", err)
+	}
+
+	rows, err := conn.Query(ctx, listPagesSql)
+	if err != nil {
+		return nil, fmt.Errorf("failed to list pages with error: %w", err)
+	}
+
+	var result []Entity
+	for rows.Next() {
+		entity := Entity{}
+		err := r.scan(rows, &entity)
+		if err != nil {
+			return nil, err
+		}
+		result = append(result, entity)
+	}
+
+	return result, nil
 }
 
 func (r *Repository) scan(rows pgx.Rows, target *Entity) error {

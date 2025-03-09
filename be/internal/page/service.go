@@ -53,3 +53,23 @@ func (s *Service) getPage(ctx context.Context, urlId string) (*gen.PageResponseG
 		},
 	}, nil
 }
+
+func (s *Service) listPages(ctx context.Context) (*gen.PageResponseList, error) {
+	entities, err := s.repository.list(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to retrieve entities: %w", err)
+	}
+
+	result := gen.PageResponseList{
+		Data: make([]gen.PageUrlIdAndTitle, 0, len(entities)),
+	}
+
+	for _, page := range entities {
+		result.Data = append(result.Data, gen.PageUrlIdAndTitle{
+			UrlId: &page.UrlId,
+			Title: &page.Title,
+		})
+	}
+
+	return &result, nil
+}

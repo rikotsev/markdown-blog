@@ -32,7 +32,6 @@ func (h *Http) PageCreate(w http.ResponseWriter, r *http.Request, ctx context.Co
 
 	w.Header().Add("Location", urlId)
 	w.WriteHeader(http.StatusCreated)
-
 	return nil
 }
 
@@ -53,6 +52,20 @@ func (h *Http) PageGet(w http.ResponseWriter, r *http.Request, urlId gen.UrlId, 
 	}
 
 	w.WriteHeader(http.StatusOK)
+	return nil
+}
 
+func (h *Http) PageList(w http.ResponseWriter, r *http.Request, ctx context.Context) error {
+	pages, err := h.service.listPages(ctx)
+	if err != nil {
+		return fmt.Errorf("failed to list pages: %w", err)
+	}
+
+	err = json.NewEncoder(w).Encode(&pages)
+	if err != nil {
+		return fmt.Errorf("failed to encode pages: %w", err)
+	}
+
+	w.WriteHeader(http.StatusOK)
 	return nil
 }

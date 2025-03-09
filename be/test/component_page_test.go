@@ -9,11 +9,25 @@ const (
 	PagePath = "page"
 )
 
-func (s *ApplicationSuite) TestCreatePage_Valid() {
-	payload := gen.PageCore{
-		Title:   ptr("Home"),
-		Content: ptr("This is a markdown content of a page."),
+func (s *ApplicationSuite) dummyPages() []gen.PageCore {
+	return []gen.PageCore{
+		{
+			Title:   ptr("Home"),
+			Content: ptr("This is a home page"),
+		},
+		{
+			Title:   ptr("About me"),
+			Content: ptr("This is an about me page"),
+		},
+		{
+			Title:   ptr("Contacts"),
+			Content: ptr("this is a contacts page"),
+		},
 	}
+}
+
+func (s *ApplicationSuite) TestCreatePage_Valid() {
+	payload := s.dummyPages()[0]
 	getResult := gen.PageResponseGet{}
 
 	response := s.httpPostRaw(PagePath, payload)
@@ -25,4 +39,22 @@ func (s *ApplicationSuite) TestCreatePage_Valid() {
 	s.Require().Equal("home", urlId)
 	s.Require().Equal(*payload.Title, getResult.Data.Title)
 	s.Require().Equal(*payload.Content, getResult.Data.Content)
+}
+
+func (s *ApplicationSuite) TestListPages() {
+	dummyPages := s.dummyPages()
+	s.httpPostRaw(PagePath, dummyPages[0])
+	s.httpPostRaw(PagePath, dummyPages[1])
+	s.httpPostRaw(PagePath, dummyPages[2])
+
+	var result gen.PageResponseList
+	s.httpGet(PagePath, &result)
+
+	s.Require().Equal(3, len(result.Data))
+	s.Require().Equal(*dummyPages[0].Title, *result.Data[0].Title)
+	s.Require().Equal("home", *result.Data[0].UrlId)
+	s.Require().Equal(*dummyPages[1].Title, *result.Data[1].Title)
+	s.Require().Equal("about-me", *result.Data[1].UrlId)
+	s.Require().Equal(*dummyPages[2].Title, *result.Data[2].Title)
+	s.Require().Equal("contacts", *result.Data[2].UrlId)
 }
