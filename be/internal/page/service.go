@@ -73,3 +73,15 @@ func (s *Service) listPages(ctx context.Context) (*gen.PageResponseList, error) 
 
 	return &result, nil
 }
+
+func (s *Service) updatePage(ctx context.Context, urlId string, data gen.PageCore) (bool, error) {
+	success, err := s.repository.update(ctx, urlId, EntityModification{
+		Title:   data.Title,
+		Content: data.Content,
+	})
+	if err != nil {
+		return false, fmt.Errorf("failed to perform update: %w", err)
+	}
+
+	return success, nil
+}

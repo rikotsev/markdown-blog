@@ -69,3 +69,20 @@ func (h *Http) PageList(w http.ResponseWriter, r *http.Request, ctx context.Cont
 	w.WriteHeader(http.StatusOK)
 	return nil
 }
+
+func (h *Http) PageEdit(w http.ResponseWriter, r *http.Request, urlId gen.UrlId, ctx context.Context) error {
+	var req gen.PageEditJSONRequestBody
+	err := json.NewDecoder(r.Body).Decode(&req)
+	if err != nil {
+		return fmt.Errorf("failed to decode body: %w", err)
+	}
+
+	_, err = h.service.updatePage(ctx, urlId, req)
+	if err != nil {
+		return fmt.Errorf("failed to do the update: %w", err)
+	}
+
+	w.Header().Add("Location", urlId)
+	w.WriteHeader(http.StatusOK)
+	return nil
+}

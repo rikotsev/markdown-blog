@@ -203,6 +203,8 @@ func (a ApplicationServer) PageGet(w http.ResponseWriter, r *http.Request, urlId
 }
 
 func (a ApplicationServer) PageEdit(w http.ResponseWriter, r *http.Request, urlId gen.UrlId) {
-	//TODO implement me
-	panic("implement me")
+	err := a.pageHttp.PageEdit(w, r, urlId, context.Background())
+	if err != nil {
+		handleExpectedError(w, r, err)
+	}
 }

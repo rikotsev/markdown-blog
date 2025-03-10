@@ -21,6 +21,11 @@ type (
 		Title   string
 		Content string
 	}
+
+	EntityModification struct {
+		Title   *string
+		Content *string
+	}
 )
 
 const (
@@ -45,6 +50,15 @@ const (
 		'' AS content
 	FROM
 	    page
+`
+	updatePageSql = `
+	UPDATE
+		page
+	SET
+	    title = COALESCE($1, title),
+	    content = COALESCE($2, content)
+	WHERE 
+	    url_id = $3;
 `
 )
 
@@ -139,6 +153,24 @@ func (r *Repository) list(ctx context.Context) ([]Entity, error) {
 	}
 
 	return result, nil
+}
+
+func (r *Repository) update(ctx context.Context, urlId string, modifications EntityModification) (bool, error) {
+	ctx, cancelFunc := context.WithTimeout(ctx, r.queryTimeout)
+	defer cancelFunc()
+
+	conn, err := r.pool.Acquire(ctx)
+	defer conn.Release()
+	if err != nil {
+		return false, fmt.Errorf("failed to get conn with: %w", err)
+	}
+
+	tag, err := conn.Exec(ctx, updatePageSql, modifications.Title, modifications.Content, urlId)
+	if err != nil {
+		return false, fmt.Errorf("failed to perform update: %w", err)
+	}
+
+	return tag.RowsAffected() > 0, nil
 }
 
 func (r *Repository) scan(rows pgx.Rows, target *Entity) error {
