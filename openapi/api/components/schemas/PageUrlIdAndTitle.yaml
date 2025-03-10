@@ -1,0 +1,6 @@
+type: object
+properties:
+  urlId:
+    $ref: ./UrlId.yaml
+  title:
+    $ref: ./EntityTitle.yaml

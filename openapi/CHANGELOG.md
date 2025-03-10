@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.0](https://github.com/rikotsev/markdown-blog/compare/api-v1.8.1...api-v1.9.0) (2025-03-09)
+
+
+### Features
+
+* **openapi:** CRUD for pages ([#86](https://github.com/rikotsev/markdown-blog/issues/86)) ([401c446](https://github.com/rikotsev/markdown-blog/commit/401c44617352e9ba800730aeb41826e190f088dd))
+
 ## [1.8.1](https://github.com/rikotsev/markdown-blog/compare/api-v1.8.0...api-v1.8.1) (2025-01-31)
 
 

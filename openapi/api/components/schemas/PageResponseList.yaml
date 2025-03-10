@@ -3,11 +3,6 @@ properties:
   data:
     type: array
     items:
-      type: object
-      properties:
-        urlId:
-          $ref: ./UrlId.yaml
-        title:
-          $ref: ./EntityTitle.yaml
+      $ref: ./PageUrlIdAndTitle.yaml
 required:
   - data
