@@ -85,3 +85,12 @@ func (s *Service) updatePage(ctx context.Context, urlId string, data gen.PageCor
 
 	return success, nil
 }
+
+func (s *Service) deletePage(ctx context.Context, urlId string) (bool, error) {
+	deleted, err := s.repository.delete(ctx, urlId)
+	if err != nil {
+		return false, fmt.Errorf("failed to delete: %w", err)
+	}
+
+	return deleted, nil
+}

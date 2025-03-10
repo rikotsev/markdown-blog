@@ -60,6 +60,12 @@ const (
 	WHERE 
 	    url_id = $3;
 `
+	deletePageSql = `
+	DELETE FROM
+	    page
+	WHERE
+	    url_id = $1;
+`
 )
 
 func NewRepository(pool *pgxpool.Pool, queryTimeout time.Duration) *Repository {
@@ -166,6 +172,24 @@ func (r *Repository) update(ctx context.Context, urlId string, modifications Ent
 	}
 
 	tag, err := conn.Exec(ctx, updatePageSql, modifications.Title, modifications.Content, urlId)
+	if err != nil {
+		return false, fmt.Errorf("failed to perform update: %w", err)
+	}
+
+	return tag.RowsAffected() > 0, nil
+}
+
+func (r *Repository) delete(ctx context.Context, urlId string) (bool, error) {
+	ctx, cancelFunc := context.WithTimeout(ctx, r.queryTimeout)
+	defer cancelFunc()
+
+	conn, err := r.pool.Acquire(ctx)
+	defer conn.Release()
+	if err != nil {
+		return false, fmt.Errorf("failed to get conn with: %w", err)
+	}
+
+	tag, err := conn.Exec(ctx, deletePageSql, urlId)
 	if err != nil {
 		return false, fmt.Errorf("failed to perform update: %w", err)
 	}

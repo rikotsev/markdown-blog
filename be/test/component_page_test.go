@@ -78,3 +78,71 @@ func (s *ApplicationSuite) TestEditPage_Valid_TitleAndContent() {
 	s.Require().Equal(*payload.Title, afterEdit.Data.Title)
 	s.Require().Equal(*payload.Content, afterEdit.Data.Content)
 }
+
+func (s *ApplicationSuite) TestEditPage_Valid_Title() {
+	beforeEdit := gen.PageResponseGet{}
+	afterEdit := gen.PageResponseGet{}
+	payload := s.dummyPages()[0]
+	response := s.httpPostRaw(PagePath, payload)
+	urlId := response.Header.Get("Location")
+	s.httpGet(PagePath+"/"+urlId, &beforeEdit)
+
+	payload.Title = ptr(*payload.Title + "-modified title")
+	payload.Content = nil
+	response = s.httpPatchRaw(PagePath+"/"+urlId, &payload)
+	s.httpGet(PagePath+"/"+urlId, &afterEdit)
+
+	s.Require().Equal(http.StatusOK, response.StatusCode)
+	s.Require().Equal(beforeEdit.Data.Id, afterEdit.Data.Id)
+	s.Require().Equal(beforeEdit.Data.UrlId, afterEdit.Data.UrlId)
+	s.Require().Equal(*payload.Title, afterEdit.Data.Title)
+	s.Require().Equal(beforeEdit.Data.Content, afterEdit.Data.Content)
+}
+
+func (s *ApplicationSuite) TestEditPage_Valid_Content() {
+	beforeEdit := gen.PageResponseGet{}
+	afterEdit := gen.PageResponseGet{}
+	payload := s.dummyPages()[0]
+	response := s.httpPostRaw(PagePath, payload)
+	urlId := response.Header.Get("Location")
+	s.httpGet(PagePath+"/"+urlId, &beforeEdit)
+
+	payload.Title = nil
+	payload.Content = ptr(*payload.Content + "-modified content")
+	response = s.httpPatchRaw(PagePath+"/"+urlId, &payload)
+	s.httpGet(PagePath+"/"+urlId, &afterEdit)
+
+	s.Require().Equal(http.StatusOK, response.StatusCode)
+	s.Require().Equal(beforeEdit.Data.Id, afterEdit.Data.Id)
+	s.Require().Equal(beforeEdit.Data.UrlId, afterEdit.Data.UrlId)
+	s.Require().Equal(*payload.Content, afterEdit.Data.Content)
+	s.Require().Equal(beforeEdit.Data.Title, afterEdit.Data.Title)
+}
+
+func (s *ApplicationSuite) TestEditPage_NotFound() {
+	payload := s.dummyPages()[0]
+
+	payload.Title = nil
+	payload.Content = ptr(*payload.Content + "-modified content")
+	response := s.httpPatchRaw(PagePath+"/not-existing", &payload)
+
+	s.Require().Equal(http.StatusNotFound, response.StatusCode)
+}
+
+func (s *ApplicationSuite) TestDeletePage_Existing() {
+	payload := s.dummyPages()[0]
+
+	response := s.httpPostRaw(PagePath, payload)
+	urlId := response.Header.Get("Location")
+	statusCode := s.httpDelete(PagePath + "/" + urlId)
+	response = s.httpGetRaw(PagePath + "/" + urlId)
+
+	s.Require().Equal(http.StatusOK, statusCode)
+	s.Require().Equal(http.StatusNotFound, response.StatusCode)
+}
+
+func (s *ApplicationSuite) TestDeletePage_NotFound() {
+	statusCode := s.httpDelete(PagePath + "/not-existing")
+
+	s.Require().Equal(http.StatusNotFound, statusCode)
+}

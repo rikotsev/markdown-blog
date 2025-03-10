@@ -191,8 +191,10 @@ func (a ApplicationServer) PageCreate(w http.ResponseWriter, r *http.Request) {
 }
 
 func (a ApplicationServer) PageDelete(w http.ResponseWriter, r *http.Request, urlId gen.UrlId) {
-	//TODO implement me
-	panic("implement me")
+	err := a.pageHttp.PageDelete(w, r, urlId, context.Background())
+	if err != nil {
+		handleExpectedError(w, r, err)
+	}
 }
 
 func (a ApplicationServer) PageGet(w http.ResponseWriter, r *http.Request, urlId gen.UrlId) {

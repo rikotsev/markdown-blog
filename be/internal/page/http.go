@@ -77,12 +77,31 @@ func (h *Http) PageEdit(w http.ResponseWriter, r *http.Request, urlId gen.UrlId,
 		return fmt.Errorf("failed to decode body: %w", err)
 	}
 
-	_, err = h.service.updatePage(ctx, urlId, req)
+	updated, err := h.service.updatePage(ctx, urlId, req)
 	if err != nil {
 		return fmt.Errorf("failed to do the update: %w", err)
 	}
 
+	if !updated {
+		w.WriteHeader(http.StatusNotFound)
+		return nil
+	}
+
 	w.Header().Add("Location", urlId)
+	w.WriteHeader(http.StatusOK)
+	return nil
+}
+
+func (h *Http) PageDelete(w http.ResponseWriter, r *http.Request, urlId gen.UrlId, ctx context.Context) error {
+	deleted, err := h.service.deletePage(ctx, urlId)
+	if err != nil {
+		return fmt.Errorf("failed to delete page: %w", err)
+	}
+
+	if !deleted {
+		w.WriteHeader(http.StatusNotFound)
+	}
+
 	w.WriteHeader(http.StatusOK)
 	return nil
 }
