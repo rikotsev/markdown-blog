@@ -72,7 +72,7 @@ export function useArticleApiCtx() {
   const context = useContext(ArticleApiContext);
   if (!context) {
     throw new Error(
-      "useCategoryApiCtx should be used within a CategoryApiContext.Provider",
+      "useArticleApiCtx should be used within a ArticleApiContext.Provider",
     );
   }
   return context;
