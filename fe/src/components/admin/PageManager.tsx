@@ -1,36 +1,52 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import {usePageApiCtx} from "../../services/PageApiContext";
-import {PageUrlIdAndTitle} from "../../openapi";
+import styles from "./ArticleManager.module.css";
+import {useNavigate} from "react-router-dom";
 
 const PageManager: React.FC = () => {
-    const {api} = usePageApiCtx();
-    const [loading, setLoading] = useState(true)
-    const [pages, setPages] = useState<PageUrlIdAndTitle[]>([])
+    const {pages, remove} = usePageApiCtx();
+    const navigate = useNavigate();
 
-    useEffect(() => {
-        const fetchInitialData = async () => {
-            try {
-                let pageResponseList = await api.pageList()
+    const handleCreatePage = () => {
+        navigate("/page/create");
+    };
 
-                if (pageResponseList.status === 200) {
-                    setPages(pageResponseList.data.data)
-                    return;
-                }
+    const handleDeletePage = async (id: string | undefined) => {
+        await remove(id!).then(() => window.alert('page removed'))
+            .catch((err) => {console.error(err)})
+    };
 
-                console.error("failed to retrieve pages", pageResponseList)
-            } catch (err) {
-                console.error(err)
-            } finally {
-                setLoading(false)
-            }
-        }
-
-        if (loading) {
-            fetchInitialData()
-        }
-    }, [api, loading])
+    const handleEditPage = (id: string | undefined) => {
+        navigate("/page/design/" + id);
+    };
 
     return (
-        <div></div>
-    )
+        <div className={styles["page-manager"]}>
+            <h2>Page Manager</h2>
+            <button onClick={handleCreatePage}>Add new page</button>
+            <ul>
+                {pages.map((page) => (
+                    <li key={page.urlId}>
+                        <div>
+                            <h3>{page.title}</h3>
+                        </div>
+                        <div>
+                            <button
+                                onClick={() => {
+                                    handleEditPage(page.urlId);
+                                }}
+                            >
+                                Edit
+                            </button>
+                            <button onClick={() => handleDeletePage(page.urlId)}>
+                                Delete
+                            </button>
+                        </div>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
 }
+
+export default PageManager

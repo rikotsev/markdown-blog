@@ -1,10 +1,13 @@
 import { NavLink } from "react-router-dom";
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useCategoryApiCtx } from "../../services/CategoryApiContext";
+import {usePageApiCtx} from "../../services/PageApiContext";
+import {PageUrlIdAndTitle} from "../../openapi";
 
 const MenuBar: React.FC = () => {
   const { categories } = useCategoryApiCtx();
+  const { pages, api } = usePageApiCtx();
   const { loginWithRedirect, isAuthenticated, logout } = useAuth0();
 
   let oauthButton;
@@ -24,32 +27,16 @@ const MenuBar: React.FC = () => {
   return (
     <nav className="navbar">
       <ul>
-        <li key={"home"}>
-          <NavLink
-            to="/"
-            className={({ isActive }) => (isActive ? "active" : "")}
-          >
-            Home
-          </NavLink>
-        </li>
-        <li key={"about"}>
-          <NavLink
-            key={"about"}
-            to="/about"
-            className={({ isActive }) => (isActive ? "active" : "")}
-          >
-            About
-          </NavLink>
-        </li>
-        <li key={"contact"}>
-          <NavLink
-            key={"contact"}
-            to="/contact"
-            className={({ isActive }) => (isActive ? "active" : "")}
-          >
-            Contact
-          </NavLink>
-        </li>
+        {pages.map((page) => (
+            <li key={page.urlId}>
+              <NavLink
+                  to={`/page/${page.urlId}`}
+                  className={({ isActive }) => (isActive ? "active" : "")}
+              >
+                {page.title}
+              </NavLink>
+            </li>
+        ))}
         {categories.map((category) => (
           <li key={category.id}>
             <NavLink
