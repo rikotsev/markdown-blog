@@ -28,7 +28,7 @@ func (s *ApplicationSuite) dummyPages() []gen.PageCore {
 	}
 }
 
-func (s *ApplicationSuite) TestCreatePage_Valid() {
+func (s *ApplicationSuite) TestCreatePageValid() {
 	payload := s.dummyPages()[0]
 	getResult := gen.PageResponseGet{}
 
@@ -61,7 +61,7 @@ func (s *ApplicationSuite) TestListPages() {
 	s.Require().Equal("contacts", *result.Data[2].UrlId)
 }
 
-func (s *ApplicationSuite) TestEditPage_Valid_TitleAndContent() {
+func (s *ApplicationSuite) TestEditPageValidTitleAndContent() {
 	beforeEdit := gen.PageResponseGet{}
 	afterEdit := gen.PageResponseGet{}
 	payload := s.dummyPages()[0]
@@ -81,7 +81,7 @@ func (s *ApplicationSuite) TestEditPage_Valid_TitleAndContent() {
 	s.Require().Equal(*payload.Content, afterEdit.Data.Content)
 }
 
-func (s *ApplicationSuite) TestEditPage_Valid_Title() {
+func (s *ApplicationSuite) TestEditPageValidTitle() {
 	beforeEdit := gen.PageResponseGet{}
 	afterEdit := gen.PageResponseGet{}
 	payload := s.dummyPages()[0]
@@ -101,7 +101,7 @@ func (s *ApplicationSuite) TestEditPage_Valid_Title() {
 	s.Require().Equal(beforeEdit.Data.Content, afterEdit.Data.Content)
 }
 
-func (s *ApplicationSuite) TestEditPage_Valid_Content() {
+func (s *ApplicationSuite) TestEditPageValidContent() {
 	beforeEdit := gen.PageResponseGet{}
 	afterEdit := gen.PageResponseGet{}
 	payload := s.dummyPages()[0]
@@ -121,7 +121,7 @@ func (s *ApplicationSuite) TestEditPage_Valid_Content() {
 	s.Require().Equal(beforeEdit.Data.Title, afterEdit.Data.Title)
 }
 
-func (s *ApplicationSuite) TestEditPage_NotFound() {
+func (s *ApplicationSuite) TestEditPageNotFound() {
 	payload := s.dummyPages()[0]
 
 	payload.Title = nil
@@ -131,7 +131,7 @@ func (s *ApplicationSuite) TestEditPage_NotFound() {
 	s.Require().Equal(http.StatusNotFound, response.StatusCode)
 }
 
-func (s *ApplicationSuite) TestDeletePage_Existing() {
+func (s *ApplicationSuite) TestDeletePageExisting() {
 	payload := s.dummyPages()[0]
 
 	response := s.httpPostRaw(PagePath, payload)
@@ -143,7 +143,7 @@ func (s *ApplicationSuite) TestDeletePage_Existing() {
 	s.Require().Equal(http.StatusNotFound, response.StatusCode)
 }
 
-func (s *ApplicationSuite) TestDeletePage_NotFound() {
+func (s *ApplicationSuite) TestDeletePageNotFound() {
 	statusCode := s.httpDelete(PagePath + "/not-existing")
 
 	s.Require().Equal(http.StatusNotFound, statusCode)
