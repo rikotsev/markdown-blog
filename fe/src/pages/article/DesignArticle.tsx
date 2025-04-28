@@ -89,7 +89,7 @@ const DesignArticle: React.FC = () => {
         },
       })
       .then((response) => {
-        if (response.status == 201) {
+        if (response.status === 201) {
           navigate(
             `/category/${articleData.category!.id}/articles/${response.headers["location"]}`,
           );
@@ -106,7 +106,7 @@ const DesignArticle: React.FC = () => {
     api
       .articleEdit(id!, articleData)
       .then((response) => {
-        if (response.status == 200) {
+        if (response.status === 200) {
           navigate(
             `/category/${articleData.category!.id}/articles/${response.headers["location"]}`,
           );

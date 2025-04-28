@@ -1,8 +1,6 @@
 import {
-  CategoryCreate,
   Configuration,
   PageApi,
-  PageCore,
   PageCreate,
   PageUrlIdAndTitle,
 } from "../openapi";
@@ -105,7 +103,7 @@ export const PageApiProvider: React.FC<PageApiProviderProps> = ({
         console.log(err);
       }
     },
-    [api],
+    [api, refreshPages],
   );
 
   const remove = useCallback(
@@ -120,7 +118,7 @@ export const PageApiProvider: React.FC<PageApiProviderProps> = ({
         console.log(err);
       }
     },
-    [api],
+    [api, refreshPages],
   );
 
   return (

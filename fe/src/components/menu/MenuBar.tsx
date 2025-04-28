@@ -1,13 +1,12 @@
 import { NavLink } from "react-router-dom";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useCategoryApiCtx } from "../../services/CategoryApiContext";
 import { usePageApiCtx } from "../../services/PageApiContext";
-import { PageUrlIdAndTitle } from "../../openapi";
 
 const MenuBar: React.FC = () => {
   const { categories } = useCategoryApiCtx();
-  const { pages, api } = usePageApiCtx();
+  const { pages } = usePageApiCtx();
   const { loginWithRedirect, isAuthenticated, logout } = useAuth0();
 
   let oauthButton;

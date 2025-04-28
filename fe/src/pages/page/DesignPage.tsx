@@ -7,7 +7,7 @@ import remarkGfm from "remark-gfm";
 import { PageCore } from "../../openapi";
 
 const DesignPage: React.FC = () => {
-  const { api, add, remove } = usePageApiCtx();
+  const { api, add } = usePageApiCtx();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
