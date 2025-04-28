@@ -225,13 +225,11 @@
   }
 }
 
-.markdown-body {
-}
-
 .markdown-body .octicon {
   display: inline-block;
   fill: currentColor;
   vertical-align: text-bottom;
+  overflow: visible !important;
 }
 
 .markdown-body h1:hover .anchor .octicon-link:before,
@@ -598,13 +596,6 @@
   );
   font-size: 12px;
   word-wrap: normal;
-}
-
-.markdown-body .octicon {
-  display: inline-block;
-  overflow: visible !important;
-  vertical-align: text-bottom;
-  fill: currentColor;
 }
 
 .markdown-body input::-webkit-outer-spin-button,
@@ -1219,7 +1210,8 @@
 .markdown-body g-emoji {
   display: inline-block;
   min-width: 1ch;
-  font-family: "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-family:
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
   font-size: 1em;
   font-style: normal !important;
   font-weight: var(--base-text-weight-normal, 400);
