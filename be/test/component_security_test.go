@@ -8,11 +8,16 @@ import (
 )
 
 func (s *ApplicationSuite) TestUnauthorizedEndpoints() {
+	const (
+		TechCategoryPath       = CategoryPath + "/tech"
+		AnotherJsFrameworkPath = ArticlePath + "/yet-another-js-framework"
+		HomePagePath           = PagePath + "/home"
+	)
+
 	tests := []struct {
-		endpoint       string
-		request        func() *http.Response
-		httpStatusCode int
-		problem        gen.Problem
+		endpoint string
+		request  func() *http.Response
+		problem  gen.Problem
 	}{
 		{
 			endpoint: "POST /category",
@@ -20,27 +25,14 @@ func (s *ApplicationSuite) TestUnauthorizedEndpoints() {
 				req := gen.CategoryCore{Name: ptr("tech")}
 				return s.httpPostRawWithHeaders(CategoryPath, req, map[string]string{})
 			},
-			httpStatusCode: http.StatusUnauthorized,
-			problem: gen.Problem{
-				Title:    ptr("auth.failed"),
-				Status:   ptr(http.StatusUnauthorized),
-				Detail:   ptr("auth.failed"),
-				Instance: ptr("/" + CategoryPath),
-			},
+			problem: standardProblem(CategoryPath),
 		},
 		{
 			endpoint: "DELETE /category/{urlId}",
 			request: func() *http.Response {
-				path := fmt.Sprintf("%s/%s", CategoryPath, "tech")
-				return s.httpDeleteWithHeaders(path, map[string]string{})
+				return s.httpDeleteWithHeaders(TechCategoryPath, map[string]string{})
 			},
-			httpStatusCode: http.StatusUnauthorized,
-			problem: gen.Problem{
-				Title:    ptr("auth.failed"),
-				Status:   ptr(http.StatusUnauthorized),
-				Detail:   ptr("auth.failed"),
-				Instance: ptr(fmt.Sprintf("/%s/%s", CategoryPath, "tech")),
-			},
+			problem: standardProblem(TechCategoryPath),
 		},
 		{
 			endpoint: "POST /article",
@@ -48,40 +40,45 @@ func (s *ApplicationSuite) TestUnauthorizedEndpoints() {
 				req := gen.ArticleCore{}
 				return s.httpPostRawWithHeaders(ArticlePath, req, map[string]string{})
 			},
-			httpStatusCode: http.StatusUnauthorized,
-			problem: gen.Problem{
-				Title:    ptr("auth.failed"),
-				Status:   ptr(http.StatusUnauthorized),
-				Detail:   ptr("auth.failed"),
-				Instance: ptr("/" + ArticlePath),
-			},
+			problem: standardProblem(ArticlePath),
 		},
 		{
 			endpoint: "DELETE /article/{urlId}",
 			request: func() *http.Response {
-				return s.httpDeleteWithHeaders(fmt.Sprintf("%s/%s", ArticlePath, "yet-another-js-framework"), map[string]string{})
+				return s.httpDeleteWithHeaders(AnotherJsFrameworkPath, map[string]string{})
 			},
-			httpStatusCode: http.StatusUnauthorized,
-			problem: gen.Problem{
-				Title:    ptr("auth.failed"),
-				Status:   ptr(http.StatusUnauthorized),
-				Detail:   ptr("auth.failed"),
-				Instance: ptr(fmt.Sprintf("/%s/%s", ArticlePath, "yet-another-js-framework")),
-			},
+			problem: standardProblem(AnotherJsFrameworkPath),
 		},
 		{
 			endpoint: "PATCH /article/{urlId}",
 			request: func() *http.Response {
 				req := gen.ArticleCore{}
-				return s.httpPatchRawWithHeaders(fmt.Sprintf("%s/%s", ArticlePath, "yet-another-js-framework"), req, map[string]string{})
+				return s.httpPatchRawWithHeaders(AnotherJsFrameworkPath, req, map[string]string{})
 			},
-			httpStatusCode: http.StatusUnauthorized,
-			problem: gen.Problem{
-				Title:    ptr("auth.failed"),
-				Status:   ptr(http.StatusUnauthorized),
-				Detail:   ptr("auth.failed"),
-				Instance: ptr(fmt.Sprintf("/%s/%s", ArticlePath, "yet-another-js-framework")),
+			problem: standardProblem(AnotherJsFrameworkPath),
+		},
+		{
+			endpoint: "POST /page",
+			request: func() *http.Response {
+				req := gen.PageCreateJSONBody{}
+				return s.httpPostRawWithHeaders(PagePath, req, map[string]string{})
 			},
+			problem: standardProblem(PagePath),
+		},
+		{
+			endpoint: "PATCH /page/{urlId}",
+			request: func() *http.Response {
+				req := gen.PageCore{}
+				return s.httpPatchRawWithHeaders(HomePagePath, req, map[string]string{})
+			},
+			problem: standardProblem(HomePagePath),
+		},
+		{
+			endpoint: "DELETE /page/{urlId}",
+			request: func() *http.Response {
+				return s.httpDeleteWithHeaders(HomePagePath, map[string]string{})
+			},
+			problem: standardProblem(HomePagePath),
 		},
 	}
 
@@ -91,7 +88,7 @@ func (s *ApplicationSuite) TestUnauthorizedEndpoints() {
 			actual := gen.Problem{}
 			err := json.NewDecoder(resp.Body).Decode(&actual)
 			s.Require().NoError(err)
-			s.Require().Equal(testCase.httpStatusCode, resp.StatusCode)
+			s.Require().Equal(http.StatusUnauthorized, resp.StatusCode)
 			s.Require().NotNil(actual.Title)
 			s.Require().Equal(*testCase.problem.Title, *actual.Title)
 			s.Require().NotNil(actual.Status)
@@ -102,5 +99,14 @@ func (s *ApplicationSuite) TestUnauthorizedEndpoints() {
 			s.Require().Equal(*testCase.problem.Instance, *actual.Instance)
 			s.Require().NotNil(actual.ErrorInstanceId)
 		})
+	}
+}
+
+func standardProblem(customInstanceValue string) gen.Problem {
+	return gen.Problem{
+		Title:    ptr("auth.failed"),
+		Status:   ptr(http.StatusUnauthorized),
+		Detail:   ptr("auth.failed"),
+		Instance: ptr("/" + customInstanceValue),
 	}
 }

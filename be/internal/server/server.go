@@ -1,13 +1,13 @@
 package server
 
 import (
-	"context"
 	"encoding/json"
 	"errors"
 	"github.com/google/uuid"
 	"github.com/rikotsev/markdown-blog/be/gen"
 	"github.com/rikotsev/markdown-blog/be/internal/article"
 	"github.com/rikotsev/markdown-blog/be/internal/category"
+	"github.com/rikotsev/markdown-blog/be/internal/page"
 	"github.com/rikotsev/markdown-blog/be/internal/urlid"
 	"github.com/rs/cors"
 	"log/slog"
@@ -21,6 +21,7 @@ type ApplicationServer struct {
 	authProvider AuthenticationProvider
 	articleHttp  *article.Http
 	categoryHttp *category.Http
+	pageHttp     *page.Http
 	Listener     net.Listener
 }
 
@@ -39,6 +40,7 @@ func New(appCtx ApplicationContext, authProvider AuthenticationProvider) (Applic
 		authProvider: authProvider,
 		articleHttp:  article.NewHttp(article.NewService(article.NewRepository(appCtx.Pool(), queryTimeout), transformer, category.NewMapper())),
 		categoryHttp: category.NewHttp(category.NewService(category.NewRepository(appCtx.Pool(), queryTimeout), transformer)),
+		pageHttp:     page.NewHttp(page.NewService(page.NewRepository(appCtx.Pool(), queryTimeout), transformer)),
 		Listener:     listener,
 	}, nil
 }
@@ -51,6 +53,7 @@ func (a ApplicationServer) Start() error {
 		AllowedMethods:   []string{"GET", "POST", "PATCH", "DELETE", "OPTIONS"},
 		AllowedHeaders:   []string{"Authorization", "Content-Type"},
 		AllowCredentials: true,
+		ExposedHeaders:   []string{"Location"},
 	})
 
 	handler := gen.HandlerWithOptions(a, gen.StdHTTPServerOptions{
@@ -118,82 +121,92 @@ func handleExpectedError(w http.ResponseWriter, r *http.Request, err error) {
 }
 
 func (a ApplicationServer) ArticleList(w http.ResponseWriter, r *http.Request, params gen.ArticleListParams) {
-	err := a.articleHttp.ArticleList(w, r, params, context.Background())
+	err := a.articleHttp.ArticleList(w, r, params, r.Context())
 	if err != nil {
 		handleExpectedError(w, r, err)
 	}
 }
 
 func (a ApplicationServer) ArticleCreate(w http.ResponseWriter, r *http.Request) {
-	err := a.articleHttp.CreateArticle(w, r, context.Background())
+	err := a.articleHttp.CreateArticle(w, r, r.Context())
 	if err != nil {
 		handleExpectedError(w, r, err)
 	}
 }
 
 func (a ApplicationServer) ArticleDelete(w http.ResponseWriter, r *http.Request, urlId gen.UrlId) {
-	err := a.articleHttp.ArticleDelete(w, r, urlId, context.Background())
+	err := a.articleHttp.ArticleDelete(w, r, urlId, r.Context())
 	if err != nil {
 		handleExpectedError(w, r, err)
 	}
 }
 
 func (a ApplicationServer) ArticleGet(w http.ResponseWriter, r *http.Request, urlId gen.UrlId) {
-	err := a.articleHttp.GetArticle(w, r, urlId, context.Background())
+	err := a.articleHttp.GetArticle(w, r, urlId, r.Context())
 	if err != nil {
 		handleExpectedError(w, r, err)
 	}
 }
 
 func (a ApplicationServer) ArticleEdit(w http.ResponseWriter, r *http.Request, urlId gen.UrlId) {
-	err := a.articleHttp.ArticleEdit(w, r, urlId, context.Background())
+	err := a.articleHttp.ArticleEdit(w, r, urlId, r.Context())
 	if err != nil {
 		handleExpectedError(w, r, err)
 	}
 }
 
 func (a ApplicationServer) CategoryList(w http.ResponseWriter, r *http.Request) {
-	err := a.categoryHttp.ListCategories(w, r, context.Background())
+	err := a.categoryHttp.ListCategories(w, r, r.Context())
 	if err != nil {
 		handleExpectedError(w, r, err)
 	}
 }
 
 func (a ApplicationServer) CategoryCreate(w http.ResponseWriter, r *http.Request) {
-	err := a.categoryHttp.CreateCategory(w, r, context.Background())
+	err := a.categoryHttp.CreateCategory(w, r, r.Context())
 	if err != nil {
 		handleExpectedError(w, r, err)
 	}
 }
 
 func (a ApplicationServer) CategoryDelete(w http.ResponseWriter, r *http.Request, urlId gen.UrlId) {
-	err := a.categoryHttp.DeleteCategory(w, r, urlId, context.Background())
+	err := a.categoryHttp.DeleteCategory(w, r, urlId, r.Context())
 	if err != nil {
 		handleExpectedError(w, r, err)
 	}
 }
 
 func (a ApplicationServer) PageList(w http.ResponseWriter, r *http.Request) {
-	//TODO implement me
-	panic("implement me")
+	err := a.pageHttp.PageList(w, r, r.Context())
+	if err != nil {
+		handleExpectedError(w, r, err)
+	}
 }
 
 func (a ApplicationServer) PageCreate(w http.ResponseWriter, r *http.Request) {
-	//TODO implement me
-	panic("implement me")
+	err := a.pageHttp.PageCreate(w, r, r.Context())
+	if err != nil {
+		handleExpectedError(w, r, err)
+	}
 }
 
 func (a ApplicationServer) PageDelete(w http.ResponseWriter, r *http.Request, urlId gen.UrlId) {
-	//TODO implement me
-	panic("implement me")
+	err := a.pageHttp.PageDelete(w, r, urlId, r.Context())
+	if err != nil {
+		handleExpectedError(w, r, err)
+	}
 }
 
 func (a ApplicationServer) PageGet(w http.ResponseWriter, r *http.Request, urlId gen.UrlId) {
-	//TODO implement me
-	panic("implement me")
+	err := a.pageHttp.PageGet(w, r, urlId, r.Context())
+	if err != nil {
+		handleExpectedError(w, r, err)
+	}
 }
 
 func (a ApplicationServer) PageEdit(w http.ResponseWriter, r *http.Request, urlId gen.UrlId) {
-	//TODO implement me
-	panic("implement me")
+	err := a.pageHttp.PageEdit(w, r, urlId, r.Context())
+	if err != nil {
+		handleExpectedError(w, r, err)
+	}
 }

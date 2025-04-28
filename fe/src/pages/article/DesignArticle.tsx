@@ -4,7 +4,7 @@ import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { useCategoryApiCtx } from "../../services/CategoryApiContext";
 import { useArticleApiCtx } from "../../services/ArticleApiContext";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { ArticleCore } from "../../openapi";
 
 const DesignArticle: React.FC = () => {
@@ -20,6 +20,7 @@ const DesignArticle: React.FC = () => {
       id: "",
     },
   });
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (id) {
@@ -87,15 +88,35 @@ const DesignArticle: React.FC = () => {
           id: articleData.category!.id,
         },
       })
+      .then((response) => {
+        if (response.status === 201) {
+          navigate(
+            `/category/${articleData.category!.id}/articles/${response.headers["location"]}`,
+          );
+        }
+
+        console.error("failed to add article", response);
+      })
       .catch((err) => {
         console.error(err);
       });
   };
 
   const editArticle = async () => {
-    api.articleEdit(id!, articleData).catch((err) => {
-      console.error(err);
-    });
+    api
+      .articleEdit(id!, articleData)
+      .then((response) => {
+        if (response.status === 200) {
+          navigate(
+            `/category/${articleData.category!.id}/articles/${response.headers["location"]}`,
+          );
+        }
+
+        console.error("failed to edit article", response);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
 
   let actionButton;

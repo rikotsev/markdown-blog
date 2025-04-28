@@ -18,6 +18,7 @@ func main() {
 	if err != nil {
 		slog.Error("failed to spin up application context", "err", err)
 	}
+	//TODO either move AuthProvider to context or pass db,
 
 	applicationServer, err := server.New(appCtx, server.Okta(cfg))
 	if err != nil {

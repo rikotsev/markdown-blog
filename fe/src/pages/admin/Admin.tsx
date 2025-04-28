@@ -3,6 +3,7 @@ import CategoryManager from "../../components/admin/CategoryManager";
 import styles from "./Admin.module.css";
 import ArticleManager from "../../components/admin/ArticleManager";
 import { useAuth0 } from "@auth0/auth0-react";
+import PageManager from "../../components/admin/PageManager";
 
 const Admin: React.FC = () => {
   const { isAuthenticated } = useAuth0();
@@ -22,6 +23,7 @@ const Admin: React.FC = () => {
       </div>
       <div className={styles.otherSection}>
         <ArticleManager />
+        <PageManager />
       </div>
     </div>
   );

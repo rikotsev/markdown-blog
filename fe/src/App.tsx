@@ -5,6 +5,7 @@ import { Config, ConfigContext } from "./services/ConfigContext";
 import { CategoryApiProvider } from "./services/CategoryApiContext";
 import { ArticleApiProvider } from "./services/ArticleApiContext";
 import { MarkdownBlog } from "./MarkdownBlog";
+import { PageApiProvider } from "./services/PageApiContext";
 
 function App() {
   const [config, setConfig] = useState<Config | null>(null);
@@ -44,7 +45,9 @@ function App() {
       >
         <CategoryApiProvider>
           <ArticleApiProvider>
-            <MarkdownBlog />
+            <PageApiProvider>
+              <MarkdownBlog />
+            </PageApiProvider>
           </ArticleApiProvider>
         </CategoryApiProvider>
       </Auth0Provider>

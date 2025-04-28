@@ -1,6 +1,6 @@
 /* src/components/DesignArticle.module.css */
 
-.article-form {
+.page-form {
   max-width: 900px;
   margin: 4rem auto;
   display: flex;
@@ -31,21 +31,7 @@
   border-color: #333;
 }
 
-.category-select {
-  width: 180px;
-  padding: 0.5rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 1rem;
-  outline: none;
-  transition: border-color 0.2s ease;
-}
-
-.category-select:focus {
-  border-color: #333;
-}
-
-.create-article-btn {
+.create-page-btn {
   padding: 0.5rem 1rem;
   background-color: #333;
   color: #fff;
@@ -56,27 +42,11 @@
   transition: background-color 0.2s ease;
 }
 
-.create-article-btn:hover {
+.create-page-btn:hover {
   background-color: #555;
 }
 
-.short-description {
-  width: 100%;
-  height: 100px;
-  padding: 0.5rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 1rem;
-  box-sizing: border-box;
-  outline: none;
-  transition: border-color 0.2s ease;
-}
-
-.short-description:focus {
-  border-color: #333;
-}
-
-.design-article {
+.design-page {
   display: flex; /* Flexbox layout for side-by-side display */
   gap: 2rem; /* Space between left and right sides */
   margin-top: 1rem;
@@ -87,13 +57,13 @@
 }
 
 .markdown-input,
-.article-output {
+.page-output {
   flex: 1; /* Both sides take equal space */
   min-width: 300px; /* Minimum width to prevent shrinking too much */
 }
 
 .markdown-input h2,
-.article-output h2 {
+.page-output h2 {
   margin-bottom: 1rem;
   color: #333;
 }
@@ -125,6 +95,18 @@
   --fontStack-monospace:
     ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono,
     monospace;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  margin: 0;
+  color: var(--fgColor-default);
+  background-color: var(--bgColor-default);
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica,
+    Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  font-size: 16px;
+  line-height: 1.5;
+  word-wrap: break-word;
+  scroll-behavior: auto;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -1229,7 +1211,7 @@
   display: inline-block;
   min-width: 1ch;
   font-family:
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "sans-serif";
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
   font-size: 1em;
   font-style: normal !important;
   font-weight: var(--base-text-weight-normal, 400);
