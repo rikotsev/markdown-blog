@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import MenuBar from "./components/menu/MenuBar";
-import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
+import {BrowserRouter as Router, Navigate, Route, Routes} from "react-router-dom";
 import Category from "./pages/category/Category";
 import Article from "./pages/article/Article";
 import Admin from "./pages/admin/Admin";
@@ -46,6 +46,7 @@ export const MarkdownBlog: React.FC = () => {
                 <Route path="/article/:id" element={<DesignArticle/>}/>
                 <Route path="/page/create" element={<DesignPage/>}/>
                 <Route path="/page/design/:id" element={<DesignPage/>}/>
+                <Route path="/logout" element={<Navigate to="/" />}/>
             </Routes>
         </Router>
     );

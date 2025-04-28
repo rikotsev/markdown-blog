@@ -25,6 +25,8 @@ func (h *Http) CreateArticle(w http.ResponseWriter, r *http.Request, ctx context
 		return fmt.Errorf("failed to decode body: %w", err)
 	}
 
+	//TODO JSON validations
+
 	urlId, err := h.service.CreateArticle(ctx, &createArticleBody)
 	if err != nil {
 		return fmt.Errorf("failed to create article: %w", err)

@@ -52,14 +52,21 @@ const DesignPage: React.FC = () => {
             title: pageData.title!,
             content: pageData.content!
         }).then((newId) => {
-            if(newId) {
+            if (newId) {
                 navigate('/page/' + newId)
             }
         })
     };
 
     const editPage = async () => {
-        api.pageEdit(id!, pageData).catch((err) => {
+        api.pageEdit(id!, pageData).then((response) => {
+            if (response.status === 200) {
+                navigate('/page/' + response.headers['location'])
+                return
+            }
+
+            console.error('failed to edit page', response)
+        }).catch((err) => {
             console.error(err);
         });
     };

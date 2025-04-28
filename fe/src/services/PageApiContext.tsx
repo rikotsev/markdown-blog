@@ -74,7 +74,7 @@ export const PageApiProvider: React.FC<PageApiProviderProps> = ({children,}) => 
 
                 if (response.status === 201) {
                     await refreshPages()
-                    const location = response.headers['Location']
+                    const location = response.headers['location']
                     if (location) {
                         return location
                     }
