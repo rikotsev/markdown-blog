@@ -101,8 +101,8 @@
   color: var(--fgColor-default);
   background-color: var(--bgColor-default);
   font-family:
-          -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica,
-          Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+    -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica,
+    Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
   font-size: 16px;
   line-height: 1.5;
   word-wrap: break-word;
@@ -226,7 +226,6 @@
 }
 
 .markdown-body {
-
 }
 
 .markdown-body .octicon {
