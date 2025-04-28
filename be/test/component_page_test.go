@@ -6,7 +6,9 @@ import (
 )
 
 const (
-	PagePath = "page"
+	PagePath               = "page"
+	modifiedContentPostfix = "-modified content"
+	modifiedTitlePostfix   = "-modified title"
 )
 
 func (s *ApplicationSuite) dummyPages() []gen.PageCore {
@@ -67,8 +69,8 @@ func (s *ApplicationSuite) TestEditPage_Valid_TitleAndContent() {
 	urlId := response.Header.Get("Location")
 	s.httpGet(PagePath+"/"+urlId, &beforeEdit)
 
-	payload.Title = ptr(*payload.Title + "-modified title")
-	payload.Content = ptr(*payload.Content + "-modified content")
+	payload.Title = ptr(*payload.Title + modifiedTitlePostfix)
+	payload.Content = ptr(*payload.Content + modifiedContentPostfix)
 	response = s.httpPatchRaw(PagePath+"/"+urlId, &payload)
 	s.httpGet(PagePath+"/"+urlId, &afterEdit)
 
@@ -87,7 +89,7 @@ func (s *ApplicationSuite) TestEditPage_Valid_Title() {
 	urlId := response.Header.Get("Location")
 	s.httpGet(PagePath+"/"+urlId, &beforeEdit)
 
-	payload.Title = ptr(*payload.Title + "-modified title")
+	payload.Title = ptr(*payload.Title + modifiedTitlePostfix)
 	payload.Content = nil
 	response = s.httpPatchRaw(PagePath+"/"+urlId, &payload)
 	s.httpGet(PagePath+"/"+urlId, &afterEdit)
@@ -108,7 +110,7 @@ func (s *ApplicationSuite) TestEditPage_Valid_Content() {
 	s.httpGet(PagePath+"/"+urlId, &beforeEdit)
 
 	payload.Title = nil
-	payload.Content = ptr(*payload.Content + "-modified content")
+	payload.Content = ptr(*payload.Content + modifiedContentPostfix)
 	response = s.httpPatchRaw(PagePath+"/"+urlId, &payload)
 	s.httpGet(PagePath+"/"+urlId, &afterEdit)
 
@@ -123,7 +125,7 @@ func (s *ApplicationSuite) TestEditPage_NotFound() {
 	payload := s.dummyPages()[0]
 
 	payload.Title = nil
-	payload.Content = ptr(*payload.Content + "-modified content")
+	payload.Content = ptr(*payload.Content + modifiedContentPostfix)
 	response := s.httpPatchRaw(PagePath+"/not-existing", &payload)
 
 	s.Require().Equal(http.StatusNotFound, response.StatusCode)

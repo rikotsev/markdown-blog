@@ -68,6 +68,8 @@ const (
 `
 )
 
+const ConnErrMsg = "failed to get conn with: %w"
+
 func NewRepository(pool *pgxpool.Pool, queryTimeout time.Duration) *Repository {
 	return &Repository{
 		pool:         pool,
@@ -82,7 +84,7 @@ func (r *Repository) create(ctx context.Context, item Entity) (*Entity, error) {
 	conn, err := r.pool.Acquire(ctx)
 	defer conn.Release()
 	if err != nil {
-		return nil, fmt.Errorf("failed to get conn with: %w", err)
+		return nil, fmt.Errorf(ConnErrMsg, err)
 	}
 
 	id := uuid.New()
@@ -112,7 +114,7 @@ func (r *Repository) get(ctx context.Context, urlId string) (*Entity, error) {
 	conn, err := r.pool.Acquire(ctx)
 	defer conn.Release()
 	if err != nil {
-		return nil, fmt.Errorf("failed to get conn with: %w", err)
+		return nil, fmt.Errorf(ConnErrMsg, err)
 	}
 
 	rows, err := conn.Query(ctx, getPageSql, urlId)
@@ -140,7 +142,7 @@ func (r *Repository) list(ctx context.Context) ([]Entity, error) {
 	conn, err := r.pool.Acquire(ctx)
 	defer conn.Release()
 	if err != nil {
-		return nil, fmt.Errorf("failed to get conn with: %w", err)
+		return nil, fmt.Errorf(ConnErrMsg, err)
 	}
 
 	rows, err := conn.Query(ctx, listPagesSql)
@@ -168,7 +170,7 @@ func (r *Repository) update(ctx context.Context, urlId string, modifications Ent
 	conn, err := r.pool.Acquire(ctx)
 	defer conn.Release()
 	if err != nil {
-		return false, fmt.Errorf("failed to get conn with: %w", err)
+		return false, fmt.Errorf(ConnErrMsg, err)
 	}
 
 	tag, err := conn.Exec(ctx, updatePageSql, modifications.Title, modifications.Content, urlId)
@@ -186,7 +188,7 @@ func (r *Repository) delete(ctx context.Context, urlId string) (bool, error) {
 	conn, err := r.pool.Acquire(ctx)
 	defer conn.Release()
 	if err != nil {
-		return false, fmt.Errorf("failed to get conn with: %w", err)
+		return false, fmt.Errorf(ConnErrMsg, err)
 	}
 
 	tag, err := conn.Exec(ctx, deletePageSql, urlId)
