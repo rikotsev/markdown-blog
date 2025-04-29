@@ -18,6 +18,7 @@ requestBody:
             required:
               - title
               - content
+              - position
 responses:
   '201':
     description: CREATED
