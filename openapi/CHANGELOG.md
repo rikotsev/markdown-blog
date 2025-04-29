@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.0](https://github.com/rikotsev/markdown-blog/compare/api-v1.9.0...api-v1.10.0) (2025-04-29)
+
+
+### Features
+
+* **openapi:** page position field ([#90](https://github.com/rikotsev/markdown-blog/issues/90)) ([2900607](https://github.com/rikotsev/markdown-blog/commit/29006078e4303429bcc2a9f8873232f67ca3e200))
+
 ## [1.9.0](https://github.com/rikotsev/markdown-blog/compare/api-v1.8.1...api-v1.9.0) (2025-03-09)
 
 
