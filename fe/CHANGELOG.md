@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/rikotsev/markdown-blog/compare/frontend-v1.0.0...frontend-v1.1.0) (2025-05-09)
+
+
+### Features
+
+* **be, fe:** crud for pages ([#88](https://github.com/rikotsev/markdown-blog/issues/88)) ([a370f9f](https://github.com/rikotsev/markdown-blog/commit/a370f9f48e4e31af1dbf8675ddd4b27d88c964a0))
+
 ## 1.0.0 (2025-02-23)
 
 
