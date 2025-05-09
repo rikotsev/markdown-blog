@@ -1,0 +1,6 @@
+type: integer
+description: |
+  The field will be used for sorting the pages in a list. 
+  Try to ensure you have reasonable entropy so that new pages can be fit in between already existing pages.
+  The client can choose to respect or ignore the value here.
+example: 100
