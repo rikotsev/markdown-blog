@@ -17,8 +17,4 @@ properties:
       Feel free to read through - if you find something interesting or want to collaborate on something
       please do send me a message.
   position:
-    type: integer
-    description: |
-      The field will be used for sorting the pages in a list. 
-      Try to ensure you have reasonable entropy so that new pages can be fit in between already existing pages.
-    example: 100
+    $ref: ./page/PagePosition.yaml

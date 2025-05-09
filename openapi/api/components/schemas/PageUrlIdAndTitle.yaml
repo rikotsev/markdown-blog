@@ -4,3 +4,9 @@ properties:
     $ref: ./UrlId.yaml
   title:
     $ref: ./EntityTitle.yaml
+  position:
+    $ref: ./page/PagePosition.yaml
+required:
+  - urlId
+  - title
+  - position
