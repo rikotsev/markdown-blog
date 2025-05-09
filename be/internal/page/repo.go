@@ -20,6 +20,7 @@ type (
 		UrlId   string
 		Title   string
 		Content string
+		Pos     int64
 	}
 
 	EntityModification struct {
@@ -30,13 +31,13 @@ type (
 
 const (
 	createPageSql = `
-	INSERT INTO page (id, url_id, title, content)
-	VALUES ($1, $2, $3, $4)
+	INSERT INTO page (id, url_id, title, content, pos)
+	VALUES ($1, $2, $3, $4, $5)
 	RETURNING *;
 `
 	getPageSql = `
 	SELECT
-		id, url_id, title, content
+		id, url_id, title, content, pos
 	FROM
 	    page
 	WHERE
@@ -47,7 +48,8 @@ const (
 		'' AS id,
 		url_id,
 		title,
-		'' AS content
+		'' AS content,
+		pos
 	FROM
 	    page
 `
@@ -89,7 +91,7 @@ func (r *Repository) create(ctx context.Context, item Entity) (*Entity, error) {
 
 	id := uuid.New()
 	rows, err := conn.Query(ctx, createPageSql, id.String(), item.UrlId,
-		item.Title, item.Content)
+		item.Title, item.Content, item.Pos)
 	if err != nil {
 		return nil, fmt.Errorf("failed to insert page: %w", err)
 	}
@@ -200,5 +202,5 @@ func (r *Repository) delete(ctx context.Context, urlId string) (bool, error) {
 }
 
 func (r *Repository) scan(rows pgx.Rows, target *Entity) error {
-	return rows.Scan(&target.Id, &target.UrlId, &target.Title, &target.Content)
+	return rows.Scan(&target.Id, &target.UrlId, &target.Title, &target.Content, &target.Pos)
 }

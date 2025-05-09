@@ -14,16 +14,19 @@ const (
 func (s *ApplicationSuite) dummyPages() []gen.PageCore {
 	return []gen.PageCore{
 		{
-			Title:   ptr("Home"),
-			Content: ptr("This is a home page"),
+			Title:    ptr("Home"),
+			Content:  ptr("This is a home page"),
+			Position: ptr(100),
 		},
 		{
-			Title:   ptr("About me"),
-			Content: ptr("This is an about me page"),
+			Title:    ptr("About me"),
+			Content:  ptr("This is an about me page"),
+			Position: ptr(200),
 		},
 		{
-			Title:   ptr("Contacts"),
-			Content: ptr("this is a contacts page"),
+			Title:    ptr("Contacts"),
+			Content:  ptr("this is a contacts page"),
+			Position: ptr(300),
 		},
 	}
 }
@@ -53,12 +56,15 @@ func (s *ApplicationSuite) TestListPages() {
 	s.httpGet(PagePath, &result)
 
 	s.Require().Equal(3, len(result.Data))
-	s.Require().Equal(*dummyPages[0].Title, *result.Data[0].Title)
-	s.Require().Equal("home", *result.Data[0].UrlId)
-	s.Require().Equal(*dummyPages[1].Title, *result.Data[1].Title)
-	s.Require().Equal("about-me", *result.Data[1].UrlId)
-	s.Require().Equal(*dummyPages[2].Title, *result.Data[2].Title)
-	s.Require().Equal("contacts", *result.Data[2].UrlId)
+	s.Require().Equal(*dummyPages[0].Title, result.Data[0].Title)
+	s.Require().Equal("home", result.Data[0].UrlId)
+	s.Require().Equal(*dummyPages[0].Position, result.Data[0].Position)
+	s.Require().Equal(*dummyPages[1].Title, result.Data[1].Title)
+	s.Require().Equal("about-me", result.Data[1].UrlId)
+	s.Require().Equal(*dummyPages[1].Position, result.Data[1].Position)
+	s.Require().Equal(*dummyPages[2].Title, result.Data[2].Title)
+	s.Require().Equal("contacts", result.Data[2].UrlId)
+	s.Require().Equal(*dummyPages[2].Position, result.Data[2].Position)
 }
 
 func (s *ApplicationSuite) TestEditPageValidTitleAndContent() {
@@ -102,6 +108,26 @@ func (s *ApplicationSuite) TestEditPageValidTitle() {
 }
 
 func (s *ApplicationSuite) TestEditPageValidContent() {
+	beforeEdit := gen.PageResponseGet{}
+	afterEdit := gen.PageResponseGet{}
+	payload := s.dummyPages()[0]
+	response := s.httpPostRaw(PagePath, payload)
+	urlId := response.Header.Get("Location")
+	s.httpGet(PagePath+"/"+urlId, &beforeEdit)
+
+	payload.Title = nil
+	payload.Content = ptr(*payload.Content + modifiedContentPostfix)
+	response = s.httpPatchRaw(PagePath+"/"+urlId, &payload)
+	s.httpGet(PagePath+"/"+urlId, &afterEdit)
+
+	s.Require().Equal(http.StatusOK, response.StatusCode)
+	s.Require().Equal(beforeEdit.Data.Id, afterEdit.Data.Id)
+	s.Require().Equal(beforeEdit.Data.UrlId, afterEdit.Data.UrlId)
+	s.Require().Equal(*payload.Content, afterEdit.Data.Content)
+	s.Require().Equal(beforeEdit.Data.Title, afterEdit.Data.Title)
+}
+
+func (s *ApplicationSuite) TestEditPageValidPosition() {
 	beforeEdit := gen.PageResponseGet{}
 	afterEdit := gen.PageResponseGet{}
 	payload := s.dummyPages()[0]
