@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.1](https://github.com/rikotsev/markdown-blog/compare/api-v1.10.0...api-v1.10.1) (2025-05-09)
+
+
+### Bug Fixes
+
+* **openapi:** return the position field for page list ([#92](https://github.com/rikotsev/markdown-blog/issues/92)) ([37c08de](https://github.com/rikotsev/markdown-blog/commit/37c08de0219a3e6bc520c3d24232a993d823012f))
+
 ## [1.10.0](https://github.com/rikotsev/markdown-blog/compare/api-v1.9.0...api-v1.10.0) (2025-04-29)
 
 
