@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS page
     url_id   TEXT NOT NULL,
     title   VARCHAR(100) NOT NULL,
     content TEXT NOT NULL,
+    pos INTEGER NOT NULL,
     CONSTRAINT pk_page PRIMARY KEY (id),
     CONSTRAINT uq_page_url_id UNIQUE (url_id)
 );
