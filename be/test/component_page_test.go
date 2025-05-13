@@ -77,6 +77,7 @@ func (s *ApplicationSuite) TestEditPageValidTitleAndContent() {
 
 	payload.Title = ptr(*payload.Title + modifiedTitlePostfix)
 	payload.Content = ptr(*payload.Content + modifiedContentPostfix)
+	payload.Position = nil
 	response = s.httpPatchRaw(PagePath+"/"+urlId, &payload)
 	s.httpGet(PagePath+"/"+urlId, &afterEdit)
 
@@ -85,6 +86,7 @@ func (s *ApplicationSuite) TestEditPageValidTitleAndContent() {
 	s.Require().Equal(beforeEdit.Data.UrlId, afterEdit.Data.UrlId)
 	s.Require().Equal(*payload.Title, afterEdit.Data.Title)
 	s.Require().Equal(*payload.Content, afterEdit.Data.Content)
+	s.Require().Equal(beforeEdit.Data.Position, afterEdit.Data.Position)
 }
 
 func (s *ApplicationSuite) TestEditPageValidTitle() {
@@ -97,6 +99,7 @@ func (s *ApplicationSuite) TestEditPageValidTitle() {
 
 	payload.Title = ptr(*payload.Title + modifiedTitlePostfix)
 	payload.Content = nil
+	payload.Position = nil
 	response = s.httpPatchRaw(PagePath+"/"+urlId, &payload)
 	s.httpGet(PagePath+"/"+urlId, &afterEdit)
 
@@ -105,6 +108,7 @@ func (s *ApplicationSuite) TestEditPageValidTitle() {
 	s.Require().Equal(beforeEdit.Data.UrlId, afterEdit.Data.UrlId)
 	s.Require().Equal(*payload.Title, afterEdit.Data.Title)
 	s.Require().Equal(beforeEdit.Data.Content, afterEdit.Data.Content)
+	s.Require().Equal(beforeEdit.Data.Position, afterEdit.Data.Position)
 }
 
 func (s *ApplicationSuite) TestEditPageValidContent() {
@@ -117,6 +121,7 @@ func (s *ApplicationSuite) TestEditPageValidContent() {
 
 	payload.Title = nil
 	payload.Content = ptr(*payload.Content + modifiedContentPostfix)
+	payload.Position = nil
 	response = s.httpPatchRaw(PagePath+"/"+urlId, &payload)
 	s.httpGet(PagePath+"/"+urlId, &afterEdit)
 
@@ -125,6 +130,7 @@ func (s *ApplicationSuite) TestEditPageValidContent() {
 	s.Require().Equal(beforeEdit.Data.UrlId, afterEdit.Data.UrlId)
 	s.Require().Equal(*payload.Content, afterEdit.Data.Content)
 	s.Require().Equal(beforeEdit.Data.Title, afterEdit.Data.Title)
+	s.Require().Equal(beforeEdit.Data.Position, afterEdit.Data.Position)
 }
 
 func (s *ApplicationSuite) TestEditPageValidPosition() {
@@ -136,15 +142,17 @@ func (s *ApplicationSuite) TestEditPageValidPosition() {
 	s.httpGet(PagePath+"/"+urlId, &beforeEdit)
 
 	payload.Title = nil
-	payload.Content = ptr(*payload.Content + modifiedContentPostfix)
+	payload.Position = ptr(*payload.Position + 1)
+	payload.Content = nil
 	response = s.httpPatchRaw(PagePath+"/"+urlId, &payload)
 	s.httpGet(PagePath+"/"+urlId, &afterEdit)
 
 	s.Require().Equal(http.StatusOK, response.StatusCode)
 	s.Require().Equal(beforeEdit.Data.Id, afterEdit.Data.Id)
 	s.Require().Equal(beforeEdit.Data.UrlId, afterEdit.Data.UrlId)
-	s.Require().Equal(*payload.Content, afterEdit.Data.Content)
+	s.Require().Equal(beforeEdit.Data.Content, afterEdit.Data.Content)
 	s.Require().Equal(beforeEdit.Data.Title, afterEdit.Data.Title)
+	s.Require().Equal(*payload.Position, afterEdit.Data.Position)
 }
 
 func (s *ApplicationSuite) TestEditPageNotFound() {

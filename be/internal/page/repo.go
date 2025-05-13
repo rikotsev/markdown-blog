@@ -20,12 +20,13 @@ type (
 		UrlId   string
 		Title   string
 		Content string
-		Pos     int64
+		Pos     int
 	}
 
 	EntityModification struct {
 		Title   *string
 		Content *string
+		Pos     *int
 	}
 )
 
@@ -58,9 +59,10 @@ const (
 		page
 	SET
 	    title = COALESCE($1, title),
-	    content = COALESCE($2, content)
+	    content = COALESCE($2, content),
+		pos = COALESCE($3, pos)
 	WHERE 
-	    url_id = $3;
+	    url_id = $4;
 `
 	deletePageSql = `
 	DELETE FROM
@@ -175,7 +177,7 @@ func (r *Repository) update(ctx context.Context, urlId string, modifications Ent
 		return false, fmt.Errorf(ConnErrMsg, err)
 	}
 
-	tag, err := conn.Exec(ctx, updatePageSql, modifications.Title, modifications.Content, urlId)
+	tag, err := conn.Exec(ctx, updatePageSql, modifications.Title, modifications.Content, modifications.Pos, urlId)
 	if err != nil {
 		return false, fmt.Errorf("failed to perform update: %w", err)
 	}

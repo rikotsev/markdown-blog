@@ -14,6 +14,7 @@ const DesignPage: React.FC = () => {
   const [pageData, setPageData] = useState<PageCore>({
     content: "",
     title: "",
+    position: 0,
   });
 
   useEffect(() => {
@@ -24,6 +25,7 @@ const DesignPage: React.FC = () => {
           setPageData({
             content: response.data.data!.content,
             title: response.data.data!.title,
+            position: response.data.data!.position,
           });
         })
         .catch((err) => {
@@ -46,11 +48,18 @@ const DesignPage: React.FC = () => {
       title: event.target.value,
     }));
   };
+  const handlePositionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPageData((prev) => ({
+      ...prev,
+      position: Number(event.target.value),
+    }));
+  };
 
   const addPage = async () => {
     await add({
       title: pageData.title!,
       content: pageData.content!,
+      position: pageData.position!,
     }).then((newId) => {
       if (newId) {
         navigate("/page/" + newId);
@@ -100,6 +109,13 @@ const DesignPage: React.FC = () => {
               value={pageData.title}
               className={styles["title-input"]}
               placeholder="Page name"
+            />
+            <input
+              type="number"
+              onChange={handlePositionChange}
+              value={pageData.position}
+              className={styles["position-input"]}
+              placeholder="Page position"
             />
             {actionButton}
           </div>
