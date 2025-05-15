@@ -7,7 +7,7 @@ import remarkGfm from "remark-gfm";
 import { PageCore } from "../../openapi";
 
 const DesignPage: React.FC = () => {
-  const { api, add } = usePageApiCtx();
+  const { api, add, edit } = usePageApiCtx();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
@@ -68,19 +68,11 @@ const DesignPage: React.FC = () => {
   };
 
   const editPage = async () => {
-    api
-      .pageEdit(id!, pageData)
-      .then((response) => {
-        if (response.status === 200) {
-          navigate("/page/" + response.headers["location"]);
-          return;
-        }
-
-        console.error("failed to edit page", response);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    await edit(id!, pageData).then((modifiedId) => {
+      if (modifiedId) {
+        navigate("/page/" + modifiedId);
+      }
+    });
   };
 
   let actionButton;
