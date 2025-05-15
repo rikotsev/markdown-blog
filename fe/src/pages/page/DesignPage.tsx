@@ -7,13 +7,14 @@ import remarkGfm from "remark-gfm";
 import { PageCore } from "../../openapi";
 
 const DesignPage: React.FC = () => {
-  const { api, add } = usePageApiCtx();
+  const { api, add, edit } = usePageApiCtx();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
   const [pageData, setPageData] = useState<PageCore>({
     content: "",
     title: "",
+    position: 0,
   });
 
   useEffect(() => {
@@ -24,6 +25,7 @@ const DesignPage: React.FC = () => {
           setPageData({
             content: response.data.data!.content,
             title: response.data.data!.title,
+            position: response.data.data!.position,
           });
         })
         .catch((err) => {
@@ -46,11 +48,18 @@ const DesignPage: React.FC = () => {
       title: event.target.value,
     }));
   };
+  const handlePositionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPageData((prev) => ({
+      ...prev,
+      position: Number(event.target.value),
+    }));
+  };
 
   const addPage = async () => {
     await add({
       title: pageData.title!,
       content: pageData.content!,
+      position: pageData.position!,
     }).then((newId) => {
       if (newId) {
         navigate("/page/" + newId);
@@ -59,19 +68,11 @@ const DesignPage: React.FC = () => {
   };
 
   const editPage = async () => {
-    api
-      .pageEdit(id!, pageData)
-      .then((response) => {
-        if (response.status === 200) {
-          navigate("/page/" + response.headers["location"]);
-          return;
-        }
-
-        console.error("failed to edit page", response);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    await edit(id!, pageData).then((modifiedId) => {
+      if (modifiedId) {
+        navigate("/page/" + modifiedId);
+      }
+    });
   };
 
   let actionButton;
@@ -100,6 +101,13 @@ const DesignPage: React.FC = () => {
               value={pageData.title}
               className={styles["title-input"]}
               placeholder="Page name"
+            />
+            <input
+              type="number"
+              onChange={handlePositionChange}
+              value={pageData.position}
+              className={styles["position-input"]}
+              placeholder="Page position"
             />
             {actionButton}
           </div>

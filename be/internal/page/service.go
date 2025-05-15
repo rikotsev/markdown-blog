@@ -24,6 +24,7 @@ func (s *Service) createPage(ctx context.Context, req *gen.PageCreateJSONBody) (
 		Title:   req.Title,
 		Content: req.Content,
 		UrlId:   s.urlIdTransformer.Process(req.Title),
+		Pos:     req.Position,
 	})
 
 	if err != nil {
@@ -50,6 +51,7 @@ func (s *Service) getPage(ctx context.Context, urlId string) (*gen.PageResponseG
 			UrlId:      foundEntity.UrlId,
 			Title:      foundEntity.Title,
 			Content:    foundEntity.Content,
+			Position:   foundEntity.Pos,
 		},
 	}, nil
 }
@@ -66,8 +68,9 @@ func (s *Service) listPages(ctx context.Context) (*gen.PageResponseList, error) 
 
 	for _, page := range entities {
 		result.Data = append(result.Data, gen.PageUrlIdAndTitle{
-			UrlId: &page.UrlId,
-			Title: &page.Title,
+			UrlId:    page.UrlId,
+			Title:    page.Title,
+			Position: page.Pos,
 		})
 	}
 
@@ -78,6 +81,7 @@ func (s *Service) updatePage(ctx context.Context, urlId string, data gen.PageCor
 	success, err := s.repository.update(ctx, urlId, EntityModification{
 		Title:   data.Title,
 		Content: data.Content,
+		Pos:     data.Position,
 	})
 	if err != nil {
 		return false, fmt.Errorf("failed to perform update: %w", err)

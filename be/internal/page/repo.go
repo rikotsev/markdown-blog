@@ -20,23 +20,25 @@ type (
 		UrlId   string
 		Title   string
 		Content string
+		Pos     int
 	}
 
 	EntityModification struct {
 		Title   *string
 		Content *string
+		Pos     *int
 	}
 )
 
 const (
 	createPageSql = `
-	INSERT INTO page (id, url_id, title, content)
-	VALUES ($1, $2, $3, $4)
+	INSERT INTO page (id, url_id, title, content, pos)
+	VALUES ($1, $2, $3, $4, $5)
 	RETURNING *;
 `
 	getPageSql = `
 	SELECT
-		id, url_id, title, content
+		id, url_id, title, content, pos
 	FROM
 	    page
 	WHERE
@@ -47,7 +49,8 @@ const (
 		'' AS id,
 		url_id,
 		title,
-		'' AS content
+		'' AS content,
+		pos
 	FROM
 	    page
 `
@@ -56,9 +59,10 @@ const (
 		page
 	SET
 	    title = COALESCE($1, title),
-	    content = COALESCE($2, content)
+	    content = COALESCE($2, content),
+		pos = COALESCE($3, pos)
 	WHERE 
-	    url_id = $3;
+	    url_id = $4;
 `
 	deletePageSql = `
 	DELETE FROM
@@ -89,7 +93,7 @@ func (r *Repository) create(ctx context.Context, item Entity) (*Entity, error) {
 
 	id := uuid.New()
 	rows, err := conn.Query(ctx, createPageSql, id.String(), item.UrlId,
-		item.Title, item.Content)
+		item.Title, item.Content, item.Pos)
 	if err != nil {
 		return nil, fmt.Errorf("failed to insert page: %w", err)
 	}
@@ -173,7 +177,7 @@ func (r *Repository) update(ctx context.Context, urlId string, modifications Ent
 		return false, fmt.Errorf(ConnErrMsg, err)
 	}
 
-	tag, err := conn.Exec(ctx, updatePageSql, modifications.Title, modifications.Content, urlId)
+	tag, err := conn.Exec(ctx, updatePageSql, modifications.Title, modifications.Content, modifications.Pos, urlId)
 	if err != nil {
 		return false, fmt.Errorf("failed to perform update: %w", err)
 	}
@@ -200,5 +204,5 @@ func (r *Repository) delete(ctx context.Context, urlId string) (bool, error) {
 }
 
 func (r *Repository) scan(rows pgx.Rows, target *Entity) error {
-	return rows.Scan(&target.Id, &target.UrlId, &target.Title, &target.Content)
+	return rows.Scan(&target.Id, &target.UrlId, &target.Title, &target.Content, &target.Pos)
 }

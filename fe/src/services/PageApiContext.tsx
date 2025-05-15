@@ -1,6 +1,7 @@
 import {
   Configuration,
   PageApi,
+  PageCore,
   PageCreate,
   PageUrlIdAndTitle,
 } from "../openapi";
@@ -21,6 +22,7 @@ export interface PageApiData {
   refreshPages: () => Promise<void>;
   add: (pageCreate: PageCreate) => Promise<string | undefined>;
   remove: (urlId: string) => Promise<void>;
+  edit: (urlId: string, pageEdit: PageCore) => Promise<string | undefined>;
 }
 
 const PageApiContext = createContext<PageApiData | undefined>(undefined);
@@ -75,7 +77,7 @@ export const PageApiProvider: React.FC<PageApiProviderProps> = ({
   const refreshPages = useCallback(async () => {
     try {
       const response = await api.pageList();
-      setPages(response.data.data);
+      setPages(response.data.data.sort((p1, p2) => p1.position - p2.position));
     } catch (err) {
       console.error(err);
     }
@@ -121,8 +123,31 @@ export const PageApiProvider: React.FC<PageApiProviderProps> = ({
     [api, refreshPages],
   );
 
+  const edit = useCallback(
+    async (urlId: string, pageEdit: PageCore) => {
+      const response = await api.pageEdit(urlId, pageEdit);
+
+      if (response.status === 200) {
+        await refreshPages();
+        const location = response.headers["location"];
+        if (location) {
+          return location;
+        }
+
+        return Promise.reject(new Error("location not found"));
+      }
+
+      return Promise.reject(
+        new Error(`request failed with status: ${response.status}`),
+      );
+    },
+    [api, refreshPages],
+  );
+
   return (
-    <PageApiContext.Provider value={{ pages, api, refreshPages, add, remove }}>
+    <PageApiContext.Provider
+      value={{ pages, api, refreshPages, add, remove, edit }}
+    >
       {children}
     </PageApiContext.Provider>
   );
